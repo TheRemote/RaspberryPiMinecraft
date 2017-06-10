@@ -1,0 +1,1 @@
+screen -dmS minecraft java -server -Dfile.encoding=UTF-8 -Xms512M -Xmx800M -XX:NewSize=300M -XX:MaxNewSize=500M -XX:+CMSIncrementalMode -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=4 -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:SurvivorRatio=16 -XX:TargetSurvivorRatio=90 -jar paperclip.jar nogui
