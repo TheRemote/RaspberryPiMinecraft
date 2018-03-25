@@ -1,1 +1,6 @@
-screen -dmS minecraft java -server -Dfile.encoding=UTF-8 -Xms512M -Xmx800M -XX:NewSize=300M -XX:MaxNewSize=500M -XX:+CMSIncrementalMode -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:ParallelGCThreads=4 -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:SurvivorRatio=16 -XX:TargetSurvivorRatio=90 -jar paperclip.jar nogui
+#!/bin/bash
+# James Chambers - V1.0 - March 24th 2018
+# Minecraft Server startup script using screen
+echo "Starting Minecraft server.  To view window type screen -r minecraft."
+echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
+screen -dmS minecraft java -jar -Xms800M -Xmx800M paperclip.jar
