@@ -21,6 +21,6 @@
 #
 # m h  dom mon dow   command
 # Restarts server at 2am and 6pm. Starts server at reboot.
-* 2 * * * /home/pi/minecraft/restart.sh
-* 18 * * * /home/pi/minecraft/restart.sh
+0 2 * * * /home/pi/minecraft/restart.sh
+0 18 * * * /home/pi/minecraft/restart.sh
 @reboot /home/pi/minecraft/start.sh
