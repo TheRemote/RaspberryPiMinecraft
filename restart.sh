@@ -20,5 +20,6 @@ sleep 1s
 screen -Rd minecraft -X stuff "say Closing server...$(printf '\r')"
 screen -Rd minecraft -X stuff "stop $(printf '\r')"
 sleep 15s
+wget -q https://ci.destroystokyo.com/job/PaperSpigot/lastSuccessfulBuild/artifact/paperclip.jar -O /home/pi/minecraft/paperclip.jar
 echo "Restarting now."
 sudo /sbin/reboot
