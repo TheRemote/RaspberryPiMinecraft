@@ -37,6 +37,10 @@ echo "${magenta}Grabbing start.sh from repository... ${reset}"
 wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 chmod +x start.sh
 
+echo "${magenta}Grabbing restart.sh from repository... ${reset}"
+wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
+chmod +x restart.sh
+
 echo "${magenta}Enter a name for your server ${reset}"
 read -p 'Server Name: ' servername
 echo "server-name=$servername" >> server.properties

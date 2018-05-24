@@ -20,6 +20,7 @@ sleep 1s
 screen -Rd minecraft -X stuff "say Closing server...$(printf '\r')"
 screen -Rd minecraft -X stuff "stop $(printf '\r')"
 sleep 15s
+echo "Updating to most recent paperclip version."
 wget -q https://ci.destroystokyo.com/job/PaperSpigot/lastSuccessfulBuild/artifact/paperclip.jar -O /home/pi/minecraft/paperclip.jar
 echo "Restarting now."
 sudo /sbin/reboot
