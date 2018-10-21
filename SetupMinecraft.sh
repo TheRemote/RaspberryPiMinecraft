@@ -25,7 +25,7 @@ mkdir minecraft
 cd minecraft
 
 echo "${magenta}Getting latest Paper Minecraft server... ${reset}"
-wget -O paperclip.jar https://ci.destroystokyo.com/job/PaperSpigot/lastSuccessfulBuild/artifact/paperclip.jar
+wget -O paperclip.jar https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
 
 echo "${magenta}Building the Minecraft server... ${reset}"
 java -jar -Xms800M -Xmx800M paperclip.jar
