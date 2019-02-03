@@ -11,3 +11,11 @@ To add Crontab server scheduled restart support check out the new crontab file c
 Eine deutsche Anleitung für die Konfigration eines Raspberry Pi mit Paper als stabiler Minecraft Server findet ihr hier:
 
 http://marc.tv/stabiler-minecraft-server-raspberry-pi
+
+Version History
+
+February 2nd 2019<br>
+-Script now checks to make sure we are running on the ARMv7 CPU architecture with 1024MB of RAM to ensure Java 9 works<br>
+-Script helps you overclock SD card and change gpu_mem to 16MB<br>
+-Increased memory usage of server from 800MB to 850MB due to gpu_mem tweak<br>
+-Improved reliability and validation checks on setup script<br>
