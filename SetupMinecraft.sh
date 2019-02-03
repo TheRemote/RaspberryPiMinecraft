@@ -1,50 +1,125 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
-# V1.0 - March 24th 2018
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
-red='tput setaf 1'
-magenta='put setaf 5'
-reset='put sgr0'
+echo "Minecraft Server installation script by James Chambers - V1.1 - February 2nd 2019"
+echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
+echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
-echo "${magenta}Minecraft Server installation script by James Chambers - V1.0"
-echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft ${reset}"
-
+# Check to see if Minecraft directory already exists, if it does then exit
 if [ -d "minecraft" ]; then
-  echo "${red}Directory minecraft already exists!  Exiting... ${reset}"
+  echo "Directory minecraft already exists!  Exiting..."
   exit 1
 fi
 
-echo "${magenta}Installing latest Java OpenJDK 9... ${reset}"
-sudo apt-get install openjdk-9-jdk-headless -y
+# Get total system memory and make sure we are a 1024MB or higher board
+echo "Getting total system memory..."
+TotalMemory=$(awk '/MemTotal/{print $2}' /proc/meminfo)
+echo "Total memory available: $TotalMemory"
+if [ $TotalMemory -lt 800000 ]; then
+  echo "Not enough memory to run a Minecraft server.  Requires Raspberry Pi with at least 1024MB of memory!"
+  exit 1
+fi
 
-echo "${magenta}Installing screen... ${reset}"
+# Check system architecture to ensure we are running ARMv7
+echo "Getting system ARM architecture..."
+CPUModel=$(cat /proc/cpuinfo | grep 'model name' | uniq)
+echo "System Architecture: $CPUModel"
+if [[ "$CPUModel" == *"ARMv7"* ]]; then
+  echo "Installing latest Java OpenJDK 9..."
+  sudo apt-get install openjdk-9-jre-headless -y
+else
+  echo "You must be using a Raspberry Pi with ARMv7 support to run a Minecraft server!"
+  echo "ARMv7 enables the G1GC garbage collector in Java which is required to have playable performance."
+  exit 1
+fi
+
+RebootRequired=0
+# Check MicroSD clock speed
+MicroSDClock="$(sudo grep "actual clock" /sys/kernel/debug/mmc0/ios 2>/dev/null | awk '{printf("%0.3f MHz", $3/1000000)}')"
+if [ -n "$MicroSDClock" ]; then
+  echo "MicroSD clock: $MicroSDClock"
+  if [ "$MicroSDClock" != "100.000 MHz" ]; then
+    echo "Your MicroSD clock is set at $MicroSDClock instead of the recommended 100 MHz"
+    echo "This setup can overclock this for you but some (usually cheaper) MicroSD cards will not boot with this setting"
+    echo "If this happens you can remove dtparam=sd_overclock=100 or reimage the MicroSD and the Pi will work normally again"
+    echo "This is at your own risk and does make a huge performance difference.  If you have a card that won't overclock or don't want to do this press n."
+    echo -n "Set clock speed to 100 MHz?  Requires reboot. (y/n)?"
+    read answer
+
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+        sudo bash -c 'printf "dtparam=sd_overclock=100\n" >> /boot/config.txt'
+        echo "SD Card speed has been changed.  Please run setup again after reboot."
+        RebootRequired=1
+    fi
+  fi
+fi
+
+# Check that GPU Shared memory is set to 16MB to give our server more resources
+echo "Getting shared GPU memory..."
+GPUMemory=$(vcgencmd get_mem gpu)
+echo "Memory being used by shared GPU: $GPUMemory"
+if [ "$GPUMemory" != "gpu=16M" ]; then
+  echo "GPU memory needs to be set to 16MB for best performance."
+  echo "This can be set in sudo raspi-config or the script can change it for you now."
+  echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
+  read answer
+
+  if [ "$answer" != "${answer#[Yy]}" ]; then
+      sudo raspi-config nonint do_memory_split "16"
+      echo "Split GPU memory has been changed.  Please run setup again after reboot."
+      RebootRequired=1
+  fi
+fi
+
+# Check if any configuration changes needed a reboot
+if [ $RebootRequired -eq 1 ]; then
+  echo "System is restarting -- please run setup again after restart"
+  sudo reboot
+  exit 0
+fi
+
+# Install screen to run minecraft in the background
+echo "Installing screen..."
 sudo apt-get install screen -y
 
-echo "${magenta}Creating minecraft server directory... ${reset}"
+# Create server directory
+echo "Creating minecraft server directory..."
 mkdir minecraft
 cd minecraft
 
-echo "${magenta}Getting latest Paper Minecraft server... ${reset}"
+# Retrieve latest build of Paper minecraft server
+echo "Getting latest Paper Minecraft server..."
 wget -O paperclip.jar https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
 
-echo "${magenta}Building the Minecraft server... ${reset}"
-java -jar -Xms800M -Xmx800M paperclip.jar
+# Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
+echo "Building the Minecraft server..."
+java -jar -Xms850M -Xmx850M paperclip.jar
 
-echo "${magenta}Accepting the EULA... ${reset}"
+# Accept the EULA
+echo "Accepting the EULA..."
 echo eula=true > eula.txt
 
-echo "${magenta}Grabbing start.sh from repository... ${reset}"
+# Download start.sh from repository
+echo "Grabbing start.sh from repository..."
 wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 chmod +x start.sh
 
-echo "${magenta}Grabbing restart.sh from repository... ${reset}"
+# Download restart.sh from repository
+echo "Grabbing restart.sh from repository..."
 wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
 chmod +x restart.sh
 
-echo "${magenta}Enter a name for your server ${reset}"
+# Server configuration
+echo "Enter a name for your server..."
 read -p 'Server Name: ' servername
 echo "server-name=$servername" >> server.properties
 echo "motd=$servername" >> server.properties
 
-echo "${magenta}Setup is complete.  To run the server go to the minecraft directory and type ./start.sh"
-echo "Don't forget to set up port forwarding on your router.  The default port is 25565 ${reset}"
+# Finished!
+echo "Setup is complete.  To run the server go to the minecraft directory and type ./start.sh"
+./start.sh
+
+# Sleep for 2 seconds to give the server time to start
+sleep 2
+
+screen -r minecraft
