@@ -13,6 +13,7 @@ February 3rd 2019<br>
 -Added a check in the installer to make sure Java was installed properly before continuing<br>
 -Installer script now goes into the started screen window after installation<br>
 -Server now checks for updates to the server on startup<br>
+-Added Aikar's Minecraft server startup Java flags to start.sh<br>
 <br>
 February 2nd 2019<br>
 -Script now checks to make sure we are running on the ARMv7 CPU architecture with 1024MB of RAM to ensure Java 9 works<br>
