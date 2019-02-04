@@ -6,7 +6,7 @@ After=network.target
 User=pi
 WorkingDirectory=/home/pi/minecraft
 Type=forking
-ExecStart=/usr/bin/screen -dmS minecraft /usr/lib/jvm/java-9-openjdk-armhf/bin/java -jar -Xms850M -Xmx850M /home/pi/minecraft/paperclip.jar
+ExecStart=/bin/bash /home/pi/minecraft/start.sh
 ExecStop=/bin/bash /home/pi/minecraft/stop.sh
 GuessMainPID=no
 

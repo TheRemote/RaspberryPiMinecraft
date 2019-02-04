@@ -27,6 +27,12 @@ echo "System Architecture: $CPUModel"
 if [[ "$CPUModel" == *"ARMv7"* ]]; then
   echo "Installing latest Java OpenJDK 9..."
   sudo apt-get install openjdk-9-jre-headless -y
+  if [ -n 'which java' ]; then
+    echo "Java installed successfully"
+  else
+    echo "Java did not install successfully -- please check the above output to see what went wrong."
+    exit 1
+  fi
 else
   echo "You must be using a Raspberry Pi with ARMv7 support to run a Minecraft server!"
   echo "ARMv7 enables the G1GC garbage collector in Java which is required to have playable performance."
@@ -104,6 +110,11 @@ echo "Grabbing start.sh from repository..."
 wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 chmod +x start.sh
 
+# Download stop.sh from repository
+echo "Grabbing stop.sh from repository..."
+wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
+chmod +x stop.sh
+
 # Download restart.sh from repository
 echo "Grabbing restart.sh from repository..."
 wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
@@ -115,11 +126,31 @@ read -p 'Server Name: ' servername
 echo "server-name=$servername" >> server.properties
 echo "motd=$servername" >> server.properties
 
-# Finished!
-echo "Setup is complete.  To run the server go to the minecraft directory and type ./start.sh"
-./start.sh
+# Service configuration
+sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
+sudo chmod +x /etc/systemd/system/minecraft.service
+sudo systemctl daemon-reload
+echo -n "Start Minecraft server at startup automatically (y/n)?"
+read answer
+if [ "$answer" != "${answer#[Yy]}" ]; then
+  sudo systemctl enable minecraft.service
 
-# Sleep for 2 seconds to give the server time to start
-sleep 2
+  # Automatic reboot at 4am configuration
+  echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
+  read answer
+  if [ "$answer" != "${answer#[Yy]}" ]; then
+    croncmd="/home/pi/minecraft/restart.sh"
+    cronjob="0 4 * * * $croncmd"
+    ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+    echo "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e"
+  fi
+fi
+
+# Finished!
+echo "Setup is complete.  Starting Minecraft server..."
+sudo systemctl start minecraft.service
+
+# Sleep for 5 seconds to give the server time to start
+sleep 5
 
 screen -r minecraft
