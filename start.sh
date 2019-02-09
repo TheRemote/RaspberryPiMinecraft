@@ -1,9 +1,15 @@
 #!/bin/bash
-# James Chambers - February 3rd 2019
+# James Chambers - February 9th 2019
 # Minecraft Server startup script using screen
 
 # Flush out memory to disk so we have the maximum available for Java allocation
 sync
+
+# Check if server is already running
+if screen -list | grep -q "minecraft"; then
+    echo "Server is already running!  Type screen -r minecraft to open the console"
+    exit 1
+fi
 
 # Start server
 cd /home/pi/minecraft/

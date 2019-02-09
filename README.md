@@ -7,13 +7,15 @@ http://marc.tv/stabiler-minecraft-server-raspberry-pi<br>
 <br>
 <b>Version History</b><br>
 <br>
+February 9th 2019<br>
+-Added check to make sure service isn't already running when started<br>
+<br>
 February 3rd 2019<br>
 -Added optional service configuration to start minecraft automatically on boot<br>
 -Added optional daily reboot configuration via Cron in setup script<br>
 -Added a check in the installer to make sure Java was installed properly before continuing<br>
 -Installer script now goes into the started screen window after installation<br>
 -Server now checks for updates to the server on startup<br>
--Added Aikar's Minecraft server startup Java flags to start.sh<br>
 <br>
 February 2nd 2019<br>
 -Script now checks to make sure we are running on the ARMv7 CPU architecture with 1024MB of RAM to ensure Java 9 works<br>
