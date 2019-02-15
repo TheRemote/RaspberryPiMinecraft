@@ -17,6 +17,8 @@ February 15th 2019<br>
 -Added network connectivity check before attempting to update server - skips update if no connection available to prevent .jar corruption<br>
 -Service now waits up to 20 seconds for network connectivity before starting up to prevent service starting before server gets an IP address<br>
 -Fixed typo in stop.sh that was causing server to say it wasn't running when it was<br>
+-Removed unnecessary sleep time on stop.sh script so it returns as soon as the minecraft server closes<br>
+-Added automatic backups performed when server starts (located in minecraft/backups)<br>
 <br>
 February 9th 2019<br>
 -Added check to make sure service isn't already running when started<br>

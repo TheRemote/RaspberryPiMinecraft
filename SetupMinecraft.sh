@@ -92,6 +92,7 @@ sudo apt-get install screen -y
 echo "Creating minecraft server directory..."
 mkdir minecraft
 cd minecraft
+mkdir backups
 
 # Retrieve latest build of Paper minecraft server
 echo "Getting latest Paper Minecraft server..."

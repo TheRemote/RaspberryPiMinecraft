@@ -28,6 +28,10 @@ done
 # Switch to server directory
 cd /home/pi/minecraft/
 
+# Back up server
+echo "Backing up server (to minecraft/backups folder)"
+tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world world_nether world_the_end
+
 # Update paperclip.jar
 echo "Updating to most recent paperclip version ..."
 # Test internet connectivity first
