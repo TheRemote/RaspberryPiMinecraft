@@ -17,6 +17,7 @@ February 15th 2019<br>
 -Added minecraft.log file to log server activity (~/minecraft/minecraft.log)<br>
 -Added network connectivity check before attempting to update server - skips update if no connection available to prevent .jar corruption<br>
 -Service now waits up to 20 seconds for network connectivity before starting up to prevent service starting before server gets an IP address<br>
+-Fixed typo in stop.sh that was causing server to say it wasn't running when it was<br>
 <br>
 February 9th 2019<br>
 -Added check to make sure service isn't already running when started<br>

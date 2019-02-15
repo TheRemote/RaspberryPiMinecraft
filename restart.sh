@@ -2,6 +2,12 @@
 # James Chambers - February 15th 2019
 # Marc Tönsing - 18.05.2018
 
+# Check if server is running
+if ! /usr/bin/screen -list | /bin/grep -q "minecraft"; then
+    echo "Server is not currently running!"
+    exit 1
+fi
+
 # Minecraft Server restart and pi reboot.
 /usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 30 seconds! $(printf '\r')"
 /bin/sleep 23s
