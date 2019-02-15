@@ -5,6 +5,11 @@ For the full article and guide visit https://www.jamesachambers.com/2019/02/rasp
 Eine deutsche Anleitung für die Konfigration eines Raspberry Pi mit Paper als stabiler Minecraft Server findet ihr hier:<br>
 http://marc.tv/stabiler-minecraft-server-raspberry-pi<br>
 <br>
+To get started type:<br>
+wget -O SetupMinecraft.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh<br>
+chmod +x SetupMinecraft.sh<br>
+./SetupMinecraft.sh<br>
+<br>
 <b>Version History</b><br>
 <br>
 February 9th 2019<br>
