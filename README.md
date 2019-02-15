@@ -14,7 +14,6 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 February 15th 2019<br>
 -Server now starts correctly on Raspbian Full (Raspbian Lite still highly recommended due to more available memory)<br>
--Added minecraft.log file to log server activity (~/minecraft/minecraft.log)<br>
 -Added network connectivity check before attempting to update server - skips update if no connection available to prevent .jar corruption<br>
 -Service now waits up to 20 seconds for network connectivity before starting up to prevent service starting before server gets an IP address<br>
 -Fixed typo in stop.sh that was causing server to say it wasn't running when it was<br>
