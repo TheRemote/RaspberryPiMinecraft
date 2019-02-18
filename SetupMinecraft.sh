@@ -7,8 +7,50 @@ echo "Don't forget to set up port forwarding on your router!  The default port i
 
 # Check to see if Minecraft directory already exists, if it does then exit
 if [ -d "minecraft" ]; then
-  echo "Directory minecraft already exists!  Exiting..."
-  exit 1
+  echo "Directory minecraft already exists!  Updating scripts and configuring service ..."
+
+  # Remove existing scripts
+  rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
+
+  # Download start.sh from repository
+  echo "Grabbing start.sh from repository..."
+  wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
+  chmod +x start.sh
+
+  # Download stop.sh from repository
+  echo "Grabbing stop.sh from repository..."
+  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
+  chmod +x stop.sh
+
+  # Download restart.sh from repository
+  echo "Grabbing restart.sh from repository..."
+  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
+  chmod +x restart.sh
+
+  # Service configuration
+  sudo rm /etc/systemd/system/minecraft.service
+  sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
+  sudo chmod +x /etc/systemd/system/minecraft.service
+  sudo systemctl daemon-reload
+  echo -n "Start Minecraft server at startup automatically (y/n)?"
+  read answer
+  if [ "$answer" != "${answer#[Yy]}" ]; then
+    sudo systemctl enable minecraft.service
+
+    # Automatic reboot at 4am configuration
+    echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
+    read answer
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+      croncmd="/home/pi/minecraft/restart.sh"
+      cronjob="0 4 * * * $croncmd"
+      ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+      echo "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e"
+    fi
+  fi
+
+  echo "Minecraft installation scripts have been updated to the latest version!"
+  exit 0
+
 fi
 
 # Get total system memory and make sure we are a 1024MB or higher board
