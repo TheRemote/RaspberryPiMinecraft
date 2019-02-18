@@ -5,6 +5,32 @@ echo "Minecraft Server installation script by James Chambers - February 15th 201
 echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
+# Install screen to run minecraft in the background
+echo "Installing screen..."
+sudo apt-get install screen -y
+
+# Check system architecture to ensure we are running ARMv7
+echo "Getting system ARM architecture..."
+CPUModel=$(cat /proc/cpuinfo | grep 'model name' | uniq)
+echo "System Architecture: $CPUModel"
+if [[ "$CPUModel" == *"ARMv7"* ]]; then
+  echo "Installing latest Java OpenJDK 9..."
+  # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
+  sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/client
+  # Install OpenJDK 9
+  sudo apt-get install openjdk-9-jre-headless -y
+  if [ -n "`which java`" ]; then
+    echo "Java installed successfully"
+  else
+    echo "Java did not install successfully -- please check the above output to see what went wrong."
+    exit 1
+  fi
+else
+  echo "You must be using a Raspberry Pi with ARMv7 support to run a Minecraft server!"
+  echo "ARMv7 enables the G1GC garbage collector in Java which is required to have playable performance."
+  exit 1
+fi
+
 # Check to see if Minecraft directory already exists, if it does then exit
 if [ -d "minecraft" ]; then
   echo "Directory minecraft already exists!  Updating scripts and configuring service ..."
@@ -62,25 +88,6 @@ if [ $TotalMemory -lt 800000 ]; then
   exit 1
 fi
 
-# Check system architecture to ensure we are running ARMv7
-echo "Getting system ARM architecture..."
-CPUModel=$(cat /proc/cpuinfo | grep 'model name' | uniq)
-echo "System Architecture: $CPUModel"
-if [[ "$CPUModel" == *"ARMv7"* ]]; then
-  echo "Installing latest Java OpenJDK 9..."
-  sudo apt-get install openjdk-9-jre-headless -y
-  if [ -n 'which java' ]; then
-    echo "Java installed successfully"
-  else
-    echo "Java did not install successfully -- please check the above output to see what went wrong."
-    exit 1
-  fi
-else
-  echo "You must be using a Raspberry Pi with ARMv7 support to run a Minecraft server!"
-  echo "ARMv7 enables the G1GC garbage collector in Java which is required to have playable performance."
-  exit 1
-fi
-
 RebootRequired=0
 # Check MicroSD clock speed
 MicroSDClock="$(sudo grep "actual clock" /sys/kernel/debug/mmc0/ios 2>/dev/null | awk '{printf("%0.3f MHz", $3/1000000)}')"
@@ -125,10 +132,6 @@ if [ $RebootRequired -eq 1 ]; then
   sudo reboot
   exit 0
 fi
-
-# Install screen to run minecraft in the background
-echo "Installing screen..."
-sudo apt-get install screen -y
 
 # Create server directory
 echo "Creating minecraft server directory..."
