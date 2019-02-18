@@ -13,8 +13,8 @@ chmod +x SetupMinecraft.sh<br>
 <b>Version History</b><br>
 <br>
 February 18th 2019<br>
-The SetupMinecraft.sh script will now update all of your scripts to the latest version when ran and reinstall the startup service<br>
-Implemented a workaround for Java 9 installation since the ca-certificates-java package broke in Raspbian on the 16th<br>
+-The SetupMinecraft.sh script will now update all of your scripts to the latest version when ran and reinstall the startup service<br>
+-Implemented a workaround for Java 9 installation since the ca-certificates-java package broke in Raspbian on the 16th<br>
 <br>
 February 15th 2019<br>
 -Server now starts correctly on Raspbian Full (Raspbian Lite still highly recommended due to more available memory)<br>
