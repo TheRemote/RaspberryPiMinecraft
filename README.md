@@ -12,6 +12,9 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 <b>Version History</b><br>
 <br>
+February 18th 2019<br>
+The SetupMinecraft.sh script will now update all of your scripts to the latest version when ran and reinstall the startup service<br>
+<br>
 February 15th 2019<br>
 -Server now starts correctly on Raspbian Full (Raspbian Lite still highly recommended due to more available memory)<br>
 -Added network connectivity check before attempting to update server - skips update if no connection available to prevent .jar corruption<br>
