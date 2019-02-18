@@ -7,7 +7,7 @@ echo "Don't forget to set up port forwarding on your router!  The default port i
 
 # Install screen to run minecraft in the background
 echo "Installing screen..."
-sudo apt-get update && apt-get install screen -y
+sudo apt-get update && sudo apt-get install screen -y
 
 # Check system architecture to ensure we are running ARMv7
 echo "Getting system ARM architecture..."
@@ -15,6 +15,7 @@ CPUModel=$(cat /proc/cpuinfo | grep 'model name' | uniq)
 echo "System Architecture: $CPUModel"
 if [[ "$CPUModel" == *"ARMv7"* ]]; then
   echo "Installing latest Java OpenJDK 9..."
+  sudo apt-get install openjdk-9-jre-headless -y
   # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
   sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
   # Install OpenJDK 9
