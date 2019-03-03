@@ -51,6 +51,7 @@ if [ -d "minecraft" ]; then
   wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
+  sed -i "s:memselect:$MemSelected:g" start.sh
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
