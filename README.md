@@ -13,6 +13,7 @@ chmod +x SetupMinecraft.sh<br>
 <b>Version History</b><br>
 <br>
 March 2nd 2019<br>
+-Added a configuration option for memory to dedicate to the Minecraft server (along with a recommended amount)<br>
 -Added support for Debian and Ubuntu Server Raspberry Pi distros<br>
 -Server now installs OpenJDK-11-jre-headless if it is available, otherwise OpenJDK 9 will be selected<br>
 -Improved CPU architecture detection<br>

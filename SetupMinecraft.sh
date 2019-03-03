@@ -19,6 +19,28 @@ if [ -d "minecraft" ]; then
   DirName=$(readlink -e ~)
   UserName=$(whoami)
 
+  # Ask user for amount of memory they want to dedicate to the Minecraft server
+  echo "Getting total system memory..."
+  sync
+  sleep 0.1s
+  TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+  AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+  echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
+  echo "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended."
+  echo "You must leave enough left over memory for the operating system to run background processes."
+  echo "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)."
+  MemSelected=0
+  while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
+    read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
+    MemSelected=$(echo $MemSelected | bc)
+    if [[ $MemSelected -lt 600 ]]; then
+      echo "Please enter a minimum of 600"
+    elif [[ $MemSelected -gt $TotalMemory ]]; then
+      echo "Please enter an amount less than the total memory in the system ($TotalMemory)"
+    fi
+  done
+  echo "Amount of memory for Minecraft server selected: $MemSelected MB"
+
   # Remove existing scripts
   rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
 
@@ -69,9 +91,10 @@ fi
 
 # Get total system memory and make sure we are a 1024MB or higher board
 echo "Getting total system memory..."
-TotalMemory=$(awk '/MemTotal/{print $2}' /proc/meminfo)
-echo "Total memory available: $TotalMemory"
-if [ $TotalMemory -lt 800000 ]; then
+TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
+if [ $TotalMemory -lt 700 ]; then
   echo "Not enough memory to run a Minecraft server.  Requires Raspberry Pi with at least 1024MB of memory!"
   exit 1
 fi
@@ -157,6 +180,34 @@ if [ -n "`which vcgencmd`" ]; then
   fi
 fi
 
+# Calculate amount of recommended memory leaving enough room for the OS processes to run
+sync
+sleep 0.1s
+AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.05/1 | bc)
+if [ $RecommendedMemory -lt 700 ]; then
+  echo "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability."
+  echo "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory."
+  echo "It is recommended to use a headless distro like Raspbian Lite to ensure you have the maximum memory available possible."
+  read -n1 -r -p "Press any key to continue"
+fi
+
+# Ask user for amount of memory they want to dedicate to the Minecraft server
+echo "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended."
+echo "You must leave enough left over memory for the operating system to run background processes."
+echo "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)."
+MemSelected=0
+while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
+  read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
+  MemSelected=$(echo $MemSelected | bc)
+  if [[ $MemSelected -lt 600 ]]; then
+    echo "Please enter a minimum of 600"
+  elif [[ $MemSelected -gt $TotalMemory ]]; then
+    echo "Please enter an amount less than the total memory in the system ($TotalMemory)"
+  fi
+done
+echo "Amount of memory for Minecraft server selected: $MemSelected MB"
+
 # Create server directory
 echo "Creating minecraft server directory..."
 cd ~
@@ -174,7 +225,7 @@ wget -O paperclip.jar https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/a
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 echo "Building the Minecraft server..."
-java -jar -Xms850M -Xmx850M paperclip.jar
+java -jar "-Xms$RecommendedMemory"M "-Xmx$RecommendedMemory"M paperclip.jar
 
 # Accept the EULA
 echo "Accepting the EULA..."
@@ -185,6 +236,7 @@ echo "Grabbing start.sh from repository..."
 wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 chmod +x start.sh
 sed -i "s:dirname:$DirName:g" start.sh
+sed -i "s:memselect:$MemSelected:g" start.sh
 
 # Download stop.sh from repository
 echo "Grabbing stop.sh from repository..."
@@ -216,6 +268,10 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo systemctl enable minecraft.service
 
   # Automatic reboot at 4am configuration
+  TimeZone=$(cat /etc/timezone)
+  CurrentTime=$(date)
+  echo "Your time zone is currently set to $TimeZone.  Current system time: $CurrentTime"
+  echo "You can adjust/remove the selected reboot time later by typing crontab -e"
   echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
   read answer
   if [ "$answer" != "${answer#[Yy]}" ]; then
