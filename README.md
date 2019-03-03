@@ -12,6 +12,11 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 <b>Version History</b><br>
 <br>
+March 2nd 2019<br>
+-Improved CPU architecture detection<br>
+-Added sudo, net-tools, wget to server dependencies to improve portability<br>
+-Removed absolute paths from scripts to improve portability<br>
+<br>
 February 18th 2019<br>
 -The SetupMinecraft.sh script will now update all of your scripts to the latest version when ran and reinstall the startup service<br>
 -Implemented a workaround for Java 9 installation since the ca-certificates-java package broke in Raspbian on the 16th<br>

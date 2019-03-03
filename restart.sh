@@ -1,33 +1,45 @@
 #!/bin/sh
-# James Chambers - February 15th 2019
+# James Chambers - March 2nd 2019
 # Marc Tönsing - 18.05.2018
 
 # Check if server is running
-if ! /usr/bin/screen -list | /bin/grep -q "minecraft"; then
+if ! screen -list | grep -q "minecraft"; then
     echo "Server is not currently running!"
     exit 1
 fi
 
+echo "Sending restart notifications to server..."
+
 # Minecraft Server restart and pi reboot.
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 30 seconds! $(printf '\r')"
-/bin/sleep 23s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 7 seconds! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 6 seconds! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 5 seconds! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 4 seconds! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 3 seconds! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 2 seconds! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Server is restarting in 1 second! $(printf '\r')"
-/bin/sleep 1s
-/usr/bin/screen -Rd minecraft -X stuff "say Closing server...$(printf '\r')"
-/usr/bin/screen -Rd minecraft -X stuff "stop $(printf '\r')"
-/bin/sleep 15s
+screen -Rd minecraft -X stuff "say Server is restarting in 30 seconds! $(printf '\r')"
+sleep 23s
+screen -Rd minecraft -X stuff "say Server is restarting in 7 seconds! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Server is restarting in 6 seconds! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Server is restarting in 5 seconds! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Server is restarting in 4 seconds! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Server is restarting in 3 seconds! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Server is restarting in 2 seconds! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Server is restarting in 1 second! $(printf '\r')"
+sleep 1s
+screen -Rd minecraft -X stuff "say Closing server...$(printf '\r')"
+screen -Rd minecraft -X stuff "stop $(printf '\r')"
+
+# Wait up to 30 seconds for server to close
+echo "Closing server..."
+StopChecks=0
+while [ $StopChecks -lt 30 ]; do
+  if ! screen -list | grep -q "minecraft"; then
+    break
+  fi
+  sleep 1;
+  ((StopChecks++))
+done
 
 echo "Restarting now."
-sudo /sbin/reboot
+sudo reboot

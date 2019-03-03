@@ -1,25 +1,37 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
-echo "Minecraft Server installation script by James Chambers - February 18th 2019"
+echo "Minecraft Server installation script by James Chambers - March 2nd 2019"
 echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
 # Install screen to run minecraft in the background
-echo "Installing screen..."
-sudo apt-get update && sudo apt-get install screen -y
+echo "Installing screen, sudo, net-tools..."
+apt-get install sudo -y
+sudo apt-get update
+sudo apt-get install screen net-tools -y
 
 # Check system architecture to ensure we are running ARMv7
-echo "Getting system ARM architecture..."
-CPUModel=$(cat /proc/cpuinfo | grep 'model name' | uniq)
-echo "System Architecture: $CPUModel"
-if [[ "$CPUModel" == *"ARMv7"* ]]; then
-  echo "Installing latest Java OpenJDK 9..."
-  sudo apt-get install openjdk-9-jre-headless -y
-  # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
-  sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
-  # Install OpenJDK 9
-  sudo apt-get install openjdk-9-jre-headless -y
+echo "Getting system CPU architecture..."
+CPUArch=$(uname -m)
+echo "System Architecture: $CPUArch"
+if [[ "$CPUArch" == *"aarch"* || "$CPUArch" == *"arm"* ]]; then
+  echo "Installing latest Java OpenJDK..."
+  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-11-jre-headless -y
+  else
+    sudo apt-get install openjdk-9-jre-headless -y
+    # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
+    if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+      sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
+    elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+      sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+    fi
+    sudo apt-get install openjdk-9-jre-headless -y
+  fi
+
+  # Check if Java installation was successful
   if [ -n "`which java`" ]; then
     echo "Java installed successfully"
   else
@@ -36,6 +48,10 @@ fi
 if [ -d "minecraft" ]; then
   echo "Directory minecraft already exists!  Updating scripts and configuring service ..."
 
+  # Get Home directory path and username
+  DirName=$(readlink -e ~)
+  UserName=$(whoami)
+
   # Remove existing scripts
   rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
 
@@ -43,21 +59,26 @@ if [ -d "minecraft" ]; then
   echo "Grabbing start.sh from repository..."
   wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
   chmod +x start.sh
+  sed -i "s:dirname:$DirName:g" start.sh
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
   wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
   chmod +x stop.sh
+  sed -i "s:dirname:$DirName:g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
   wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
+  sed -i "s:dirname:$DirName:g" restart.sh
 
   # Service configuration
   sudo rm /etc/systemd/system/minecraft.service
   sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
   sudo chmod +x /etc/systemd/system/minecraft.service
+  sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/minecraft.service
+  sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
   sudo systemctl daemon-reload
   echo -n "Start Minecraft server at startup automatically (y/n)?"
   read answer
@@ -136,9 +157,14 @@ fi
 
 # Create server directory
 echo "Creating minecraft server directory..."
+cd ~
 mkdir minecraft
 cd minecraft
 mkdir backups
+
+# Get Home directory path and username
+DirName=$(readlink -e ~)
+UserName=$(whoami)
 
 # Retrieve latest build of Paper minecraft server
 echo "Getting latest Paper Minecraft server..."
@@ -156,16 +182,19 @@ echo eula=true > eula.txt
 echo "Grabbing start.sh from repository..."
 wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 chmod +x start.sh
+sed -i "s:dirname:$DirName:g" start.sh
 
 # Download stop.sh from repository
 echo "Grabbing stop.sh from repository..."
 wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
 chmod +x stop.sh
+sed -i "s:dirname:$DirName:g" stop.sh
 
 # Download restart.sh from repository
 echo "Grabbing restart.sh from repository..."
 wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
 chmod +x restart.sh
+sed -i "s:dirname:$DirName:g" restart.sh
 
 # Server configuration
 echo "Enter a name for your server..."
@@ -176,6 +205,8 @@ echo "motd=$servername" >> server.properties
 # Service configuration
 sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
 sudo chmod +x /etc/systemd/system/minecraft.service
+sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/minecraft.service
+sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
 sudo systemctl daemon-reload
 echo -n "Start Minecraft server at startup automatically (y/n)?"
 read answer
@@ -186,7 +217,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
   read answer
   if [ "$answer" != "${answer#[Yy]}" ]; then
-    croncmd="/home/pi/minecraft/restart.sh"
+    croncmd="$DirName/minecraft/restart.sh"
     cronjob="0 4 * * * $croncmd"
     ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
     echo "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e"

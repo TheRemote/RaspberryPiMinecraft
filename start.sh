@@ -1,12 +1,12 @@
 #!/bin/bash
-# James Chambers - February 15th 2019
+# James Chambers - March 2nd 2019
 # Minecraft Server startup script using screen
 
 # Flush out memory to disk so we have the maximum available for Java allocation
 sync
 
 # Check if server is already running
-if /usr/bin/screen -list | /bin/grep -q "minecraft"; then
+if screen -list | /bin/grep -q "minecraft"; then
     echo "Server is already running!  Type screen -r minecraft to open the console"
     exit 1
 fi
@@ -26,7 +26,7 @@ while [ -z "$DefaultRoute" ]; do
 done
 
 # Switch to server directory
-cd /home/pi/minecraft/
+cd dirname/minecraft/
 
 # Back up server
 echo "Backing up server (to minecraft/backups folder)"
@@ -35,13 +35,13 @@ tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world world_nether world_th
 # Update paperclip.jar
 echo "Updating to most recent paperclip version ..."
 # Test internet connectivity first
-/usr/bin/wget --spider --quiet https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
+wget --spider --quiet https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    /usr/bin/wget https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar -O /home/pi/minecraft/paperclip.jar
+    wget https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar -O paperclip.jar
 fi
 
 echo "Starting Minecraft server.  To view window type screen -r minecraft."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
-/usr/bin/screen -dmS minecraft /usr/lib/jvm/java-9-openjdk-armhf/bin/java -jar -Xms850M -Xmx850M /home/pi/minecraft/paperclip.jar
+screen -dmS minecraft java -jar -Xms850M -Xmx850M dirname/minecraft/paperclip.jar

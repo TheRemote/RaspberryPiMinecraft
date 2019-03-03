@@ -3,11 +3,11 @@ Description=minecraft server service
 After=network-online.target
 
 [Service]
-User=pi
-WorkingDirectory=/home/pi/minecraft
+User=replace
+WorkingDirectory=dirname/minecraft
 Type=forking
-ExecStart=/bin/bash /home/pi/minecraft/start.sh
-ExecStop=/bin/bash /home/pi/minecraft/stop.sh
+ExecStart=/bin/bash dirname/minecraft/start.sh
+ExecStop=/bin/bash dirname/minecraft/stop.sh
 GuessMainPID=no
 
 [Install]
