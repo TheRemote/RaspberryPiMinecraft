@@ -18,6 +18,7 @@ March 2nd 2019<br>
 -Improved CPU architecture detection<br>
 -Added sudo, net-tools, wget to server dependencies to improve portability<br>
 -Removed absolute paths from scripts to improve portability<br>
+-MicroSD overclock and GPU memory split config are now split if vcgencmd is not present (non-Raspbian systems)<br>
 <br>
 February 18th 2019<br>
 -The SetupMinecraft.sh script will now update all of your scripts to the latest version when ran and reinstall the startup service<br>

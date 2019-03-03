@@ -11,39 +11,6 @@ apt-get update && apt-get install sudo -y
 sudo apt-get update
 sudo apt-get install screen net-tools -y
 
-# Check system architecture to ensure we are running ARMv7
-echo "Getting system CPU architecture..."
-CPUArch=$(uname -m)
-echo "System Architecture: $CPUArch"
-if [[ "$CPUArch" == *"aarch"* || "$CPUArch" == *"arm"* ]]; then
-  echo "Installing latest Java OpenJDK..."
-  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-11-jre-headless -y
-  else
-    sudo apt-get install openjdk-9-jre-headless -y
-    # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
-    if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-      sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
-    elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-      sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
-    fi
-    sudo apt-get install openjdk-9-jre-headless -y
-  fi
-
-  # Check if Java installation was successful
-  if [ -n "`which java`" ]; then
-    echo "Java installed successfully"
-  else
-    echo "Java did not install successfully -- please check the above output to see what went wrong."
-    exit 1
-  fi
-else
-  echo "You must be using a Raspberry Pi with ARMv7 support to run a Minecraft server!"
-  echo "ARMv7 enables the G1GC garbage collector in Java which is required to have playable performance."
-  exit 1
-fi
-
 # Check to see if Minecraft directory already exists, if it does then exit
 if [ -d "minecraft" ]; then
   echo "Directory minecraft already exists!  Updating scripts and configuring service ..."
@@ -89,7 +56,7 @@ if [ -d "minecraft" ]; then
     echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
     read answer
     if [ "$answer" != "${answer#[Yy]}" ]; then
-      croncmd="/home/pi/minecraft/restart.sh"
+      croncmd="$DirName/minecraft/restart.sh"
       cronjob="0 4 * * * $croncmd"
       ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
       echo "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e"
@@ -98,7 +65,6 @@ if [ -d "minecraft" ]; then
 
   echo "Minecraft installation scripts have been updated to the latest version!"
   exit 0
-
 fi
 
 # Get total system memory and make sure we are a 1024MB or higher board
@@ -110,49 +76,85 @@ if [ $TotalMemory -lt 800000 ]; then
   exit 1
 fi
 
-RebootRequired=0
-# Check MicroSD clock speed
-MicroSDClock="$(sudo grep "actual clock" /sys/kernel/debug/mmc0/ios 2>/dev/null | awk '{printf("%0.3f MHz", $3/1000000)}')"
-if [ -n "$MicroSDClock" ]; then
-  echo "MicroSD clock: $MicroSDClock"
-  if [ "$MicroSDClock" != "100.000 MHz" ]; then
-    echo "Your MicroSD clock is set at $MicroSDClock instead of the recommended 100 MHz"
-    echo "This setup can overclock this for you but some (usually cheaper) MicroSD cards will not boot with this setting"
-    echo "If this happens you can remove dtparam=sd_overclock=100 or reimage the MicroSD and the Pi will work normally again"
-    echo "This is at your own risk and does make a huge performance difference.  If you have a card that won't overclock or don't want to do this press n."
-    echo -n "Set clock speed to 100 MHz?  Requires reboot. (y/n)?"
+# Check system architecture to ensure we are running ARMv7
+echo "Getting system CPU architecture..."
+CPUArch=$(uname -m)
+echo "System Architecture: $CPUArch"
+if [[ "$CPUArch" == *"aarch"* || "$CPUArch" == *"arm"* ]]; then
+  echo "Installing latest Java OpenJDK..."
+  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-11-jre-headless -y
+  else
+    sudo apt-get install openjdk-9-jre-headless -y
+    # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
+    if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+      sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
+    elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+      sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+    fi
+    sudo apt-get install openjdk-9-jre-headless -y
+  fi
+
+  # Check if Java installation was successful
+  if [ -n "`which java`" ]; then
+    echo "Java installed successfully"
+  else
+    echo "Java did not install successfully -- please check the above output to see what went wrong."
+    exit 1
+  fi
+else
+  echo "You must be using a Raspberry Pi with ARMv7 support to run a Minecraft server!"
+  echo "ARMv7 enables the G1GC garbage collector in Java which is required to have playable performance."
+  exit 1
+fi
+
+# Check if we are running Raspbian for the overclock and split GPU memory configuration.  If vcgencmd is not present then skip.
+if [ -n "`which vcgencmd`" ]; then
+  RebootRequired=0
+  # Check MicroSD clock speed
+  MicroSDClock="$(sudo grep "actual clock" /sys/kernel/debug/mmc0/ios 2>/dev/null | awk '{printf("%0.3f MHz", $3/1000000)}')"
+  if [ -n "$MicroSDClock" ]; then
+    echo "MicroSD clock: $MicroSDClock"
+    if [ "$MicroSDClock" != "100.000 MHz" ]; then
+      echo "Your MicroSD clock is set at $MicroSDClock instead of the recommended 100 MHz"
+      echo "This setup can overclock this for you but some (usually cheaper) MicroSD cards will not boot with this setting"
+      echo "If this happens you can remove dtparam=sd_overclock=100 or reimage the MicroSD and the Pi will work normally again"
+      echo "This is at your own risk and does make a huge performance difference.  If you have a card that won't overclock or don't want to do this press n."
+      echo -n "Set clock speed to 100 MHz?  Requires reboot. (y/n)?"
+      read answer
+
+      if [ "$answer" != "${answer#[Yy]}" ]; then
+          sudo bash -c 'printf "dtparam=sd_overclock=100\n" >> /boot/config.txt'
+          echo "SD Card speed has been changed.  Please run setup again after reboot."
+          RebootRequired=1
+      fi
+    fi
+  fi
+
+  # Check that GPU Shared memory is set to 16MB to give our server more resources
+  echo "Getting shared GPU memory..."
+  GPUMemory=$(vcgencmd get_mem gpu)
+  echo "Memory being used by shared GPU: $GPUMemory"
+  if [ "$GPUMemory" != "gpu=16M" ]; then
+    echo "GPU memory needs to be set to 16MB for best performance."
+    echo "This can be set in sudo raspi-config or the script can change it for you now."
+    echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
     read answer
 
     if [ "$answer" != "${answer#[Yy]}" ]; then
-        sudo bash -c 'printf "dtparam=sd_overclock=100\n" >> /boot/config.txt'
-        echo "SD Card speed has been changed.  Please run setup again after reboot."
+        sudo raspi-config nonint do_memory_split "16"
+        echo "Split GPU memory has been changed.  Please run setup again after reboot."
         RebootRequired=1
     fi
   fi
-fi
 
-# Check that GPU Shared memory is set to 16MB to give our server more resources
-echo "Getting shared GPU memory..."
-GPUMemory=$(vcgencmd get_mem gpu)
-echo "Memory being used by shared GPU: $GPUMemory"
-if [ "$GPUMemory" != "gpu=16M" ]; then
-  echo "GPU memory needs to be set to 16MB for best performance."
-  echo "This can be set in sudo raspi-config or the script can change it for you now."
-  echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
-  read answer
-
-  if [ "$answer" != "${answer#[Yy]}" ]; then
-      sudo raspi-config nonint do_memory_split "16"
-      echo "Split GPU memory has been changed.  Please run setup again after reboot."
-      RebootRequired=1
+  # Check if any configuration changes needed a reboot
+  if [ $RebootRequired -eq 1 ]; then
+    echo "System is restarting -- please run setup again after restart"
+    sudo reboot
+    exit 0
   fi
-fi
-
-# Check if any configuration changes needed a reboot
-if [ $RebootRequired -eq 1 ]; then
-  echo "System is restarting -- please run setup again after restart"
-  sudo reboot
-  exit 0
 fi
 
 # Create server directory
