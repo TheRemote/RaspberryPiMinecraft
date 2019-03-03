@@ -7,7 +7,7 @@ echo "Don't forget to set up port forwarding on your router!  The default port i
 
 # Install screen to run minecraft in the background
 echo "Installing screen, sudo, net-tools..."
-apt-get install sudo -y
+apt-get update && apt-get install sudo -y
 sudo apt-get update
 sudo apt-get install screen net-tools -y
 

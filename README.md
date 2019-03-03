@@ -13,6 +13,8 @@ chmod +x SetupMinecraft.sh<br>
 <b>Version History</b><br>
 <br>
 March 2nd 2019<br>
+-Added support for Debian and Ubuntu Server Raspberry Pi distros<br>
+-Server now installs OpenJDK-11-jre-headless if it is available, otherwise OpenJDK 9 will be selected<br>
 -Improved CPU architecture detection<br>
 -Added sudo, net-tools, wget to server dependencies to improve portability<br>
 -Removed absolute paths from scripts to improve portability<br>
