@@ -16,6 +16,7 @@ if [ -d "minecraft" ]; then
   echo "Directory minecraft already exists!  Updating scripts and configuring service ..."
 
   # Get Home directory path and username
+  cd minecraft
   DirName=$(readlink -e ~)
   UserName=$(whoami)
 
@@ -25,6 +26,7 @@ if [ -d "minecraft" ]; then
   sleep 0.1s
   TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+  RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
   echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
   echo "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended."
   echo "You must leave enough left over memory for the operating system to run background processes."
@@ -184,7 +186,7 @@ fi
 sync
 sleep 0.1s
 AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.05/1 | bc)
+RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
 if [ $RecommendedMemory -lt 700 ]; then
   echo "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability."
   echo "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory."
