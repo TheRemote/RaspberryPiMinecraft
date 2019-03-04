@@ -281,6 +281,9 @@ read -p 'Server Name: ' servername
 echo "server-name=$servername" >> server.properties
 echo "motd=$servername" >> server.properties
 
+# Configure paper.yml options
+sudo sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
+
 # Service configuration
 sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
 sudo chmod +x /etc/systemd/system/minecraft.service
