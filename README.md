@@ -10,7 +10,12 @@ wget -O SetupMinecraft.sh https://raw.githubusercontent.com/TheRemote/RaspberryP
 chmod +x SetupMinecraft.sh<br>
 ./SetupMinecraft.sh<br>
 <br>
-<b>Version History</b><br>
+<b>Update History</b><br>
+<br>
+March 4th 2019<br>
+-Shared GPU memory reduction and MicroSD overclock now supported on distros that use /boot/firmware/config.txt such as Ubuntu Server and Debian<br>
+-Removed vcgencmd usage for portability to other distros<br>
+-Added check for sudo for compatibility with more distros<br>
 <br>
 March 2nd 2019<br>
 -Added a configuration option for memory to dedicate to the Minecraft server (along with a recommended amount)<br>
