@@ -16,6 +16,7 @@ March 4th 2019<br>
 -Shared GPU memory reduction and MicroSD overclock now supported on distros that use /boot/firmware/config.txt such as Ubuntu Server and Debian<br>
 -Removed vcgencmd usage for portability to other distros<br>
 -Added check for sudo for compatibility with more distros<br>
+-Improved MicroSD clock detection<br>
 <br>
 March 2nd 2019<br>
 -Added a configuration option for memory to dedicate to the Minecraft server (along with a recommended amount)<br>

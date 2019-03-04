@@ -142,7 +142,7 @@ RebootRequired=0
 MicroSDClock="$(sudo grep "actual clock" /sys/kernel/debug/mmc0/ios 2>/dev/null | awk '{printf("%0.3f MHz", $3/1000000)}')"
 if [ -n "$MicroSDClock" ]; then
   echo "MicroSD clock: $MicroSDClock"
-  if [[ "$MicroSDClock" != "100.000 MHz" && $MicroSDClock != "0.195 MHz" ]]; then
+  if [[ "$MicroSDClock" == "50.000 MHz" ]]; then
     echo "Your MicroSD clock is set at $MicroSDClock instead of the recommended 100 MHz"
     echo "This setup can overclock this for you but some (usually cheaper) MicroSD cards will not boot with this setting"
     echo "If this happens you can remove dtparam=sd_overclock=100 from /boot/config.txt or reimage the MicroSD and the Pi will work normally again"
@@ -193,7 +193,7 @@ if [[ ! -n "$GPUMemory" && "$GPUMemory" != "gpu_mem=16" ]]; then
       echo "Split GPU memory has been changed.  Please run setup again after reboot."
       RebootRequired=1
     else
-      echo "Error -- Unable to find config.txt file on this platform - MicroSD clock speed has not been changed!"
+      echo "Error -- Unable to find config.txt file on this platform - split GPU memory has not been changed!"
     fi
   fi
 fi
