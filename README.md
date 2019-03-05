@@ -17,7 +17,7 @@ March 4th 2019<br>
 -Removed vcgencmd usage for portability to other distros<br>
 -Added check for sudo for compatibility with more distros<br>
 -Improved MicroSD clock detection<br>
--Setup now sets paper.yml option for watchdog warnings to wait until 120 seconds after the server starts tlo suppress excessive warnings<br>
+-Setup now sets paper.yml option for watchdog warnings to wait until 120 seconds after the server starts to suppress excessive warnings<br>
 <br>
 March 2nd 2019<br>
 -Added a configuration option for memory to dedicate to the Minecraft server (along with a recommended amount)<br>

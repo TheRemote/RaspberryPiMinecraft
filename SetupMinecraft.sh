@@ -25,10 +25,10 @@ if [ -d "minecraft" ]; then
   # Ask user for amount of memory they want to dedicate to the Minecraft server
   echo "Getting total system memory..."
   sync
-  sleep 0.1s
+  sleep 1s
   TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-  RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.10/1 | bc)
+  RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
   echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
   echo "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended."
   echo "You must leave enough left over memory for the operating system to run background processes."
@@ -207,9 +207,9 @@ fi
 
 # Calculate amount of recommended memory leaving enough room for the OS processes to run
 sync
-sleep 0.1s
+sleep 1s
 AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.10/1 | bc)
+RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
 if [ $RecommendedMemory -lt 700 ]; then
   echo "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability."
   echo "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory."
@@ -282,7 +282,8 @@ echo "server-name=$servername" >> server.properties
 echo "motd=$servername" >> server.properties
 
 # Configure paper.yml options
-sudo sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
+sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
+sed -i "s/early-warning-every: 5000/early-warning-every: 15000/g" paper.yml
 
 # Service configuration
 sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service

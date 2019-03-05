@@ -44,4 +44,4 @@ fi
 
 echo "Starting Minecraft server.  To view window type screen -r minecraft."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
-screen -dmS minecraft java -jar -XmsmemselectM -XmxmemselectM dirname/minecraft/paperclip.jar
+screen -dmS minecraft java -jar -Xms250M -XmxmemselectM dirname/minecraft/paperclip.jar
