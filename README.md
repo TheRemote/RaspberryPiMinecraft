@@ -6,7 +6,7 @@ Eine deutsche Anleitung für die Konfigration eines Raspberry Pi mit Paper als s
 http://marc.tv/stabiler-minecraft-server-raspberry-pi<br>
 <br>
 To get started type:<br>
-wget -O SetupMinecraft.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh<br>
+wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh<br>
 chmod +x SetupMinecraft.sh<br>
 ./SetupMinecraft.sh<br>
 <br>

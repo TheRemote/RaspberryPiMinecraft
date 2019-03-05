@@ -29,7 +29,7 @@ if [ -d "minecraft" ]; then
   TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
   RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
-  echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
+  echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory - Recommended Memory: $RecommendedMemory"
   echo "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended."
   echo "You must leave enough left over memory for the operating system to run background processes."
   echo "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)."
@@ -94,17 +94,7 @@ if [ -d "minecraft" ]; then
   exit 0
 fi
 
-# Get total system memory and make sure we are a 1024MB or higher board
-echo "Getting total system memory..."
-TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
-if [ $TotalMemory -lt 700 ]; then
-  echo "Not enough memory to run a Minecraft server.  Requires Raspberry Pi with at least 1024MB of memory!"
-  exit 1
-fi
-
-# Check system architecture to ensure we are running ARMv7
+# Check system architecture to ensure we are running ARMv7 or higher
 echo "Getting system CPU architecture..."
 CPUArch=$(uname -m)
 echo "System Architecture: $CPUArch"
@@ -205,11 +195,22 @@ if [ $RebootRequired -eq 1 ]; then
   exit 0
 fi
 
-# Calculate amount of recommended memory leaving enough room for the OS processes to run
+# Get total system memory and make sure we are a 1024MB or higher board
 sync
 sleep 1s
+echo "Getting total system memory..."
+TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+if [ $TotalMemory -lt 700 ]; then
+  echo "Not enough memory to run a Minecraft server.  Requires Raspberry Pi with at least 1024MB of memory!"
+  echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
+  exit 1
+fi
+
+# Calculate amount of recommended memory leaving enough room for the OS processes to run
 AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
 RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
+echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory - Recommended Memory: $RecommendedMemory"
 if [ $RecommendedMemory -lt 700 ]; then
   echo "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability."
   echo "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory."
@@ -280,10 +281,6 @@ echo "Enter a name for your server..."
 read -p 'Server Name: ' servername
 echo "server-name=$servername" >> server.properties
 echo "motd=$servername" >> server.properties
-
-# Configure paper.yml options
-sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
-sed -i "s/early-warning-every: 5000/early-warning-every: 15000/g" paper.yml
 
 # Service configuration
 sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
