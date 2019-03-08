@@ -101,8 +101,15 @@ echo "System Architecture: $CPUArch"
 if [[ "$CPUArch" == *"aarch"* || "$CPUArch" == *"arm"* ]]; then
   echo "Installing latest Java OpenJDK..."
   JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-11-jre-headless -y
+    # Work around broken Java certificates package
+    if [[ "$CertVer" != "2019" ]]; then
+      wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190214_all.deb
+      sudo dpkg --install ca-certificates-java*.deb
+      rm ca-certificates-java*.deb
+    fi
   else
     sudo apt-get install openjdk-9-jre-headless -y
     # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
@@ -161,13 +168,15 @@ fi
 echo "Getting shared GPU memory..."
 if [ -f "/boot/config.txt" ]; then
   GPUMemory=$(grep "gpu_mem" /boot/config.txt)
+  echo "Memory being used by shared GPU: $GPUMemory"
 elif [ -f "/boot/firmware/config.txt" ]; then
   GPUMemory=$(grep "gpu_mem" /boot/firmware/config.txt)
+  echo "Memory being used by shared GPU: $GPUMemory"
 else
   echo "Error -- Unable to find config.txt file on this platform - GPU shared memory has not been changed!"
 fi
-echo "Memory being used by shared GPU: $GPUMemory"
-if [[ ! -n "$GPUMemory" && "$GPUMemory" != "gpu_mem=16" ]]; then
+
+if [[ ! -n $GPUMemory && "$GPUMemory" != "gpu_mem=16" ]]; then
   echo "GPU memory needs to be set to 16MB for best performance."
   echo "This can be set in sudo raspi-config or the script can change it for you now."
   echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
