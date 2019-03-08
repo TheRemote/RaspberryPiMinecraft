@@ -102,23 +102,37 @@ if [[ "$CPUArch" == *"aarch"* || "$CPUArch" == *"arm"* ]]; then
   echo "Installing latest Java OpenJDK..."
   JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
   CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)
+
+  # Check for OpenJDK 11
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-11-jre-headless -y
-    # Work around broken Java certificates package
+    # Work around broken Java certificates packages on some distros (too old)
     if [[ "$CertVer" != "2019" ]]; then
       wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190214_all.deb
       sudo dpkg --install ca-certificates-java*.deb
       rm ca-certificates-java*.deb
     fi
   else
-    sudo apt-get install openjdk-9-jre-headless -y
-    # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
-    if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-      sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
-    elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-      sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+    # Check for OpenJDK 9
+    JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+    if [[ "$JavaVer" ]]; then
+      sudo apt-get install openjdk-9-jre-headless -y
+      # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
+      if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+        sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
+      elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+        sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+      fi
+      sudo apt-get install openjdk-9-jre-headless -y
+    else
+      # Check for OpenJDK 8
+      JavaVer=$(apt-cache show openjdk-8-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+      if [[ "$JavaVer" ]]; then
+        sudo apt-get install openjdk-8-jre-headless -y
+      else
+        "No versions of OpenJDK down all the way to 8.  Please use a different more up to date Linux distribution."
+      fi
     fi
-    sudo apt-get install openjdk-9-jre-headless -y
   fi
 
   # Check if Java installation was successful
@@ -173,10 +187,11 @@ elif [ -f "/boot/firmware/config.txt" ]; then
   GPUMemory=$(grep "gpu_mem" /boot/firmware/config.txt)
   echo "Memory being used by shared GPU: $GPUMemory"
 else
+  GPUMemory=""
   echo "Error -- Unable to find config.txt file on this platform - GPU shared memory has not been changed!"
 fi
 
-if [[ ! -n $GPUMemory && "$GPUMemory" != "gpu_mem=16" ]]; then
+if [[ "$GPUMemory" && "$GPUMemory" != "gpu_mem=16" ]]; then
   echo "GPU memory needs to be set to 16MB for best performance."
   echo "This can be set in sudo raspi-config or the script can change it for you now."
   echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
