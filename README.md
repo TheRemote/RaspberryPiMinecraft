@@ -10,6 +10,12 @@ wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/Set
 chmod +x SetupMinecraft.sh<br>
 ./SetupMinecraft.sh<br>
 <br>
+<b>Tested Distributions</b><br>
+-Raspbian / Raspian Lite Stretch<br>
+-Ubuntu Server 18.04.2<br>
+-Debian 9 Buster Preview<br>
+-Armbian 9 Stretch<br>
+<br>
 <b>Update History</b><br>
 <br>
 March 4th 2019<br>

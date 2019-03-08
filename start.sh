@@ -29,15 +29,20 @@ done
 cd dirname/minecraft/
 
 # Back up server
-echo "Backing up server (to minecraft/backups folder)"
-tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world world_nether world_the_end
+if [ -d "world" ]; then 
+    echo "Backing up server (to minecraft/backups folder)"
+    tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world world_nether world_the_end
+fi
 
 # Configure paper.yml options
-sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
-sed -i "s/early-warning-every: 5000/early-warning-every: 15000/g" paper.yml
+if [ -f "paper.yml" ]; then
+    sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
+    sed -i "s/early-warning-every: 5000/early-warning-every: 15000/g" paper.yml
+fi
 
 # Update paperclip.jar
 echo "Updating to most recent paperclip version ..."
+
 # Test internet connectivity first
 wget --spider --quiet https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
 if [ "$?" != 0 ]; then
