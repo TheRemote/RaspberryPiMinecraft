@@ -15,8 +15,17 @@ chmod +x SetupMinecraft.sh<br>
 -Ubuntu Server 18.04.2<br>
 -Debian 9 Buster Preview<br>
 -Armbian 9 Stretch<br>
+-TinkerOS Stretch 2.0.8<br>
 <br>
 <b>Update History</b><br>
+<br>
+March 7th 2019<br>
+-Added support for OpenJDK 8 to improve portability<br>
+-Added Armbian support<br>
+-Tinkerboard platform now supported.  Other Armbian capable boards should also work<br>
+-Added ca-certificates-java OpenJDK 11 fix for a broken package on some platforms<br>
+-Added checks for paper.yml and world backup folders before attempting to back up<br>
+-Fixed portability issue with route vs /sbin/route<br>
 <br>
 March 4th 2019<br>
 -Shared GPU memory reduction and MicroSD overclock now supported on distros that use /boot/firmware/config.txt such as Ubuntu Server and Debian<br>
