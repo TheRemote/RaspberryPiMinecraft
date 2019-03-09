@@ -44,7 +44,7 @@ fi
 echo "Updating to most recent paperclip version ..."
 
 # Test internet connectivity first
-wget --spider --quiet wget -O paperclip.jar https://papermc.io/api/v1/paper/1.13.2/latest/download
+wget --spider --quiet https://papermc.io/api/v1/paper/1.13.2/latest/download
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
