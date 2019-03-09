@@ -1,5 +1,5 @@
 #!/bin/bash
-# James Chambers - March 4th 2019
+# James Chambers - March 9th 2019
 # Minecraft Server startup script using screen
 
 # Flush out memory to disk so we have the maximum available for Java allocation
@@ -44,11 +44,11 @@ fi
 echo "Updating to most recent paperclip version ..."
 
 # Test internet connectivity first
-wget --spider --quiet https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
+wget --spider --quiet wget -O paperclip.jar https://papermc.io/api/v1/paper/1.13.2/latest/download
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    wget https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar -O paperclip.jar
+    wget -O paperclip.jar https://papermc.io/api/v1/paper/1.13.2/latest/download
 fi
 
 echo "Starting Minecraft server.  To view window type screen -r minecraft."

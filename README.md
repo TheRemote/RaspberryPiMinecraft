@@ -19,6 +19,9 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 <b>Update History</b><br>
 <br>
+March 9th 2019<br>
+-Changed Paper download URL to use API (Issue #7 Fix)<br>
+<br>
 March 7th 2019<br>
 -Added support for OpenJDK 8 to improve portability<br>
 -Added Armbian support<br>

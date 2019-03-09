@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
-echo "Minecraft Server installation script by James Chambers - March 4th 2019"
+echo "Minecraft Server installation script by James Chambers - March 9th 2019"
 echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
@@ -271,7 +271,7 @@ UserName=$(whoami)
 
 # Retrieve latest build of Paper minecraft server
 echo "Getting latest Paper Minecraft server..."
-wget -O paperclip.jar https://papermc.io/ci/job/Paper-1.13/lastSuccessfulBuild/artifact/paperclip.jar
+wget -O paperclip.jar https://papermc.io/api/v1/paper/1.13.2/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 echo "Building the Minecraft server..."
