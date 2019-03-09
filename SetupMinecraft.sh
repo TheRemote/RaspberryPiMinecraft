@@ -187,11 +187,11 @@ elif [ -f "/boot/firmware/config.txt" ]; then
   GPUMemory=$(grep "gpu_mem" /boot/firmware/config.txt)
   echo "Memory being used by shared GPU: $GPUMemory"
 else
-  GPUMemory=""
+  GPUMemory="Unknown"
   echo "Error -- Unable to find config.txt file on this platform - GPU shared memory has not been changed!"
 fi
 
-if [[ "$GPUMemory" && "$GPUMemory" != "gpu_mem=16" ]]; then
+if [[ "$GPUMemory" != "Unknown" && "$GPUMemory" != "gpu_mem=16" ]]; then
   echo "GPU memory needs to be set to 16MB for best performance."
   echo "This can be set in sudo raspi-config or the script can change it for you now."
   echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
