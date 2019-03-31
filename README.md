@@ -19,6 +19,9 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 <b>Update History</b><br>
 <br>
+March 31st 2019<br>
+-Added x86_64 support<br>
+<br>
 March 9th 2019<br>
 -Changed Paper download URL to use API (Issue #7 Fix)<br>
 -Added \n to beginning of printf to config.txt to prevent adding our line to the end of another config line<br>
