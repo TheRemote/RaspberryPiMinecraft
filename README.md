@@ -19,6 +19,10 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 <b>Update History</b><br>
 <br>
+April 18th 2019<br>
+-Changed StopChecks++ to StopChecks=$((StopChecks+1)) to improve portability (thanks Jason B.)<br>
+-Added TimeoutStartSec=600 to server to prevent it being killed if taking longer than usual to download paperclip<br>
+<br>
 March 31st 2019<br>
 -Added x86_64 support<br>
 <br>

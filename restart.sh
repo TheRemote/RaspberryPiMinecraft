@@ -38,7 +38,7 @@ while [ $StopChecks -lt 30 ]; do
     break
   fi
   sleep 1;
-  ((StopChecks++))
+  StopChecks=$((StopChecks+1))
 done
 
 echo "Restarting now."
