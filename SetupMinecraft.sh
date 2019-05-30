@@ -266,7 +266,7 @@ UserName=$(whoami)
 
 # Retrieve latest build of Paper minecraft server
 echo "Getting latest Paper Minecraft server..."
-wget -O paperclip.jar https://papermc.io/api/v1/paper/1.14.1/latest/download
+wget -O paperclip.jar https://papermc.io/api/v1/paper/1.14.2/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 echo "Building the Minecraft server..."
