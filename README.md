@@ -19,6 +19,9 @@ chmod +x SetupMinecraft.sh<br>
 <br>
 <b>Update History</b><br>
 <br>
+May 30th 2019<br>
+Updated to 1.14.2<br>
+<br>
 May 19th 2019<br>
 -Updated to 1.14.1<br>
 <br>
