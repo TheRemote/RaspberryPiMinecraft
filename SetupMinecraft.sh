@@ -194,11 +194,11 @@ if [[ "$GPUMemory" != "Unknown" && "$GPUMemory" != "gpu_mem=16" ]]; then
 
   if [ "$answer" != "${answer#[Yy]}" ]; then
     if [ -f "/boot/config.txt" ]; then
-      sudo bash -c '\nprintf "gpu_mem=16\n" >> /boot/config.txt'
+      sudo bash -c 'printf "\ngpu_mem=16\n" >> /boot/config.txt'
       echo "Split GPU memory has been changed.  Please run setup again after reboot."
       RebootRequired=1
     elif [ -f "/boot/firmware/config.txt" ]; then
-      sudo bash -c '\nprintf "gpu_mem=16\n" >> /boot/firmware/config.txt'
+      sudo bash -c 'printf "\ngpu_mem=16\n" >> /boot/firmware/config.txt'
       echo "Split GPU memory has been changed.  Please run setup again after reboot."
       RebootRequired=1
     else
