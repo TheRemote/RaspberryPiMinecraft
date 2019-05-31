@@ -22,6 +22,9 @@ chmod +x SetupMinecraft.sh<br>
 May 31st 2019<br>
 -Fixed bug where changing GPU memory wasn't being applied<br>
 <br>
+May 30th 2019<br>
+-Updated to 1.14.2<br>
+<br>
 May 19th 2019<br>
 -Updated to 1.14.1<br>
 <br>
