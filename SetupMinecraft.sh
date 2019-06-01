@@ -100,37 +100,48 @@ CPUArch=$(uname -m)
 echo "System Architecture: $CPUArch"
 
 echo "Installing latest Java OpenJDK..."
-JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)
 
-# Check for OpenJDK 11
+JavaVer=$(apt-cache show openjdk-12-jre-headless | grep Version | awk 'NR==1{ print $2 }')
 if [[ "$JavaVer" ]]; then
-  sudo apt-get install openjdk-11-jre-headless -y
-  # Work around broken Java certificates packages on some distros (too old)
-  if [[ "$CertVer" != "2019" ]]; then
-    wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190405_all.deb
-    sudo dpkg --install ca-certificates-java*.deb
-    rm ca-certificates-java*.deb
-  fi
+  sudo apt-get install openjdk-12-jre-headless -y
 else
-  # Check for OpenJDK 9
-  JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  # Check for OpenJDK 11
   if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-9-jre-headless -y
-    # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
-    if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-      sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
-    elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-      sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
-    fi
-    sudo apt-get install openjdk-9-jre-headless -y
+    sudo apt-get install openjdk-11-jre-headless -y
   else
-    # Check for OpenJDK 8
-    JavaVer=$(apt-cache show openjdk-8-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+    JavaVer=$(apt-cache show openjdk-10-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+    # Check for OpenJDK 10
     if [[ "$JavaVer" ]]; then
-      sudo apt-get install openjdk-8-jre-headless -y
+      sudo apt-get install openjdk-10-jre-headless -y
     else
-      "No versions of OpenJDK down all the way to 8.  Please use a different more up to date Linux distribution."
+      # Attempt to install OpenJDK 10 from repository
+      CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)\
+      if [[ "$CertVer" != "2019" ]]; then
+        wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190405_all.deb
+        sudo dpkg --install ca-certificates-java*.deb
+        rm ca-certificates-java*.deb
+      fi
+      sudo apt-get install libfontconfig1
+
+      if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+        wget http://archive.raspbian.org/raspbian/pool/main/o/openjdk-10/openjdk-10-jre-headless_10.0.2%2B13-2_armhf.deb
+      fi
+      
+      # Install OpenJDK 9 as a fallback
+      if [ ! -n "`which java`" ]; then
+        JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+        if [[ "$JavaVer" ]]; then
+          sudo apt-get install openjdk-9-jre-headless -y
+          # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
+          if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+            sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
+          elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+            sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+          fi
+          sudo apt-get install openjdk-9-jre-headless -y
+        fi
+      fi
     fi
   fi
 fi

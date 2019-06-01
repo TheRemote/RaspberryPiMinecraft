@@ -93,8 +93,8 @@ if [ -f "paper.yml" ]; then
     # This causes the nether and the end to be ticked and save so we are going to disable it
     # This setting makes sense on high player count servers but for the Pi it just wastes resources
     sed -i "s/keep-spawn-loaded: true/keep-spawn-loaded: false/g" paper.yml
-    
 fi
+
 # Configure bukkit.yml options
 if [ -f "bukkit.yml" ]; then
     # monster-spawns
@@ -107,13 +107,19 @@ if [ -f "bukkit.yml" ]; then
     # chunk-gc
     # This unloads vacant chunks faster than vanilla rates. Ticking fewer chunks means less TPS consumption.
 fi
+
 # Configure spigot.yml options
 if [ -f "spigot.yml" ]; then
     # Merging items has a huge impact on tick consumption for ground items. Higher values allow more items to be swept into piles and allow you to avoid plugins like ClearLag.
     # Note: Merging items will lead to the occasional illusion of items disappearing as they merge together a few blocks away. A minor annoyance.
     sed -i "s/exp: 3.0/exp: 6.0/g" spigot.yml
     sed -i "s/item: 2.5/item: 4.0/g" spigot.yml
+    # max-entity-collisions
+    # Crammed entities (grinders, farms, etc.) will collide less and consume less TPS in the process.
+    sed -i "s/max-entity-collisions: 8/max-entity-collisions: 2/g" spigot.yml
 fi
+
+# Configure server.properties options
 if [ -f "server.properties" ]; then
     # Configure server.properties
     # network-compression-threshold

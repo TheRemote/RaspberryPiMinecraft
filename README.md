@@ -16,6 +16,8 @@ chmod +x SetupMinecraft.sh<br>
 <h2>Update History</h2><br>
 <br>
 <h3>May 31st 2019</h3><br>
+-OpenJDK 12 and OpenJDK 10 package checks added into the script<br>
+-Script will attempt to install OpenJDK 10 from package on Raspbian if it isn't in apt<br>
 -Added many paper.yml, bukkit.yml and spigot.yml changes to server config files to help with the ongoing lag affecting all Minecraft servers in 1.14<br>
 -To configure them open start.sh in nano after running SetupMinecraft and you will see the different options and what they do<br>
 -Updated Java certificates installer link<br>
