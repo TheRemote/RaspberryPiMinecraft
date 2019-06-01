@@ -1,8 +1,10 @@
 #!/bin/bash
-# James Chambers - March 9th 2019
+# James Chambers - May 31 2019
+# GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server startup script using screen
 
 # Flush out memory to disk so we have the maximum available for Java allocation
+sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"
 sync
 
 # Check if server is already running
@@ -42,7 +44,7 @@ if [ -f "paper.yml" ]; then
     # early-warning-delay, early-warning-every
     # Disables constant error spam of chunk unloading warnings
     sed -i "s/early-warning-delay: 10000/early-warning-delay: 120000/g" paper.yml
-    sed -i "s/early-warning-every: 5000/early-warning-every: 30000/g" paper.yml
+    sed -i "s/early-warning-every: 5000/early-warning-every: 60000/g" paper.yml
     # optimize-explosions
     # Paper applies a custom and far more efficient algorithm for explosions. It has no impact on gameplay.
     sed -i "s/optimize-explosions: false/optimize-explosions: true/g" paper.yml
@@ -93,7 +95,7 @@ if [ -f "paper.yml" ]; then
     # This causes the nether and the end to be ticked and save so we are going to disable it
     # This setting makes sense on high player count servers but for the Pi it just wastes resources
     sed -i "s/keep-spawn-loaded: true/keep-spawn-loaded: false/g" paper.yml
-    sed -i "s/keep-spawn-loaded-range: 10/keep-spawn-loaded-range: 1/g" paper.yml
+    sed -i "s/keep-spawn-loaded-range: 10/keep-spawn-loaded-range: -1/g" paper.yml
 fi
 
 # Configure bukkit.yml options
@@ -105,8 +107,6 @@ if [ -f "bukkit.yml" ]; then
     # This enables Bukkit's world saving function and how often it runs (in ticks). It should be 6000 (5 minutes) by default.
     # This is causing 10 second lag spikes in 1.14 so we are going to increase it to 18000 (15 minutes).
     sed -i "s/autosave: 6000/autosave: 18000/g" bukkit.yml
-    # chunk-gc
-    # This unloads vacant chunks faster than vanilla rates. Ticking fewer chunks means less TPS consumption.
 fi
 
 # Configure spigot.yml options
@@ -118,9 +118,11 @@ if [ -f "spigot.yml" ]; then
     # max-entity-collisions
     # Crammed entities (grinders, farms, etc.) will collide less and consume less TPS in the process.
     sed -i "s/max-entity-collisions: 8/max-entity-collisions: 2/g" spigot.yml
-
+    # mob-spawn-range
+    # Crammed entities (grinders, farms, etc.) will collide less and consume less TPS in the process.
+    sed -i "s/mob-spawn-range: 8/mob-spawn-range: 6/g" spigot.yml
     # entity-activation-range:
-    sed -i "s/entity-activation-range:\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      tick-inactive-villagers: true/entity-activation-range:\n      animals: 24\n      monsters: 24\n      raiders: 48\n      misc: 12\n      tick-inactive-villagers: false/g" paper.yml
+    sed -i -z "s/entity-activation-range:\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      tick-inactive-villagers: true/entity-activation-range:\n      animals: 24\n      monsters: 24\n      raiders: 48\n      misc: 12\n      tick-inactive-villagers: false/g" spigot.yml
 fi
 
 # Configure server.properties options
@@ -129,7 +131,14 @@ if [ -f "server.properties" ]; then
     # network-compression-threshold
     # This option caps the size of a packet before the server attempts to compress it. Setting it higher can save some resources at the cost of more bandwidth, setting it to -1 disables it.
     # Note: If your server is in a network with the proxy on localhost or the same datacenter (<2 ms ping), disabling this (-1) will be beneficial.
-    sed -i "s/network-compression-threshold=256/network-compression-threshold=-1/g" server.properties
+    sed -i "s/network-compression-threshold=256/network-compression-threshold=512/g" server.properties
+    # Disable Spawn protection
+    sed -i "s/spawn-protection=16/spawn-protection=-1/g" server.properties
+    # Disable snooper
+    sed -i "s/snooper-enabled=true/snooper-enabled=false/g" server.properties
+    # Increase server watchdog timer to prevent it from shutting itself down without restarting
+    sed -i "s/max-tick-time=60000/max-tick-time=120000/g" server.properties
+
 fi
 
 # Update paperclip.jar
