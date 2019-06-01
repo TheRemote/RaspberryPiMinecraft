@@ -30,7 +30,7 @@ else
       sudo apt-get install openjdk-10-jre-headless -y
     else
       # Attempt to install OpenJDK 10 from repository
-      CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)\
+      CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)
       if [[ "$CertVer" != "2019" ]]; then
         wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190405_all.deb
         sudo dpkg --install ca-certificates-java*.deb
