@@ -12,6 +12,11 @@ chmod +x SetupMinecraft.sh<br>
 -Armbian 9 Stretch<br>
 -TinkerOS Stretch 2.0.8<br>
 <h2>Update History</h2>
+<h3>June 1st 2019</h3>
+-Added option to select stable or development version<br>
+-Current stable version of the Paper Minecraft server is 1.13.2<br>
+-If you want to install 1.14.2 you may select to do so during installation<br>
+-Be aware that 1.14.2 continues to have severe performance issues for the entire Minecraft server/hosting community.  After playing on it myself and talking to the Paper developers I can personally state that performance on 1.14.2 is really bad right now and highly recommend sticking with the stable version.<br>
 <h3>May 31st 2019</h3>
 -OpenJDK 12 and OpenJDK 10 package checks added into the script<br>
 -Script will attempt to install OpenJDK 10 from package on Raspbian if it isn't in apt<br>

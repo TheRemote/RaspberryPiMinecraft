@@ -133,7 +133,7 @@ if [ -f "server.properties" ]; then
     # Note: If your server is in a network with the proxy on localhost or the same datacenter (<2 ms ping), disabling this (-1) will be beneficial.
     sed -i "s/network-compression-threshold=256/network-compression-threshold=512/g" server.properties
     # Disable Spawn protection
-    sed -i "s/spawn-protection=16/spawn-protection=-1/g" server.properties
+    sed -i "s/spawn-protection=16/spawn-protection=0/g" server.properties
     # Disable snooper
     sed -i "s/snooper-enabled=true/snooper-enabled=false/g" server.properties
     # Increase server watchdog timer to prevent it from shutting itself down without restarting
@@ -145,11 +145,11 @@ fi
 echo "Updating to most recent paperclip version ..."
 
 # Test internet connectivity first
-wget --spider --quiet https://papermc.io/api/v1/paper/1.14.2/latest/download
+wget --spider --quiet https://papermc.io/api/v1/paper/verselect/latest/download
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    wget -O paperclip.jar https://papermc.io/api/v1/paper/1.14.2/latest/download
+    wget -O paperclip.jar https://papermc.io/api/v1/paper/verselect/latest/download
 fi
 
 echo "Starting Minecraft server.  To view window type screen -r minecraft."

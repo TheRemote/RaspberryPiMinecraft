@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
-echo "Minecraft Server installation script by James Chambers - March 9th 2019"
+echo "Minecraft Server installation script by James Chambers - June 1st 2019"
 echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
@@ -12,6 +12,18 @@ if [ ! -n "`which sudo`" ]; then
 fi
 sudo apt-get update
 sudo apt-get install screen net-tools bc wget -y
+
+# Ask user to select stable or development version
+echo "The current stable version of the Paper Minecraft server will be installed (1.13.2)"
+echo "The current development version is 1.14.2 but it is not stable and has serious performance issues."
+echo "Warning: Once your server is upgraded you cannot roll it back.  Please make sure you have a backup or are willing to start a new world."
+echo "Press enter to install the stable version or if you understand the risks or type 'dev' to install the developer version."
+Version="1.13.2"
+read -p "Press enter to install stable version (1.13.2) or dev to install developer version (1.14.2):" VersionSelect
+if [[ "$VersionSelect" == "dev" ]]; then
+  Version="1.14.2"
+fi
+echo "Installation version selected: $Version"
 
 # Install Java
 echo "Installing latest Java OpenJDK..."
@@ -110,6 +122,7 @@ if [ -d "minecraft" ]; then
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
+  sed -i "s:verselect:$Version:g" start.sh
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
@@ -294,6 +307,7 @@ wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraf
 chmod +x start.sh
 sed -i "s:dirname:$DirName:g" start.sh
 sed -i "s:memselect:$MemSelected:g" start.sh
+sed -i "s:verselect:$Version:g" start.sh
 
 # Download stop.sh from repository
 echo "Grabbing stop.sh from repository..."
