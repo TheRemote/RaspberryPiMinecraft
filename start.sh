@@ -86,6 +86,14 @@ if [ -f "paper.yml" ]; then
     # disable-chest-cat-detection
     # By default, chests scan for a cat/ocelot on top of it when opened. While this eliminates a vanilla mechanic (cats block chest opening), do you really need this silly mechanic?
     sed -i "s/disable-chest-cat-detection: false/disable-chest-cat-detection: true/g" paper.yml
+    # bungee-online-mode
+    # disable Bungee online mode
+    sed -i "s/bungee-online-mode: true/bungee-online-mode: false/g" paper.yml
+    # keep-spawn-loaded: true
+    # This causes the nether and the end to be ticked and save so we are going to disable it
+    # This setting makes sense on high player count servers but for the Pi it just wastes resources
+    sed -i "s/keep-spawn-loaded: true/keep-spawn-loaded: false/g" paper.yml
+    
 fi
 # Configure bukkit.yml options
 if [ -f "bukkit.yml" ]; then

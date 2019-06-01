@@ -108,7 +108,7 @@ if [[ "$JavaVer" ]]; then
   sudo apt-get install openjdk-11-jre-headless -y
   # Work around broken Java certificates packages on some distros (too old)
   if [[ "$CertVer" != "2019" ]]; then
-    wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190214_all.deb
+    wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190405_all.deb
     sudo dpkg --install ca-certificates-java*.deb
     rm ca-certificates-java*.deb
   fi
