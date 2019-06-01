@@ -49,7 +49,7 @@ if [ -f "paper.yml" ]; then
     # mob-spawner-tick-rate
     # This is the delay (in ticks) before an activated spawner attempts to spawn mobs. Doubling the rate to 2 should have no impact on spawn rates. 
     # Only go higher if you have severe load from ticking spawners. Keep below 10.
-    sed -i "s/mob-spawner-tick-rate: 1/mob-spawner-tick-rate: 2/g" paper.yml
+    sed -i "s/mob-spawner-tick-rate: 1/mob-spawner-tick-rate: 3/g" paper.yml
     # container-update-tick-rate
     # This changes how often your containers/inventories are refreshed while open. Do not go higher than 3.
     sed -i "s/container-update-tick-rate: 1/container-update-tick-rate: 2/g" paper.yml
@@ -89,10 +89,11 @@ if [ -f "paper.yml" ]; then
     # bungee-online-mode
     # disable Bungee online mode
     sed -i "s/bungee-online-mode: true/bungee-online-mode: false/g" paper.yml
-    # keep-spawn-loaded: true
+    # keep-spawn-loaded, keep-spawn-loaded-range
     # This causes the nether and the end to be ticked and save so we are going to disable it
     # This setting makes sense on high player count servers but for the Pi it just wastes resources
     sed -i "s/keep-spawn-loaded: true/keep-spawn-loaded: false/g" paper.yml
+    sed -i "s/keep-spawn-loaded-range: 10/keep-spawn-loaded-range: 1/g" paper.yml
 fi
 
 # Configure bukkit.yml options
@@ -117,6 +118,9 @@ if [ -f "spigot.yml" ]; then
     # max-entity-collisions
     # Crammed entities (grinders, farms, etc.) will collide less and consume less TPS in the process.
     sed -i "s/max-entity-collisions: 8/max-entity-collisions: 2/g" spigot.yml
+
+    # entity-activation-range:
+    sed -i "s/entity-activation-range:\n      animals: 32\n      monsters: 32\n      raiders: 48\n      misc: 16\n      tick-inactive-villagers: true/entity-activation-range:\n      animals: 24\n      monsters: 24\n      raiders: 48\n      misc: 12\n      tick-inactive-villagers: false/g" paper.yml
 fi
 
 # Configure server.properties options
@@ -141,4 +145,4 @@ fi
 
 echo "Starting Minecraft server.  To view window type screen -r minecraft."
 echo "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D"
-screen -dmS minecraft java -jar -Xms250M -XmxmemselectM dirname/minecraft/paperclip.jar
+screen -dmS minecraft java -jar -Xms400M -XmxmemselectM dirname/minecraft/paperclip.jar
