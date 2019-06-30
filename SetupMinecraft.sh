@@ -15,13 +15,13 @@ sudo apt-get install screen net-tools bc wget -y
 
 # Ask user to select stable or development version
 echo "The current stable version of the Paper Minecraft server will be installed (1.13.2)"
-echo "The current development version is 1.14.2 but it is not stable and has serious performance issues."
+echo "The current development version is 1.14.3 but is not yet stable and has performance issues."
 echo "Warning: Once your server is upgraded you cannot roll it back.  Please make sure you have a backup or are willing to start a new world."
 echo "Press enter to install the stable version or if you understand the risks or type 'dev' to install the developer version."
 Version="1.13.2"
-read -p "Press enter to install stable version (1.13.2) or dev to install developer version (1.14.2):" VersionSelect
+read -p "Press enter to install stable version (1.13.2) or dev to install developer version (1.14.3):" VersionSelect
 if [[ "$VersionSelect" == "dev" ]]; then
-  Version="1.14.2"
+  Version="1.14.3"
 fi
 echo "Installation version selected: $Version"
 
@@ -291,7 +291,7 @@ UserName=$(whoami)
 
 # Retrieve latest build of Paper minecraft server
 echo "Getting latest Paper Minecraft server..."
-wget -O paperclip.jar https://papermc.io/api/v1/paper/1.14.2/latest/download
+wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 echo "Building the Minecraft server..."

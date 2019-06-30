@@ -12,6 +12,9 @@ chmod +x SetupMinecraft.sh<br>
 -Armbian 9 Stretch<br>
 -TinkerOS Stretch 2.0.8<br>
 <h2>Update History</h2>
+<h3>June 30th 2019</h3>
+-Updated development version to 1.14.3<br>
+-Fixed issue that could cause 1.13.2 servers to crash<br>
 <h3>June 1st 2019</h3>
 -Added option to select stable or development version<br>
 -Current stable version of the Paper Minecraft server is 1.13.2<br>
