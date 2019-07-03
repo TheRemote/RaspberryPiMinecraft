@@ -6,12 +6,14 @@ wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/Set
 chmod +x SetupMinecraft.sh<br>
 ./SetupMinecraft.sh<br>
 <h2>Tested Distributions</h2>
--Raspbian / Raspian Lite Stretch<br>
+-Raspbian / Raspian Lite Buster/Stretch<br>
 -Ubuntu Server 18.04.2<br>
 -Debian 9 Buster Preview<br>
 -Armbian 9 Stretch<br>
 -TinkerOS Stretch 2.0.8<br>
 <h2>Update History</h2>
+<h3>July 2nd 2019</h3>
+-Removed bc dependency to improve portability<br>
 <h3>June 30th 2019</h3>
 -Raspberry Pi 4 support (all memory sizes)<br>
 -Updated development version to 1.14.3<br>

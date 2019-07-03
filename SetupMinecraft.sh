@@ -6,12 +6,12 @@ echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
 # Install dependencies needed to run minecraft in the background
-echo "Installing screen, sudo, net-tools, bc, wget..."
+echo "Installing screen, sudo, net-tools, wget..."
 if [ ! -n "`which sudo`" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
-sudo apt-get install screen net-tools bc wget -y
+sudo apt-get install screen net-tools wget -y
 
 # Ask user to select stable or development version
 echo "The current stable version of the Paper Minecraft server will be installed (1.13.2)"
@@ -96,15 +96,13 @@ if [ -d "minecraft" ]; then
   sleep 1s
   TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-  RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
-  echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory - Recommended Memory: $RecommendedMemory"
-  echo "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended."
+  echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
+  echo "Please enter the amount of memory in megabytes (MB) of RAM you want to dedicate to the server.  A minimum of 700MB is recommended."
   echo "You must leave enough left over memory for the operating system to run background processes."
   echo "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)."
   MemSelected=0
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
     read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
-    MemSelected=$(echo $MemSelected | bc)
     if [[ $MemSelected -lt 600 ]]; then
       echo "Please enter a minimum of 600"
     elif [[ $MemSelected -gt $TotalMemory ]]; then
@@ -253,9 +251,8 @@ fi
 
 # Calculate amount of recommended memory leaving enough room for the OS processes to run
 AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
-RecommendedMemory=$(echo $AvailableMemory-$AvailableMemory*0.08/1 | bc)
-echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory - Recommended Memory: $RecommendedMemory"
-if [ $RecommendedMemory -lt 700 ]; then
+echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
+if [ $AvailableMemory -lt 700 ]; then
   echo "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability."
   echo "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory."
   echo "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible."
@@ -268,8 +265,7 @@ echo "You must leave enough left over memory for the operating system to run bac
 echo "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)."
 MemSelected=0
 while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
-  read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
-  MemSelected=$(echo $MemSelected | bc)
+  read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (>700MB recommended, $AvailableMemory available): " MemSelected
   if [[ $MemSelected -lt 600 ]]; then
     echo "Please enter a minimum of 600"
   elif [[ $MemSelected -gt $TotalMemory ]]; then
