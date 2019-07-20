@@ -1,4 +1,4 @@
-This script will automatically download and configure the Paper Minecraft 1.14.2 server on your Raspberry Pi!<br>
+This script will automatically download and configure the Paper Minecraft 1.14.4 server on your Raspberry Pi!<br>
 For the full article and guide visit https://www.jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/<br>
 <h2>Installation Instructions</h2>
 To get started type:<br>
@@ -12,6 +12,9 @@ chmod +x SetupMinecraft.sh<br>
 -Armbian 9 Stretch<br>
 -TinkerOS Stretch 2.0.8<br>
 <h2>Update History</h2>
+<h3>July 19th 2019</h3>
+-Updated development version to 1.14.4<br>
+-Added OpenJDK 13 support<br>
 <h3>July 2nd 2019</h3>
 -Removed bc dependency to improve portability<br>
 <h3>June 30th 2019</h3>

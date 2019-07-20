@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
-echo "Minecraft Server installation script by James Chambers - July 3rd 2019"
+echo "Minecraft Server installation script by James Chambers - July 19th 2019"
 echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
@@ -11,62 +11,59 @@ if [ ! -n "`which sudo`" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
-sudo apt-get install screen net-tools wget -y
+sudo apt-get install screen wget -y
+sudo apt-get install net-tools -y
 
 # Ask user to select stable or development version
 echo "The current stable version of the Paper Minecraft server will be installed (1.13.2)"
-echo "The current development version is 1.14.3 but is not yet stable and has performance issues."
+echo "The current development version is 1.14.4 but is not yet stable and has performance issues."
 echo "Warning: Once your server is upgraded you cannot roll it back.  Please make sure you have a backup or are willing to start a new world."
 echo "Press enter to install the stable version or if you understand the risks or type 'dev' to install the developer version."
 Version="1.13.2"
-read -p "Press enter to install stable version (1.13.2) or dev to install developer version (1.14.3):" VersionSelect
+read -p "Press enter to install stable version (1.13.2) or dev to install developer version (1.14.4):" VersionSelect
 if [[ "$VersionSelect" == "dev" ]]; then
-  Version="1.14.3"
+  Version="1.14.4"
 fi
 echo "Installation version selected: $Version"
 
 # Install Java
 echo "Installing latest Java OpenJDK..."
-JavaVer=$(apt-cache show openjdk-12-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
 if [[ "$JavaVer" ]]; then
-  sudo apt-get install openjdk-12-jre-headless -y
+  sudo apt-get install openjdk-14-jre-headless -y
 else
-  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  # Check for OpenJDK 11
+  JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-11-jre-headless -y
+    sudo apt-get install openjdk-13-jre-headless -y
   else
-    JavaVer=$(apt-cache show openjdk-10-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-    # Check for OpenJDK 10
+    JavaVer=$(apt-cache show openjdk-12-jre-headless | grep Version | awk 'NR==1{ print $2 }')
     if [[ "$JavaVer" ]]; then
-      sudo apt-get install openjdk-10-jre-headless -y
+      sudo apt-get install openjdk-12-jre-headless -y
     else
-      # Attempt to install OpenJDK 10 from repository
-      CertVer=$(apt-cache show ca-certificates-java | grep Version | awk 'NR==1{ print $2 }' | cut -b 1-4)
-      if [[ "$CertVer" != "2019" ]]; then
-        wget http://ftp.us.debian.org/debian/pool/main/c/ca-certificates-java/ca-certificates-java_20190405_all.deb
-        sudo dpkg --install ca-certificates-java*.deb
-        rm ca-certificates-java*.deb
-      fi
-      sudo apt-get install libfontconfig1
-      if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-        wget http://archive.raspbian.org/raspbian/pool/main/o/openjdk-10/openjdk-10-jre-headless_10.0.2%2B13-2_armhf.deb
-      fi
-      sudo dpkg -i openjdk-10*
-      rm openjdk-10*
-      
-      # Install OpenJDK 9 as a fallback
-      if [ ! -n "`which java`" ]; then
-        JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+      JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+      # Check for OpenJDK 11
+      if [[ "$JavaVer" ]]; then
+        sudo apt-get install openjdk-11-jre-headless -y
+      else
+        JavaVer=$(apt-cache show openjdk-10-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+        # Check for OpenJDK 10
         if [[ "$JavaVer" ]]; then
-          sudo apt-get install openjdk-9-jre-headless -y
-          # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
-          if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-            sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
-          elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-            sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+          sudo apt-get install openjdk-10-jre-headless -y
+        else
+          # Install OpenJDK 9 as a fallback
+          if [ ! -n "`which java`" ]; then
+            JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+            if [[ "$JavaVer" ]]; then
+              sudo apt-get install openjdk-9-jre-headless -y
+              # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
+              if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+                sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
+              elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+                sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
+              fi
+              sudo apt-get install openjdk-9-jre-headless -y
+            fi
           fi
-          sudo apt-get install openjdk-9-jre-headless -y
         fi
       fi
     fi
