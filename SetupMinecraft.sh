@@ -196,7 +196,6 @@ if [ -n "$MicroSDClock" ]; then
   fi
 fi
 
-if ($TotalMemory <= 1024)
 # Check that GPU Shared memory is set to 16MB to give our server more resources
 echo "Getting shared GPU memory..."
 if [ -f "/boot/config.txt" ]; then
