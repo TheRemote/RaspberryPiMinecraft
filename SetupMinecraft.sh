@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
-echo "Minecraft Server installation script by James Chambers - July 19th 2019"
+echo "Minecraft Server installation script by James Chambers - August 24th 2019"
 echo "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft"
 echo "Don't forget to set up port forwarding on your router!  The default port is 25565"
 
@@ -241,7 +241,7 @@ fi
 sync
 sleep 1s
 echo "Getting total system memory..."
-TotalMemory=$(awk '/MemTotal/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+TotalMemory=$(awk '/MemTotal/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
 AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
 if [ $TotalMemory -lt 700 ]; then
   echo "Not enough memory to run a Minecraft server.  Requires at least 1024MB of memory!"
@@ -250,7 +250,7 @@ if [ $TotalMemory -lt 700 ]; then
 fi
 
 # Calculate amount of recommended memory leaving enough room for the OS processes to run
-AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f \n", $2/1024 }' /proc/meminfo)
+RecommendedMemory=$(awk '/MemAvailable/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
 echo "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
 if [ $AvailableMemory -lt 700 ]; then
   echo "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability."
@@ -265,11 +265,14 @@ echo "You must leave enough left over memory for the operating system to run bac
 echo "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)."
 MemSelected=0
 while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
-  read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (>700MB recommended, $AvailableMemory available): " MemSelected
+  read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
   if [[ $MemSelected -lt 600 ]]; then
     echo "Please enter a minimum of 600"
   elif [[ $MemSelected -gt $TotalMemory ]]; then
     echo "Please enter an amount less than the total memory in the system ($TotalMemory)"
+  elif [[ $MemSelected -gt 2700 ]]; then
+    echo "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all."
+    echo "You can lift this restriction by upgrading to a 64 bit operating system."
   fi
 done
 echo "Amount of memory for Minecraft server selected: $MemSelected MB"
@@ -291,7 +294,7 @@ wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 echo "Building the Minecraft server..."
-java -jar "-Xms$RecommendedMemory"M "-Xmx$RecommendedMemory"M paperclip.jar
+java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
 
 # Accept the EULA
 echo "Accepting the EULA..."
