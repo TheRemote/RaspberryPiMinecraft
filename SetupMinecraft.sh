@@ -28,6 +28,8 @@ Print_Style () {
 
 # Configure how much memory to use for the Minecraft server
 Get_ServerMemory () {
+  sync
+  sleep 1s
   Print_Style "Getting total system memory..." $YELLOW
   TotalMemory=$(awk '/MemTotal/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
@@ -221,77 +223,7 @@ if [ -d "minecraft" ]; then
   exit 0
 fi
 
-RebootRequired=0
-# Check MicroSD clock speed
-MicroSDClock="$(sudo grep "actual clock" /sys/kernel/debug/mmc0/ios 2>/dev/null | awk '{printf("%0.3f MHz", $3/1000000)}')"
-if [ -n "$MicroSDClock" ]; then
-  if [[ "$MicroSDClock" == "50.000 MHz" ]]; then
-    Print_Style "Your MicroSD clock is set at $MicroSDClock instead of the recommended 100 MHz" $CYAN
-    Print_Style "This setup can overclock this for you but some (usually cheaper) MicroSD cards will not boot with this setting" $CYAN
-    Print_Style "If this happens you can remove dtparam=sd_overclock=100 from /boot/config.txt or reimage the MicroSD and the Pi will work normally again" $CYAN
-    Print_Style "This is at your own risk and does make a huge performance difference.  If you have a card that won't overclock or don't want to do this press n." $CYAN
-    echo -n "Set clock speed to 100 MHz?  Requires reboot. (y/n)?"
-    read answer
-
-    if [ "$answer" != "${answer#[Yy]}" ]; then
-      # Check for config.txt in /boot and /boot/firmware
-      if [ -f "/boot/config.txt" ]; then
-        sudo bash -c 'printf "\ndtparam=sd_overclock=100\n" >> /boot/config.txt'
-        Print_Style "SD Card speed has been changed.  Please run setup again after reboot." $GREEN
-        RebootRequired=1
-      elif [ -f "/boot/firmware/config.txt" ]; then
-        sudo bash -c 'printf "\ndtparam=sd_overclock=100\n" >> /boot/firmware/config.txt'
-        Print_Style "SD Card speed has been changed.  Please run setup again after reboot." $GREEN
-        RebootRequired=1
-      else
-        Print_Style "Error -- Unable to find config.txt file on this platform - MicroSD clock speed has not been changed!" $RED
-      fi
-    fi
-  fi
-fi
-
-# Check that GPU Shared memory is set to 16MB to give our server more resources
-Print_Style "Getting shared GPU memory..." $YELLOW
-if [ -f "/boot/config.txt" ]; then
-  GPUMemory=$(grep "gpu_mem" /boot/config.txt)
-elif [ -f "/boot/firmware/config.txt" ]; then
-  GPUMemory=$(grep "gpu_mem" /boot/firmware/config.txt)
-else
-  GPUMemory="Unknown"
-  Print_Style "Error -- Unable to find config.txt file on this platform - GPU shared memory has not been changed!" $RED
-fi
-
-if [[ "$GPUMemory" != "Unknown" && "$GPUMemory" != "gpu_mem=16" ]]; then
-  Print_Style "GPU memory needs to be set to 16MB for best performance." $CYAN
-  Print_Style "This can be set in sudo raspi-config or the script can change it for you now." $CYAN
-  echo -n "Change GPU shared memory to 16MB?  Requires reboot. (y/n)?"
-  read answer
-
-  if [ "$answer" != "${answer#[Yy]}" ]; then
-    if [ -f "/boot/config.txt" ]; then
-      sudo bash -c 'printf "\ngpu_mem=16\n" >> /boot/config.txt'
-      Print_Style "Split GPU memory has been changed.  Please run setup again after reboot." $GREEN
-      RebootRequired=1
-    elif [ -f "/boot/firmware/config.txt" ]; then
-      sudo bash -c 'printf "\ngpu_mem=16\n" >> /boot/firmware/config.txt'
-      Print_Style "Split GPU memory has been changed.  Please run setup again after reboot." $GREEN
-      RebootRequired=1
-    else
-      Print_Style "Error -- Unable to find config.txt file on this platform - split GPU memory has not been changed!" $RED
-    fi
-  fi
-fi
-
-# Check if any configuration changes needed a reboot
-if [ $RebootRequired -eq 1 ]; then
-  Print_Style "System is restarting -- please run setup again after restart" $GREEN
-  sudo reboot
-  exit 0
-fi
-
-# Get total system memory and make sure we are a 1024MB or higher board
-sync
-sleep 1s
+# Get total system memory
 Get_ServerMemory
 
 # Create server directory
