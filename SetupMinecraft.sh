@@ -78,7 +78,7 @@ else
   exit 1
 fi
 
-# Check to see if Minecraft directory already exists, if it does then exit
+# Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "minecraft" ]; then
   echo "Directory minecraft already exists!  Updating scripts and configuring service ..."
 
@@ -107,6 +107,7 @@ if [ -d "minecraft" ]; then
     elif [[ $MemSelected -gt 2700 ]]; then
       echo "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all."
       echo "You can lift this restriction by upgrading to a 64 bit operating system."
+      MemSelected=0
     fi
   done
   echo "Amount of memory for Minecraft server selected: $MemSelected MB"
@@ -273,6 +274,7 @@ while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
   elif [[ $MemSelected -gt 2700 ]]; then
     echo "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all."
     echo "You can lift this restriction by upgrading to a 64 bit operating system."
+    MemSelected=0
   fi
 done
 echo "Amount of memory for Minecraft server selected: $MemSelected MB"
