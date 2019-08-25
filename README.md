@@ -12,6 +12,8 @@ chmod +x SetupMinecraft.sh<br>
 -Armbian 9 Stretch<br>
 -TinkerOS Stretch 2.0.8<br>
 <h2>Update History</h2>
+<h3>August 24th 2019</h3>
+-To prevent startup failure on 32bit ARM the maximum memory for the Minecraft server is capped at 2700MB. This is a per process limitation of 32 bit on ARM and Linux. This restriction can be lifted by using a 64 bit operating system.
 <h3>July 19th 2019</h3>
 -Updated development version to 1.14.4<br>
 -Added OpenJDK 13 support<br>

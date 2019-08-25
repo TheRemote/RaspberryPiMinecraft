@@ -104,6 +104,9 @@ if [ -d "minecraft" ]; then
       echo "Please enter a minimum of 600"
     elif [[ $MemSelected -gt $TotalMemory ]]; then
       echo "Please enter an amount less than the total memory in the system ($TotalMemory)"
+    elif [[ $MemSelected -gt 2700 ]]; then
+      echo "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all."
+      echo "You can lift this restriction by upgrading to a 64 bit operating system."
     fi
   done
   echo "Amount of memory for Minecraft server selected: $MemSelected MB"
@@ -193,6 +196,7 @@ if [ -n "$MicroSDClock" ]; then
   fi
 fi
 
+if ($TotalMemory <= 1024)
 # Check that GPU Shared memory is set to 16MB to give our server more resources
 echo "Getting shared GPU memory..."
 if [ -f "/boot/config.txt" ]; then
