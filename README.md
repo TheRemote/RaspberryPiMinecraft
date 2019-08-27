@@ -12,6 +12,8 @@ chmod +x SetupMinecraft.sh<br>
 -Armbian 9 Stretch<br>
 -TinkerOS Stretch 2.0.8<br>
 <h2>Update History</h2>
+<h3>August 26th 2019</h3>
+-Fixed a silly bug causing recommended memory to be stuck at 2700<br>
 <h3>August 25th 2019</h3>
 -Improved server startup detection after running SetupMinecraft<br>
 -Added terminal colors to improve visibility<br>

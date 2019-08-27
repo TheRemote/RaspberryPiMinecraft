@@ -35,7 +35,7 @@ Get_ServerMemory () {
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
   Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory" $YELLOW
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-    if [[ $AvailableMemory > 2700 ]]; then
+    if [ $AvailableMemory -gt 2700 ]; then
       AvailableMemory=2700
     fi
   fi
@@ -43,7 +43,7 @@ Get_ServerMemory () {
     Print_Style "Not enough memory to run a Minecraft server.  Requires at least 1024MB of memory!" $YELLOW
     exit 1
   fi
-  Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory"&
+  Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
   if [ $AvailableMemory -lt 700 ]; then
     Print_Style "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability." $RED
     Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." $RED
