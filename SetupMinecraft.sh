@@ -1,9 +1,9 @@
 #!/bin/bash
-# Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
-# GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
+# NukkitX Server Installation Script by Randomblock1 - original code by James A. Chambers - https://www.jamesachambers.com
+# GitHub Repository: https://github.com/Randomblock1/RaspberryPiMinecraft
 
 # Minecraft server version
-Version="1.14.4"
+Version="1.12.0"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
@@ -26,62 +26,14 @@ Print_Style () {
   printf "%s\n" "${2}$1${NORMAL}"
 }
 
-# Configure how much memory to use for the Minecraft server
-Get_ServerMemory () {
-  sync
-  sleep 1s
-  Print_Style "Getting total system memory..." $YELLOW
-  TotalMemory=$(awk '/MemTotal/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
-  AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
-  Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory" $YELLOW
-  if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-    if [ $AvailableMemory -gt 2700 ]; then
-      AvailableMemory=2700
-    fi
-  fi
-  if [ $TotalMemory -lt 700 ]; then
-    Print_Style "Not enough memory to run a Minecraft server.  Requires at least 1024MB of memory!" $YELLOW
-    exit 1
-  fi
-  Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
-  if [ $AvailableMemory -lt 700 ]; then
-    Print_Style "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability." $RED
-    Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." $RED
-    Print_Style "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible." $RED
-    read -n1 -r -p "Press any key to continue"
-  fi
-
-  # Ask user for amount of memory they want to dedicate to the Minecraft server
-  Print_Style "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended." $CYAN
-  Print_Style "You must leave enough left over memory for the operating system to run background processes." $CYAN
-  Print_Style "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)." $CYAN
-  if [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-  Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." $YELLOW
-  fi
-  MemSelected=0
-  while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
-    read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $AvailableMemory): " MemSelected
-    if [[ $MemSelected -lt 600 ]]; then
-      Print_Style "Please enter a minimum of 600" $RED
-    elif [[ $MemSelected -gt $TotalMemory ]]; then
-      Print_Style "Please enter an amount less than the total memory in the system ($TotalMemory)" $RED
-    elif [[ $MemSelected -gt 2700 && "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-      Print_Style "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all." $RED
-      Print_Style "You can lift this restriction by upgrading to a 64 bit operating system." $RED
-      MemSelected=0
-    fi
-  done
-  Print_Style "Amount of memory for Minecraft server selected: $MemSelected MB" $GREEN
-}
-
 # Updates all scripts
 Update_Scripts () {
   # Remove existing scripts
-  rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
+  rm nukkitx/start.sh nukkitx/stop.sh nukkitx/restart.sh
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." $YELLOW
-  wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
+  wget -O start.sh https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
@@ -89,29 +41,29 @@ Update_Scripts () {
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
-  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
+  wget -O stop.sh https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
-  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
+  wget -O restart.sh https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
 }
 
-# Updates Minecraft service
+# Updates NukkitX service
 Update_Service () {
-  sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
-  sudo chmod +x /etc/systemd/system/minecraft.service
-  sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/minecraft.service
-  sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
+  sudo wget -O /etc/systemd/system/nukkitx.service https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/nukkitx.service
+  sudo chmod +x /etc/systemd/system/nukkitx.service
+  sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/nukkitx.service
+  sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/nukkitx.service
   sudo systemctl daemon-reload
-  Print_Style "Minecraft can automatically start at boot if you wish." $CYAN
-  echo -n "Start Minecraft server at startup automatically (y/n)?"
+  Print_Style "NukkitX can automatically start at boot if you wish." $CYAN
+  echo -n "Start NukkitX Minecraft server at startup automatically (y/n)?"
   read answer
   if [ "$answer" != "${answer#[Yy]}" ]; then
-    sudo systemctl enable minecraft.service
+    sudo systemctl enable nukkitx.service
   fi
 }
 
@@ -125,15 +77,15 @@ Configure_Reboot () {
   echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
   read answer
   if [ "$answer" != "${answer#[Yy]}" ]; then
-    croncmd="$DirName/minecraft/restart.sh"
+    croncmd="$DirName/nukkitx/restart.sh"
     cronjob="0 4 * * * $croncmd"
     ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
     Print_Style "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e" $GREEN
   fi
 }
 
-Print_Style "Minecraft Server installation script by James Chambers - August 25th 2019" $MAGENTA
-Print_Style "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft" $MAGENTA
+Print_Style "NukkitX Minecraft: Bedrock Edition Server installation script by Randomblock1 and James Chambers - October 5th 2019" $MAGENTA
+Print_Style "Latest version always at https://github.com/Randomblock1/RaspberryPiMinecraft" $MAGENTA
 Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" $MAGENTA
 
 # Check system architecture to ensure we are running ARMv7 or higher
@@ -146,12 +98,11 @@ if [ ! -n "`which sudo`" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
-sudo apt-get install screen wget -y
-sudo apt-get install net-tools -y
+sudo apt-get install screen wget net-tools -y
 
 # Install Java
 Print_Style "Installing latest Java OpenJDK..." $YELLOW
-JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+JavaVer=$(apt-cache show openjdk-14-jre-headless | grep Version | awk 'NR==1{ print $2 }')
 if [[ "$JavaVer" ]]; then
   sudo apt-get install openjdk-14-jre-headless -y
 else
@@ -202,16 +153,13 @@ else
 fi
 
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
-if [ -d "minecraft" ]; then
+if [ -d "nukkitx" ]; then
   Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." $YELLOW
 
   # Get Home directory path and username
-  cd minecraft
+  cd nukkitx
   DirName=$(readlink -e ~)
   UserName=$(whoami)
-
-  # Ask user for amount of memory they want to dedicate to the Minecraft server
-  Get_ServerMemory
 
   # Update Minecraft server scripts
   Update_Scripts
@@ -222,35 +170,24 @@ if [ -d "minecraft" ]; then
   # Configure automatic start on boot
   Configure_Reboot
 
-  Print_Style "Minecraft installation scripts have been updated to the latest version!" $GREEN
+  Print_Style "NukkitX installation scripts have been updated to the latest version!" $GREEN
   exit 0
 fi
-
-# Get total system memory
-Get_ServerMemory
 
 # Create server directory
 Print_Style "Creating minecraft server directory..." $YELLOW
 cd ~
-mkdir minecraft
-cd minecraft
+mkdir nukkitx
+cd nukkitx
 mkdir backups
 
 # Get Home directory path and username
 DirName=$(readlink -e ~)
 UserName=$(whoami)
 
-# Retrieve latest build of Paper minecraft server
-Print_Style "Getting latest Paper Minecraft server..." $YELLOW
-wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
-
-# Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
-Print_Style "Building the Minecraft server..." $YELLOW
-java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
-
-# Accept the EULA
-Print_Style "Accepting the EULA..." $GREEN
-echo eula=true > eula.txt
+# Retrieve latest build of NukkitX Minecraft server
+Print_Style "Getting latest NukkitX Minecraft server..." $YELLOW
+wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/master/lastSuccessfulBuild/artifact/target/nukkit-1.0-SNAPSHOT.jar
 
 # Update Minecraft server scripts
 Update_Scripts
@@ -258,8 +195,11 @@ Update_Scripts
 # Server configuration
 Print_Style "Enter a name for your server..." $MAGENTA
 read -p 'Server Name: ' servername
-echo "server-name=$servername" >> server.properties
 echo "motd=$servername" >> server.properties
+Print_Style "Enter a Sub-MOTD for your server..." $MAGENTA
+read -p 'Sub-MOTD: ' submotd
+echo "sub-motd=$submotd" >> server.properties
+
 
 # Service configuration
 Update_Service
@@ -268,14 +208,16 @@ Update_Service
 Configure_Reboot
 
 # Finished!
-Print_Style "Setup is complete.  Starting Minecraft server..." $GREEN
-sudo systemctl start minecraft.service
+Print_Style "Setup is complete.  Starting NukkitX..." $GREEN
+Print_Style "To minimize the window and let the server run in the background, press Ctrl+A then Ctrl+D." $GREEN
+
+sudo systemctl start nukkitx.service
 
 # Wait up to 30 seconds for server to start
 StartChecks=0
-while [ $StartChecks -lt 30 ]; do
-  if screen -list | grep -q "minecraft"; then
-    screen -r minecraft
+while [ $StartChecks -lt 10 ]; do
+  if screen -list | grep -q "nukkitx"; then
+    screen -r nukkitx
     break
   fi
   sleep 1;
@@ -285,5 +227,5 @@ done
 if [[ $StartChecks == 30 ]]; then
   Print_Style "Server has failed to start after 30 seconds." $RED
 else
-  screen -r minecraft
+  screen -r nukkitx
 fi
