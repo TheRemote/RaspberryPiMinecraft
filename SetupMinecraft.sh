@@ -151,7 +151,7 @@ sudo apt-get install net-tools -y
 
 # Install Java
 Print_Style "Installing latest Java OpenJDK..." $YELLOW
-JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+JavaVer=$(apt-cache show openjdk-14-jre-headless | grep Version | awk 'NR==1{ print $2 }')
 if [[ "$JavaVer" ]]; then
   sudo apt-get install openjdk-14-jre-headless -y
 else
