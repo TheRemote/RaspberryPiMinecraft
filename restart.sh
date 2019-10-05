@@ -3,7 +3,7 @@
 # Marc Tönsing - 18.05.2018
 
 # Check if server is running
-if ! screen -list | grep -q "minecraft"; then
+if ! screen -list | grep -q "nukkitx"; then
     echo "Server is not currently running!"
     exit 1
 fi
