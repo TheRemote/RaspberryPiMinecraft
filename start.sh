@@ -32,7 +32,7 @@ cd dirname/nukkitx/
 
 # Back up server
 if [ -d "world" ]; then 
-    echo "Backing up server (to minecraft/backups folder)"
+    echo "Backing up server (to nukkitx/backups folder)"
     tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world nether the_end
 fi
 
