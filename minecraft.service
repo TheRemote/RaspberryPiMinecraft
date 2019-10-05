@@ -1,13 +1,13 @@
 [Unit]
-Description=minecraft server service
+Description=nukkitx mc bedrock edition server
 After=network-online.target
 
 [Service]
 User=replace
-WorkingDirectory=dirname/minecraft
+WorkingDirectory=dirname/nukkitx
 Type=forking
-ExecStart=/bin/bash dirname/minecraft/start.sh
-ExecStop=/bin/bash dirname/minecraft/stop.sh
+ExecStart=/bin/bash dirname/nukkitx/start.sh
+ExecStop=/bin/bash dirname/nukkitx/stop.sh
 GuessMainPID=no
 TimeoutStartSec=600
 
