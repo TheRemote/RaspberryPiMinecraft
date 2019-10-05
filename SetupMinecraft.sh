@@ -55,6 +55,9 @@ Get_ServerMemory () {
   Print_Style "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended." $CYAN
   Print_Style "You must leave enough left over memory for the operating system to run background processes." $CYAN
   Print_Style "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)." $CYAN
+  if [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+  Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." $YELLOW
+  fi
   MemSelected=0
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
     read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $AvailableMemory): " MemSelected
@@ -62,7 +65,7 @@ Get_ServerMemory () {
       Print_Style "Please enter a minimum of 600" $RED
     elif [[ $MemSelected -gt $TotalMemory ]]; then
       Print_Style "Please enter an amount less than the total memory in the system ($TotalMemory)" $RED
-    elif [[ $MemSelected -gt 2700 ]]; then
+    elif [[ $MemSelected -gt 2700 && "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
       Print_Style "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all." $RED
       Print_Style "You can lift this restriction by upgrading to a 64 bit operating system." $RED
       MemSelected=0
