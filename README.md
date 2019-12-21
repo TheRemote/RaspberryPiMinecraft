@@ -17,6 +17,9 @@ chmod +x SetupMinecraft.sh<br>
 <li>TinkerOS Stretch 2.0.8</li>
 </ul>
 
+<h2>Getting Help</h2>
+To get help you may open an issue here or visit my web site at https://www.jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/ which contains lots of comments from myself and users helping each other out!
+
 <h2>Update History</h2>
 
 <h3>December 20th 2019</h3>
