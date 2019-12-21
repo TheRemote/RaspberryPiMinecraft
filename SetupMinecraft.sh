@@ -54,22 +54,22 @@ Get_ServerMemory() {
   if [ $AvailableMemory -lt 700 ]; then
     Print_Style "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability." "$RED"
     Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." "$RED"
-    Print_Style "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible." $RED
+    Print_Style "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible." "$RED"
     read -n1 -r -p "Press any key to continue"
   fi
 
   # Ask user for amount of memory they want to dedicate to the Minecraft server
-  Print_Style "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended." $CYAN
-  Print_Style "You must leave enough left over memory for the operating system to run background processes." $CYAN
-  Print_Style "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)." $CYAN
+  Print_Style "Please enter the amount of memory you want to dedicate to the server.  A minimum of 700MB is recommended." "$CYAN"
+  Print_Style "You must leave enough left over memory for the operating system to run background processes." "$CYAN"
+  Print_Style "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)." "$CYAN"
   if [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-    Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." $YELLOW
+    Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." "$YELLOW"
   fi
   MemSelected=0
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
     read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $AvailableMemory): " MemSelected
     if [[ $MemSelected -lt 600 ]]; then
-      Print_Style "Please enter a minimum of 600" $RED
+      Print_Style "Please enter a minimum of 600" "$RED"
     elif [[ $MemSelected -gt $TotalMemory ]]; then
       Print_Style "Please enter an amount less than the total memory in the system ($TotalMemory)" "$RED"
     elif [[ $MemSelected -gt 2700 && "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
@@ -79,7 +79,7 @@ Get_ServerMemory() {
       MemSelected=0
     fi
   done
-  Print_Style "Amount of memory for Minecraft server selected: $MemSelected MB" $GREEN
+  Print_Style "Amount of memory for Minecraft server selected: $MemSelected MB" "$GREEN"
 }
 
 # Updates all scripts
@@ -88,7 +88,7 @@ Update_Scripts() {
   rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
 
   # Download start.sh from repository
-  Print_Style "Grabbing start.sh from repository..." $YELLOW
+  Print_Style "Grabbing start.sh from repository..." "$YELLOW"
   wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
@@ -115,7 +115,7 @@ Update_Service() {
   sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/minecraft.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
   sudo systemctl daemon-reload
-  Print_Style "Minecraft can automatically start at boot if you wish." $CYAN
+  Print_Style "Minecraft can automatically start at boot if you wish." "$CYAN"
   echo -n "Start Minecraft server at startup automatically (y/n)?"
   read answer
   if [ "$answer" != "${answer#[Yy]}" ]; then
@@ -128,8 +128,8 @@ Configure_Reboot() {
   # Automatic reboot at 4am configuration
   TimeZone=$(cat /etc/timezone)
   CurrentTime=$(date)
-  Print_Style "Your time zone is currently set to $TimeZone.  Current system time: $CurrentTime" $CYAN
-  Print_Style "You can adjust/remove the selected reboot time later by typing crontab -e" $CYAN
+  Print_Style "Your time zone is currently set to $TimeZone.  Current system time: $CurrentTime" "$CYAN"
+  Print_Style "You can adjust/remove the selected reboot time later by typing crontab -e" "$CYAN"
   echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
   read answer
   if [ "$answer" != "${answer#[Yy]}" ]; then
@@ -139,13 +139,13 @@ Configure_Reboot() {
       crontab -l | grep -v -F "$croncmd"
       echo "$cronjob"
     ) | crontab -
-    Print_Style "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e" $GREEN
+    Print_Style "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e" "$GREEN"
   fi
 }
 
 Install_Java() {
   # Install Java
-  Print_Style "Installing latest Java OpenJDK..." $YELLOW
+  Print_Style "Installing latest Java OpenJDK..." "$YELLOW"
 
   # Check for the highest available JDK first and then decrement version until we find a candidate for installation
   JavaVer=$(apt-cache show openjdk-16-jre-headless | grep Version | awk 'NR==1{ print $2 }')
@@ -195,13 +195,13 @@ Install_Java() {
 
 #################################################################################################
 
-Print_Style "Minecraft Server installation script by James Chambers - December 20th 2019" $MAGENTA
-Print_Style "Version $Version will be installed.  To change this, open SetupMinecraft.sh and change the \"Version\" variable to the version you want to install." $MAGENTA
-Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" $MAGENTA
-Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" $MAGENTA
+Print_Style "Minecraft Server installation script by James Chambers - December 20th 2019" "$MAGENTA"
+Print_Style "Version $Version will be installed.  To change this, open SetupMinecraft.sh and change the \"Version\" variable to the version you want to install." "$MAGENTA"
+Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" "$MAGENTA"
+Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" "$MAGENTA"
 
 # Install dependencies needed to run minecraft in the background
-Print_Style "Installing screen, sudo, net-tools, wget..." $YELLOW
+Print_Style "Installing screen, sudo, net-tools, wget..." "$YELLOW"
 if [ ! -n "$(which sudo)" ]; then
   apt-get update && apt-get install sudo -y
 fi
@@ -214,16 +214,15 @@ Install_Java
 
 # Check if Java installation was successful
 if [ -n "$(which java)" ]; then
-  Print_Style "Java installed successfully" $GREEN
+  Print_Style "Java installed successfully" "$GREEN"
 else
-  Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." $RED
+  Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." "$RED"
   exit 1
 fi
 
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "minecraft" ]; then
-  Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." $YELLOW
-
+  Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." "$YELLOW"
   # Get Home directory path and username
   cd minecraft
   DirName=$(readlink -e ~)
@@ -241,7 +240,7 @@ if [ -d "minecraft" ]; then
   # Configure automatic start on boot
   Configure_Reboot
 
-  Print_Style "Minecraft installation scripts have been updated to the latest version!" $GREEN
+  Print_Style "Minecraft installation scripts have been updated to the latest version!" "$GREEN"
   exit 0
 fi
 
@@ -249,7 +248,7 @@ fi
 Get_ServerMemory
 
 # Create server directory
-Print_Style "Creating minecraft server directory..." $YELLOW
+Print_Style "Creating minecraft server directory..." "$YELLOW"
 cd ~
 mkdir minecraft
 cd minecraft
@@ -260,22 +259,22 @@ DirName=$(readlink -e ~)
 UserName=$(whoami)
 
 # Retrieve latest build of Paper minecraft server
-Print_Style "Getting latest Paper Minecraft server..." $YELLOW
+Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
 wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
-Print_Style "Building the Minecraft server..." $YELLOW
+Print_Style "Building the Minecraft server..." "$YELLOW"
 java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
 
 # Accept the EULA
-Print_Style "Accepting the EULA..." $GREEN
+Print_Style "Accepting the EULA..." "$GREEN"
 echo eula=true >eula.txt
 
 # Update Minecraft server scripts
 Update_Scripts
 
 # Server configuration
-Print_Style "Enter a name for your server..." $MAGENTA
+Print_Style "Enter a name for your server..." "$MAGENTA"
 read -p 'Server Name: ' servername
 echo "server-name=$servername" >>server.properties
 echo "motd=$servername" >>server.properties
@@ -287,7 +286,7 @@ Update_Service
 Configure_Reboot
 
 # Finished!
-Print_Style "Setup is complete.  Starting Minecraft server..." $GREEN
+Print_Style "Setup is complete.  Starting Minecraft server..." "$GREEN"
 sudo systemctl start minecraft.service
 
 # Wait up to 30 seconds for server to start
@@ -302,7 +301,7 @@ while [ $StartChecks -lt 30 ]; do
 done
 
 if [[ $StartChecks == 30 ]]; then
-  Print_Style "Server has failed to start after 30 seconds." $RED
+  Print_Style "Server has failed to start after 30 seconds." "$RED"
 else
   screen -r minecraft
 fi
