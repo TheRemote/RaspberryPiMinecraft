@@ -27,7 +27,7 @@ To get help you may open an issue here or visit my web site at https://www.james
 <li>Updated to version 1.15.1</li>
 <li>Added more information to script installation warnings to help with initial configuration</li>
 <li>Added warning to 2700MB limit on 32 bit operating systems explaining that you can lift the 3 GB limit by using a 64 bit Pi distribution</li>
-<li>Cleaned up Java installation of setup script</li>
+<li>Cleaned up Java installation in setup script</li>
 </ul>
 
 <h3>August 26th 2019</h3>

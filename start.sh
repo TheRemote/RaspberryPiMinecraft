@@ -108,6 +108,9 @@ if [ -f "bukkit.yml" ]; then
     # This enables Bukkit's world saving function and how often it runs (in ticks). It should be 6000 (5 minutes) by default.
     # This is causing 10 second lag spikes in 1.14 so we are going to increase it to 18000 (15 minutes).
     sed -i "s/autosave: 6000/autosave: 18000/g" bukkit.yml
+    # warn-on-overload
+    # Disables annoying server is overloaded messages
+    sed -i "s/warn-on-overload: true/warn-on-overload: false/g" bukkit.yml
 fi
 
 # Configure spigot.yml options
