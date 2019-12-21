@@ -15,7 +15,7 @@ chmod +x SetupMinecraft.sh<br>
 <li>Armbian 9 Stretch</li>
 <li>Arch Linux</li>
 <li>TinkerOS Stretch 2.0.8</li>
-</li>
+</ul>
 
 <h2>Update History</h2>
 
