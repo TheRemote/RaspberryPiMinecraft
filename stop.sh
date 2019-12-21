@@ -1,5 +1,6 @@
 #!/bin/bash
-# James Chambers - March 2nd 2019
+# James Chambers - December 20th 2019
+# More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/
 # Minecraft Server stop script - primarily called by minecraft service but can be ran manually
 
 # Check if server is running

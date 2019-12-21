@@ -1,5 +1,6 @@
 #!/bin/bash
-# James Chambers - May 31 2019
+# James Chambers - December 20th 2019
+# More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server startup script using screen
 

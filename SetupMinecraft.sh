@@ -1,9 +1,10 @@
 #!/bin/bash
 # Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
+# More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 
 # Minecraft server version
-Version="1.14.4"
+Version="1.15.1"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
@@ -22,31 +23,37 @@ REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
 
 # Prints a line with color using terminal codes
-Print_Style () {
+Print_Style() {
   printf "%s\n" "${2}$1${NORMAL}"
 }
 
 # Configure how much memory to use for the Minecraft server
-Get_ServerMemory () {
+Get_ServerMemory() {
   sync
   sleep 1s
-  Print_Style "Getting total system memory..." $YELLOW
+
+  Print_Style "Getting total system memory..." "$YELLOW"
   TotalMemory=$(awk '/MemTotal/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
   AvailableMemory=$(awk '/MemAvailable/ { printf "%.0f\n", $2/1024 }' /proc/meminfo)
-  Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory" $YELLOW
+  CPUArch=$(uname -m)
+
+  Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory" "$YELLOW"
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-    if [ $AvailableMemory -gt 2700 ]; then
+    if [ "$AvailableMemory" -gt 2700 ]; then
+      Print_Style "Warning: You are running a 32 bit operating system which has a hard limit of 3 GB of memory per process" "$RED"
+      Print_Style "You must also leave behind some room for the Java VM process overhead.  It is not recommended to exceed 2700 and if you experience crashes you may need to reduce it further." $RED
+      Print_Style "You can remove this limit by using a 64 bit Raspberry Pi Linux distribution (aarch64/arm64) like Ubuntu, Debian, etc." "$RED"
       AvailableMemory=2700
     fi
   fi
-  if [ $TotalMemory -lt 700 ]; then
-    Print_Style "Not enough memory to run a Minecraft server.  Requires at least 1024MB of memory!" $YELLOW
+  if [ "$TotalMemory" -lt 700 ]; then
+    Print_Style "Not enough memory to run a Minecraft server.  Requires at least 1024MB of memory!" "$YELLOW"
     exit 1
   fi
   Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory"
   if [ $AvailableMemory -lt 700 ]; then
-    Print_Style "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability." $RED
-    Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." $RED
+    Print_Style "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability." "$RED"
+    Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." "$RED"
     Print_Style "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible." $RED
     read -n1 -r -p "Press any key to continue"
   fi
@@ -56,7 +63,7 @@ Get_ServerMemory () {
   Print_Style "You must leave enough left over memory for the operating system to run background processes." $CYAN
   Print_Style "If all memory is exhausted the Minecraft server will either crash or force background processes into the paging file (very slow)." $CYAN
   if [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-  Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." $YELLOW
+    Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." $YELLOW
   fi
   MemSelected=0
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
@@ -64,10 +71,11 @@ Get_ServerMemory () {
     if [[ $MemSelected -lt 600 ]]; then
       Print_Style "Please enter a minimum of 600" $RED
     elif [[ $MemSelected -gt $TotalMemory ]]; then
-      Print_Style "Please enter an amount less than the total memory in the system ($TotalMemory)" $RED
+      Print_Style "Please enter an amount less than the total memory in the system ($TotalMemory)" "$RED"
     elif [[ $MemSelected -gt 2700 && "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-      Print_Style "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all." $RED
-      Print_Style "You can lift this restriction by upgrading to a 64 bit operating system." $RED
+      Print_Style "You are running a 32 bit operating system which has a limit of 2700MB.  Please enter 2700 to use it all." "$RED"
+      Print_Style "If you experience crashes at 2700MB you may need to run SetupMinecraft again and lower it further." "$RED"
+      Print_Style "You can lift this restriction by upgrading to a 64 bit operating system." "$RED"
       MemSelected=0
     fi
   done
@@ -75,7 +83,7 @@ Get_ServerMemory () {
 }
 
 # Updates all scripts
-Update_Scripts () {
+Update_Scripts() {
   # Remove existing scripts
   rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
 
@@ -101,7 +109,7 @@ Update_Scripts () {
 }
 
 # Updates Minecraft service
-Update_Service () {
+Update_Service() {
   sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
   sudo chmod +x /etc/systemd/system/minecraft.service
   sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/minecraft.service
@@ -116,7 +124,7 @@ Update_Service () {
 }
 
 # Configuration of server automatic reboots
-Configure_Reboot () {
+Configure_Reboot() {
   # Automatic reboot at 4am configuration
   TimeZone=$(cat /etc/timezone)
   CurrentTime=$(date)
@@ -127,77 +135,88 @@ Configure_Reboot () {
   if [ "$answer" != "${answer#[Yy]}" ]; then
     croncmd="$DirName/minecraft/restart.sh"
     cronjob="0 4 * * * $croncmd"
-    ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+    (
+      crontab -l | grep -v -F "$croncmd"
+      echo "$cronjob"
+    ) | crontab -
     Print_Style "Daily reboot scheduled.  To change time or remove automatic reboot type crontab -e" $GREEN
   fi
 }
 
-Print_Style "Minecraft Server installation script by James Chambers - August 25th 2019" $MAGENTA
-Print_Style "Latest version always at https://github.com/TheRemote/RaspberryPiMinecraft" $MAGENTA
-Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" $MAGENTA
+Install_Java() {
+  # Install Java
+  Print_Style "Installing latest Java OpenJDK..." $YELLOW
 
-# Check system architecture to ensure we are running ARMv7 or higher
-CPUArch=$(uname -m)
-Print_Style "System Architecture: $CPUArch" $YELLOW
+  # Check for the highest available JDK first and then decrement version until we find a candidate for installation
+  JavaVer=$(apt-cache show openjdk-16-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-16-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-15-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-15-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-14-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-14-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-13-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-12-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-12-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-11-jre-headless -y
+    return
+  fi
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-10-jre-headless -y
+    return
+  fi
+
+  # Install OpenJDK 9 as a fallback
+  if [ ! -n "$(which java)" ]; then
+    JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+    if [[ "$JavaVer" ]]; then
+      sudo apt-get install openjdk-9-jre-headless -y
+      return
+    fi
+  fi
+}
+
+#################################################################################################
+
+Print_Style "Minecraft Server installation script by James Chambers - December 20th 2019" $MAGENTA
+Print_Style "Version $Version will be installed.  To change this, open SetupMinecraft.sh and change the \"Version\" variable to the version you want to install." $MAGENTA
+Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" $MAGENTA
+Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" $MAGENTA
 
 # Install dependencies needed to run minecraft in the background
 Print_Style "Installing screen, sudo, net-tools, wget..." $YELLOW
-if [ ! -n "`which sudo`" ]; then
+if [ ! -n "$(which sudo)" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
 sudo apt-get install screen wget -y
 sudo apt-get install net-tools -y
 
-# Install Java
-Print_Style "Installing latest Java OpenJDK..." $YELLOW
-JavaVer=$(apt-cache show openjdk-14-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-if [[ "$JavaVer" ]]; then
-  sudo apt-get install openjdk-14-jre-headless -y
-else
-  JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-13-jre-headless -y
-  else
-    JavaVer=$(apt-cache show openjdk-12-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-    if [[ "$JavaVer" ]]; then
-      sudo apt-get install openjdk-12-jre-headless -y
-    else
-      JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-      # Check for OpenJDK 11
-      if [[ "$JavaVer" ]]; then
-        sudo apt-get install openjdk-11-jre-headless -y
-      else
-        JavaVer=$(apt-cache show openjdk-10-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-        # Check for OpenJDK 10
-        if [[ "$JavaVer" ]]; then
-          sudo apt-get install openjdk-10-jre-headless -y
-        else
-          # Install OpenJDK 9 as a fallback
-          if [ ! -n "`which java`" ]; then
-            JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-            if [[ "$JavaVer" ]]; then
-              sudo apt-get install openjdk-9-jre-headless -y
-              # Create soft link to fix broken ca-certificates-java package that looks for client instead of server
-              if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-                sudo ln -s /usr/lib/jvm/java-9-openjdk-armhf/lib/server /usr/lib/jvm/java-9-openjdk-armhf/lib/client
-              elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-                sudo ln -s /usr/lib/jvm/java-9-openjdk-arm64/lib/server /usr/lib/jvm/java-9-openjdk-arm64/lib/client
-              fi
-              sudo apt-get install openjdk-9-jre-headless -y
-            fi
-          fi
-        fi
-      fi
-    fi
-  fi
-fi
+# Install Java dependency
+Install_Java
 
 # Check if Java installation was successful
-if [ -n "`which java`" ]; then
+if [ -n "$(which java)" ]; then
   Print_Style "Java installed successfully" $GREEN
 else
-  Print_Style "Java did not install successfully -- please check the above output to see what went wrong." $RED
+  Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." $RED
   exit 1
 fi
 
@@ -250,7 +269,7 @@ java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
 
 # Accept the EULA
 Print_Style "Accepting the EULA..." $GREEN
-echo eula=true > eula.txt
+echo eula=true >eula.txt
 
 # Update Minecraft server scripts
 Update_Scripts
@@ -258,8 +277,8 @@ Update_Scripts
 # Server configuration
 Print_Style "Enter a name for your server..." $MAGENTA
 read -p 'Server Name: ' servername
-echo "server-name=$servername" >> server.properties
-echo "motd=$servername" >> server.properties
+echo "server-name=$servername" >>server.properties
+echo "motd=$servername" >>server.properties
 
 # Service configuration
 Update_Service
@@ -278,8 +297,8 @@ while [ $StartChecks -lt 30 ]; do
     screen -r minecraft
     break
   fi
-  sleep 1;
-  StartChecks=$((StartChecks+1))
+  sleep 1
+  StartChecks=$((StartChecks + 1))
 done
 
 if [[ $StartChecks == 30 ]]; then
