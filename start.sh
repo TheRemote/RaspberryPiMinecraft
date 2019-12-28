@@ -1,5 +1,5 @@
 #!/bin/bash
-# James Chambers - December 20th 2019
+# James Chambers - December 28th 2019
 # More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server startup script using screen
@@ -33,8 +33,8 @@ cd dirname/minecraft/
 
 # Back up server
 if [ -d "world" ]; then 
-    echo "Backing up server (to minecraft/backups folder)"
-    tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world world_nether world_the_end
+    echo "Backing up server (to cd minecraft/backups folder)"
+    tar --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
 fi
 
 # Paper / Spigot / Bukkit Optimization settings

@@ -22,6 +22,11 @@ To get help you may open an issue here or visit my web site at https://www.james
 
 <h2>Update History</h2>
 
+<h3>December 28th 2019</h3>
+<ul>
+<li>Backup system now takes a backup of your entire server folder (minus logs and cache) instead of just the world folders.  This mean it now backs up things like server.properties and other worlds if you are running a multiverse setup.</li>
+</ul>
+
 <h3>December 20th 2019</h3>
 <ul>
 <li>Updated to version 1.15.1</li>
