@@ -7,4 +7,4 @@ chmod +x SetupMinecraft.sh<br>
 ./SetupMinecraft.sh<br>
 
 <h2>Tested Distributions</h2>
--Raspian Lite Buster
+- Raspian Buster Lite
