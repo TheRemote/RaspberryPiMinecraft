@@ -3,6 +3,9 @@
 # GitHub Repository: https://github.com/Randomblock1/RaspberryPiMinecraft
 # NukkitX Minecraft Server startup script using screen
 
+# Minecraft server version from NukkitX-CI (Jenkins)
+Artifact="artifact"
+
 # Flush out memory to disk so we have the maximum available for Java allocation
 sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"
 sync
@@ -49,11 +52,11 @@ fi
 echo "Updating to most recent NukkitX version ..."
 
 # Test internet connectivity first
-wget --spider --quiet https://ci.nukkitx.com/
+wget --spider --quiet $Artifact
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/2.0/lastSuccessfulBuild/artifact/target/Nukkit.jar
+    wget -O nukkitx.jar $Artifact
 fi
 
 echo "Starting NukkitX server.  To view window type screen -r nukkitx."
