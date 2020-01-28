@@ -1,9 +1,13 @@
 #!/bin/bash
-# NukkitX Server Installation Script by Randomblock1 - original code by James A. Chambers - https://www.jamesachambers.com
-# GitHub Repository: https://github.com/Randomblock1/RaspberryPiMinecraft
+# NukkitX Server Installation Script by LexNetAT
+# Forked from Randomblock1 - original code by James A. Chambers - https://www.jamesachambers.com
+# GitHub Repository: https://github.com//RaspberryPiMinecraft
 
-# Minecraft server version
-Version="1.14.0"
+# GIT Repository
+GIT="https://raw.githubusercontent.com/LexNetAT/RaspberryPiMinecraft"
+
+# Minecraft server version from NukkitX-CI (Jenkins)
+Artifact="https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/2.0/lastSuccessfulBuild/artifact/target/Nukkit.jar"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
@@ -33,7 +37,7 @@ Update_Scripts () {
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." $YELLOW
-  wget -O start.sh https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/start.sh
+  wget -O start.sh $GIT/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
@@ -42,20 +46,20 @@ Update_Scripts () {
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
-  wget -O stop.sh https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/stop.sh
+  wget -O stop.sh $GIT/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
-  wget -O restart.sh https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/restart.sh
+  wget -O restart.sh $GIT/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
 }
 
 # Updates NukkitX service
 Update_Service () {
-  sudo wget -O /etc/systemd/system/nukkitx.service https://raw.githubusercontent.com/Randomblock1/RaspberryPiMinecraft/master/nukkitx.service
+  sudo wget -O /etc/systemd/system/nukkitx.service $GIT/master/nukkitx.service
   sudo chmod +x /etc/systemd/system/nukkitx.service
   sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/nukkitx.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/nukkitx.service
@@ -85,9 +89,7 @@ Configure_Reboot () {
   fi
 }
 
-Print_Style "NukkitX Minecraft: Bedrock Edition Server installation script by Randomblock1 and James Chambers - October 5th 2019" $MAGENTA
-Print_Style "Latest version always at https://github.com/Randomblock1/RaspberryPiMinecraft" $MAGENTA
-Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" $MAGENTA
+Print_Style "NukkitX Minecraft: Bedrock Edition Server installation script by LexNetAT" $MAGENTA
 
 # Check system architecture to ensure we are running ARMv7 or higher
 CPUArch=$(uname -m)
@@ -188,7 +190,7 @@ UserName=$(whoami)
 
 # Retrieve latest build of NukkitX Minecraft server
 Print_Style "Getting latest NukkitX Minecraft server..." $YELLOW
-wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/2.0/lastSuccessfulBuild/artifact/target/Nukkit.jar
+wget -O nukkitx.jar $Artifact
 
 # Update Minecraft server scripts
 Update_Scripts
