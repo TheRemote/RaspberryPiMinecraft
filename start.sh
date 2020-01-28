@@ -36,7 +36,7 @@ cd dirname/nukkitx/
 # Back up server
 if [ -d "world" ]; then 
     echo "Backing up server (to nukkitx/backups folder)"
-    tar -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz world nether the_end
+    tar --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./nukkitx.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
 fi
 
 # Configure server.properties options
@@ -44,8 +44,6 @@ if [ -f "server.properties" ]; then
     # Configure server.properties
     # Disable Spawn protection
     sed -i "s/spawn-protection=16/spawn-protection=0/g" server.properties
-
-
 fi
 
 # Update nukkitx.jar

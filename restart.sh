@@ -1,6 +1,6 @@
 #!/bin/sh
-# James Chambers - March 2nd 2019
-# Marc Tönsing - 18.05.2018
+# James Chambers - December 20th 2019
+# More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/
 
 # Check if server is running
 if ! screen -list | grep -q "nukkitx"; then
