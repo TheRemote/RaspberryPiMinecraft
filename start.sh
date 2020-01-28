@@ -4,7 +4,7 @@
 # NukkitX Minecraft Server startup script using screen
 
 # Minecraft server version from NukkitX-CI (Jenkins)
-Artifact="artifact"
+Artifact=artifact
 
 # Flush out memory to disk so we have the maximum available for Java allocation
 sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"
