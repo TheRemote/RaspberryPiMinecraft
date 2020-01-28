@@ -3,7 +3,7 @@
 # GitHub Repository: https://github.com/Randomblock1/RaspberryPiMinecraft
 
 # Minecraft server version
-Version="1.12.0"
+Version="1.14.0"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
@@ -37,7 +37,8 @@ Update_Scripts () {
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
-  sed -i "s:verselect:$Version:g" start.sh
+  sed -i "s:verselect:$
+  :g" start.sh
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
@@ -187,7 +188,7 @@ UserName=$(whoami)
 
 # Retrieve latest build of NukkitX Minecraft server
 Print_Style "Getting latest NukkitX Minecraft server..." $YELLOW
-wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/master/lastSuccessfulBuild/artifact/target/nukkit-1.0-SNAPSHOT.jar
+wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/2.0/lastSuccessfulBuild/artifact/target/Nukkit.jar
 
 # Update Minecraft server scripts
 Update_Scripts
