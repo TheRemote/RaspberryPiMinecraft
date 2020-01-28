@@ -49,11 +49,11 @@ fi
 echo "Updating to most recent NukkitX version ..."
 
 # Test internet connectivity first
-wget --spider --quiet https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/master/lastSuccessfulBuild/artifact/target/nukkit-1.0-SNAPSHOT.jar
+wget --spider --quiet https://ci.nukkitx.com/
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/master/lastSuccessfulBuild/artifact/target/nukkit-1.0-SNAPSHOT.jar
+    wget -O nukkitx.jar https://ci.nukkitx.com/job/NukkitX/job/Nukkit/job/2.0/lastSuccessfulBuild/artifact/target/Nukkit.jar
 fi
 
 echo "Starting NukkitX server.  To view window type screen -r nukkitx."
