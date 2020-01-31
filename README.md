@@ -22,7 +22,7 @@ To get help you may open an issue here or visit my web site at https://www.james
 
 <h2>Update History</h2>
 
-<h3>January 25th 2019</h3>
+<h3>January 25th 2020</h3>
 <ul>
 <li>Update to 1.15.2</li>
 </ul>
