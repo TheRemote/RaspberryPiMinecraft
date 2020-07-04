@@ -7,6 +7,9 @@ wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/Set
 chmod +x SetupMinecraft.sh<br>
 ./SetupMinecraft.sh<br>
 
+<h2>Getting Help</h2>
+To get help you may open an issue here or visit my web site at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/ which contains lots of comments from myself and users helping each other out!
+
 <h2>Check Java Version</h2>
 
 <p>Sometimes if you have multiple versions of Java installed the wrong version of Java will be selected as the default.  If the server didn't start check that the right version of Java is selected with this command:</p>
@@ -33,9 +36,6 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <li>Arch Linux</li>
 <li>TinkerOS Stretch</li>
 </ul>
-
-<h2>Getting Help</h2>
-To get help you may open an issue here or visit my web site at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/ which contains lots of comments from myself and users helping each other out!
 
 <h2>Update History</h2>
 
