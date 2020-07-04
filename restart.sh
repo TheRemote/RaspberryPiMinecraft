@@ -1,6 +1,6 @@
 #!/bin/sh
-# James Chambers - December 20th 2019
-# More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/
+# James Chambers - July 4th 2020
+# More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/
 
 # Check if server is running
 if ! screen -list | grep -q "minecraft"; then
