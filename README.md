@@ -1,4 +1,4 @@
-This script will automatically download and configure the Paper Minecraft 1.15.1 server on your Raspberry Pi!<br>
+This script will automatically download and configure the Paper Minecraft 1.16.1 server on your Raspberry Pi!<br>
 For the full article and guide visit https://www.jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/<br>
 
 <h2>Installation Instructions</h2>
@@ -10,17 +10,22 @@ chmod +x SetupMinecraft.sh<br>
 <h2>Tested Distributions</h2>
 <ul>
 <li>Raspbian / Raspian Lite Buster/Stretch</li>
-<li>Ubuntu Server 18.04.3</li>
-<li>Debian 9 Buster Preview</li>
+<li>Ubuntu / Ubuntu Server 20.04 / 18.04</li>
+<li>Debian 9 Buster</li>
 <li>Armbian 9 Stretch</li>
 <li>Arch Linux</li>
-<li>TinkerOS Stretch 2.0.8</li>
+<li>TinkerOS Stretch</li>
 </ul>
 
 <h2>Getting Help</h2>
 To get help you may open an issue here or visit my web site at https://www.jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/ which contains lots of comments from myself and users helping each other out!
 
 <h2>Update History</h2>
+
+<h3>July 4th 2020</h3>
+<ul>
+<li>Update to 1.16.1</li>
+</ul>
 
 <h3>January 25th 2020</h3>
 <ul>
