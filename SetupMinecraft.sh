@@ -292,7 +292,7 @@ sudo systemctl start minecraft.service
 # Wait up to 30 seconds for server to start
 StartChecks=0
 while [ $StartChecks -lt 30 ]; do
-  if screen -list | grep -q "minecraft"; then
+  if screen -list | grep -q "\.minecraft"; then
     screen -r minecraft
     break
   fi
