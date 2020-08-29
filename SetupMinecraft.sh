@@ -195,7 +195,7 @@ Install_Java() {
 
 #################################################################################################
 
-Print_Style "Minecraft Server installation script by James Chambers - July 4th 2020" "$MAGENTA"
+Print_Style "Minecraft Server installation script by James Chambers August 28th 2020" "$MAGENTA"
 Print_Style "Version $Version will be installed.  To change this, open SetupMinecraft.sh and change the \"Version\" variable to the version you want to install." "$MAGENTA"
 Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" "$MAGENTA"
 Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" "$MAGENTA"
