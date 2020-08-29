@@ -39,6 +39,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>August 28th 2020</h3>
+<ul>
+<li>Update to 1.16.2</li>
+</ul>
+
 <h3>July 4th 2020</h3>
 <ul>
 <li>Update to 1.16.1</li>
