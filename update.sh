@@ -76,6 +76,8 @@ Get_ServerMemory() {
 
 bash stop.sh
 
+sudo rm start.sh
+
 wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 
 chmod +x start.sh
