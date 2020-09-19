@@ -96,13 +96,13 @@ Update_Scripts() {
   sed -i "s:verselect:$Version:g" start.sh
 
   # Download stop.sh from repository
-  echo "Grabbing stop.sh from repository..."
+  Print_Style "Grabbing stop.sh from repository..." "$YELLOW"
   wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
 
   # Download restart.sh from repository
-  echo "Grabbing restart.sh from repository..."
+  Print_Style "Grabbing restart.sh from repository..." "$YELLOW"
   wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
@@ -193,6 +193,34 @@ Install_Java() {
   fi
 }
 
+##This is the new function to take desired version from the user, check that the paperClip exists and update $Version
+Get_MC_Version() {
+    answer="n" 
+    while [[ "$answer" != "y" ]]
+    do
+        while [[ "$answer" != "y" ]]
+        do
+            read -p "Enter the version of minecraft you want to run: " mcVer
+
+
+            read -p "Do you want minecraft: $mcVer? [y/n]" answer
+        done
+
+        Print_Style "Getting Paper Minecraft server v$mcVer..." "$YELLOW"
+
+
+        URL="https://papermc.io/api/v1/paper/$mcVer/latest/download"
+
+        wget -q "$URL"
+        if [ $? -ne 0 ] 
+        then 
+            Print_Style "$mcVer is not a valid version, please try again" "$RED"
+            answer="n"
+        fi
+    done
+    #change name of downloaded paper.jar to paperClip.jar
+    mv download paperclip.jar
+}
 #################################################################################################
 
 Print_Style "Minecraft Server installation script by James Chambers August 28th 2020" "$MAGENTA"
@@ -258,9 +286,11 @@ mkdir backups
 DirName=$(readlink -e ~)
 UserName=$(whoami)
 
-# Retrieve latest build of Paper minecraft server
-Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
-wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+# not needed (FOC)
+#   Retrieve latest build of Paper minecraft server
+#   Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
+#   wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+Get_MC_Version
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 Print_Style "Building the Minecraft server..." "$YELLOW"
