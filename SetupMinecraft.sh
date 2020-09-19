@@ -228,8 +228,8 @@ Get_MC_Version() {
         fi
     done
     Version="$mcVer"
-    #change name of downloaded paper.jar to paperClip.jar
-    wget -O paperclip.jar "$URL"
+    
+    
 
     
 }
@@ -259,6 +259,8 @@ else
   Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." "$RED"
   exit 1
 fi
+
+Get_MC_Version
 
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "minecraft" ]; then
@@ -301,8 +303,8 @@ UserName=$(whoami)
 # not needed (FOC)
 #   Retrieve latest build of Paper minecraft server
 #   Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
-#   wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
-Get_MC_Version
+wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 Print_Style "Building the Minecraft server..." "$YELLOW"
