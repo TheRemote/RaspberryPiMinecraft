@@ -81,6 +81,10 @@ sudo rm start.sh
 wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 
 chmod +x start.sh
+# Get Home directory path and username
+DirName=$(readlink -e ~)
+
+#update new start.sh
 sed -i "s:dirname:$DirName:g" start.sh
 sed -i "s:memselect:$MemSelected:g" start.sh
 
