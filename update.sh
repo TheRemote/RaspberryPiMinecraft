@@ -110,7 +110,7 @@ answer="n"
         if [ $? -ne 0 ] 
         then 
             # update version in start.sh
-            sed -i "s:verSelect:$mcVer:g" start.sh
+            sed -i "s:verselect:$mcVer:g" start.sh
         fi
     done
 
