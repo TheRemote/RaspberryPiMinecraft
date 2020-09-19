@@ -13,7 +13,7 @@ answer="n"
             read -p "Do you want minecraft: $mcVer? [y/n]" answer
         done
 
-        Print_Style "Getting Paper Minecraft server v$mcVer..." "$YELLOW"
+        echo "Getting Paper Minecraft server v$mcVer..."
 
         # d/l url
         URL="https://papermc.io/api/v1/paper/$mcVer/latest/download"
