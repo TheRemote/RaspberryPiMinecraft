@@ -108,11 +108,10 @@ do
     # will return code 0 if paper version d/l's with no issue 
     # else will inform user that version entered is invalid and they need to try again
     wget --spider --quiet "$URL"
-    if [ $? -ne 0 ] 
-    then 
-           
-    else 
+    if [ $? -eq 0 ]     
+    then
         answer="n"
+        echo "version invalid, please try again"
     fi
 done
 
