@@ -22,6 +22,7 @@ answer="n"
         wget --spider --quiet "$URL"
         if [ $? -ne 0 ] 
         then 
+            #update version in start.sh
             sed -i "s:verselect:$mcVer:g" start.sh
         fi
     done
