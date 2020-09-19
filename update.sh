@@ -1,4 +1,6 @@
 
+bash stop.sh
+
 answer="n" 
     # nested loop for version authentication and user input
     while [[ "$answer" != "y" ]]
@@ -20,8 +22,7 @@ answer="n"
         wget --spider --quiet "$URL"
         if [ $? -ne 0 ] 
         then 
-            Print_Style "$mcVer is not a valid version, please try again" "$RED"
-            answer="n"
+            sed -i "s:verselect:$mcVer:g" start.sh
         fi
     done
 
@@ -29,3 +30,5 @@ answer="n"
 # Update paperclip.jar
 echo "Updating to paperclip v$mcVer..."
 wget -O paperclip.jar "$URL"
+
+bash start.sh
