@@ -111,10 +111,15 @@ answer="n"
         wget --spider --quiet "$URL"
         if [ $? -ne 0 ] 
         then 
-            # update version in start.sh
-            sed -i "s:verselect:$mcVer:g" start.sh
+           
+        else 
+            answer="n"
         fi
+
     done
+
+# update version in start.sh
+sed -i "s:verselect:$mcVer:g" start.sh
 
 
 # Update paperclip.jar
