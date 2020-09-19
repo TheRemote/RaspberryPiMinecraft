@@ -78,6 +78,8 @@ bash stop.sh
 
 sudo rm start.sh
 
+Get_ServerMemory
+
 wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
 
 chmod +x start.sh
