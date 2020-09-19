@@ -3,6 +3,13 @@
 # More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 
+# About the Pull Rqst:
+# This proposed update will call the Get_MC_Version function to prompt the user to input the server version  they want to run and then download that version of paper.
+# The function uses wget return codes to  check the version exists before moving on. If the version doesn't exist the user will be informed and asked to enther the desired version again.
+# It would be super great to hear feedback on this if you don't want to include it, or to recieve contributor status/some credit on the github so I can put this contribution on my portfolio.
+# Thanks,
+
+
 # Minecraft server version
 Version="1.16.2"
 
@@ -213,15 +220,18 @@ Get_MC_Version() {
         URL="https://papermc.io/api/v1/paper/$mcVer/latest/download"
         # will return code 0 if paper version d/l's with no issue 
         # else will inform user that version entered is invalid and they need to try again
-        wget -q "$URL"
+        wget --spider --quiet "$URL"
         if [ $? -ne 0 ] 
         then 
             Print_Style "$mcVer is not a valid version, please try again" "$RED"
             answer="n"
         fi
     done
+    Version="$mcVer"
     #change name of downloaded paper.jar to paperClip.jar
-    mv download paperclip.jar
+    wget -O paperclip.jar "$URL"
+
+    
 }
 #################################################################################################
 
