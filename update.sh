@@ -121,8 +121,5 @@ sed -i "s:dirname:$DirName:g" start.sh
 sed -i "s:memselect:$MemSelected:g" start.sh
 
 
-# Update paperclip.jar
-# echo "Updating to paperclip v$mcVer..."
-# wget -O paperclip.jar "$URL"
 
 bash start.sh
