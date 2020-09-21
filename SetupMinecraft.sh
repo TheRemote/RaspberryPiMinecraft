@@ -92,7 +92,7 @@ Get_ServerMemory() {
 # Updates all scripts
 Update_Scripts() {
   # Remove existing scripts
-  rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
+  rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh minecraft/update.sh
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." "$YELLOW"
@@ -113,6 +113,15 @@ Update_Scripts() {
   wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
+
+  ## The following is an adition for the update.sh repo, the repo address will need changing if adopted
+  # Download update.sh from repository
+  Print_Style "Grabbing update.sh from repository..." "$YELLOW"
+  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh # needs changing if merged
+  chmod +x update.sh
+  # update variable buffers 
+  sed -i "s:dirname_buff:$DirName:g" update.sh
+  sed -i "s:memselect_buff:$MemSelected:g" update.sh
 }
 
 # Updates Minecraft service
