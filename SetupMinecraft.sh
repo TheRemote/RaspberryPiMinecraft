@@ -117,7 +117,7 @@ Update_Scripts() {
   ## The following is an adition for the update.sh repo, the repo address will need changing if adopted
   # Download update.sh from repository
   Print_Style "Grabbing update.sh from repository..." "$YELLOW"
-  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh # needs changing if merged
+  wget -O update.sh https://raw.githubusercontent.com/outInsideOut/RaspberryPiMinecraft/master/update.sh # needs changing if merged
   chmod +x update.sh
   # update variable buffers 
   sed -i "s:dirname_buff:$DirName:g" update.sh
