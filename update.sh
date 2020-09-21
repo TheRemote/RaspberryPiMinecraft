@@ -87,8 +87,8 @@ wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/sta
 chmod +x start.sh
 
 #variable buffers to be filled from "SetupMinecraft.sh"
-MemSelected="memselect_buff"
-DirName="dirname_buff"
+MemSelected=memselect_buff
+DirName=dirname_buff
 
 answer="n" 
 # nested loop for version authentication and user input
