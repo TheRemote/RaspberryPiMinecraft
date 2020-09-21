@@ -73,6 +73,8 @@ Print_Style() {
 #   done
 #   Print_Style "Amount of memory for Minecraft server selected: $MemSelected MB" "$GREEN"
 # }
+cd ~
+cd minecraft
 
 bash stop.sh
 
