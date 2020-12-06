@@ -4,7 +4,7 @@
 # Minecraft Server stop script - primarily called by minecraft service but can be ran manually
 
 # Check if server is running
-if ! screen -list | grep -q "minecraft"; then
+if ! screen -list | grep -q "\.minecraft"; then
   echo "Server is not currently running!"
   exit 1
 fi
@@ -17,7 +17,7 @@ screen -Rd minecraft -X stuff "stop$(printf '\r')"
 # Wait up to 30 seconds for server to close
 StopChecks=0
 while [ $StopChecks -lt 30 ]; do
-  if ! screen -list | grep -q "minecraft"; then
+  if ! screen -list | grep -q "\.minecraft"; then
     break
   fi
   sleep 1;
@@ -25,7 +25,7 @@ while [ $StopChecks -lt 30 ]; do
 done
 
 # Force quit if server is still open
-if screen -list | grep -q "minecraft"; then
+if screen -list | grep -q "\.minecraft"; then
   echo "Minecraft server still hasn't closed after 30 seconds, closing screen manually"
   screen -S minecraft -X quit
 fi

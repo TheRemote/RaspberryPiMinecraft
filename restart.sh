@@ -3,7 +3,7 @@
 # More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/
 
 # Check if server is running
-if ! screen -list | grep -q "minecraft"; then
+if ! screen -list | grep -q "\.minecraft"; then
     echo "Server is not currently running!"
     exit 1
 fi
@@ -34,7 +34,7 @@ screen -Rd minecraft -X stuff "stop $(printf '\r')"
 echo "Closing server..."
 StopChecks=0
 while [ $StopChecks -lt 30 ]; do
-  if ! screen -list | grep -q "minecraft"; then
+  if ! screen -list | grep -q "\.minecraft"; then
     break
   fi
   sleep 1;
