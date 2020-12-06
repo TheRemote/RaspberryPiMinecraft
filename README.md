@@ -1,5 +1,5 @@
-This script will automatically download and configure the Paper Minecraft 1.16.1 server on your Raspberry Pi!<br>
-For the full article and guide visit https://www.jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service-1-13/<br>
+This script will automatically download and configure the Paper Minecraft server on your Raspberry Pi!<br>
+For the full article and guide visit https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/<br>
 
 <h2>Installation Instructions</h2>
 To get started type:<br>
@@ -9,6 +9,13 @@ chmod +x SetupMinecraft.sh<br>
 
 <h2>Getting Help</h2>
 To get help you may open an issue here or visit my web site at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/ which contains lots of comments from myself and users helping each other out!
+
+<h2>Changing Minecraft Server Versions</h2>
+If a new version of Minecraft is out and the script hasn't been updated yet you can change it in the SetupMinecraft.sh script.  If you do nano SetupMinecraft.sh it will be the first line in the file like this:<br>
+<br>
+Version="1.16.4"<br>
+<br>
+Note that for this to work the Paper Minecraft server must also have released the latest version or the download will fail.  You can check here: <a href="https://papermc.io/downloads">https://papermc.io/downloads</a><br>
 
 <h2>Check Java Version</h2>
 
@@ -38,6 +45,13 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 </ul>
 
 <h2>Update History</h2>
+
+<h3>December 5th 2020</h3>
+<ul>
+<li>Update to 1.16.4</li>
+<li>Fixed a bug where if your username on the Pi was Minecraft it would cause the script to break (thanks Minecraftschurli, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/pull/20">pull request #20</a>)</li>
+<li>Fixed a bug that could cause OpenJDK 10 to try to be installed even if OpenJDK 11 installation was successful</li>
+</ul>
 
 <h3>September 25th 2020</h3>
 <ul>

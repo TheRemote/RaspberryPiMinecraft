@@ -4,7 +4,7 @@
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 
 # Minecraft server version
-Version="1.16.3"
+Version="1.16.4"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
@@ -178,12 +178,13 @@ Install_Java() {
     sudo apt-get install openjdk-11-jre-headless -y
     return
   fi
+  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-10-jre-headless -y
     return
   fi
 
-  # Install OpenJDK 9 as a fallback
+  # Install OpenJDK 9 as a last resort
   if [ ! -n "$(which java)" ]; then
     JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
     if [[ "$JavaVer" ]]; then

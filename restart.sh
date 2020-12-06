@@ -1,6 +1,8 @@
 #!/bin/sh
-# James Chambers - August 28th 2020
+# Author: James A. Chambers - https://jamesachambers.com/
 # More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/
+# GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
+# Minecraft Server restart script - primarily called by minecraft service but can be ran manually with ./restart.sh
 
 # Check if server is running
 if ! screen -list | grep -q "\.minecraft"; then
