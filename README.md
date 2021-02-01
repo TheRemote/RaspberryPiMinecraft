@@ -13,7 +13,7 @@ To get help you may open an issue here or visit my web site at https://jamesacha
 <h2>Changing Minecraft Server Versions</h2>
 If a new version of Minecraft is out and the script hasn't been updated yet you can change it in the SetupMinecraft.sh script.  If you do nano SetupMinecraft.sh it will be the first line in the file like this:<br>
 <br>
-Version="1.16.4"<br>
+Version="1.16.5"<br>
 <br>
 Note that for this to work the Paper Minecraft server must also have released the latest version or the download will fail.  You can check here: <a href="https://papermc.io/downloads">https://papermc.io/downloads</a><br>
 
@@ -45,6 +45,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 </ul>
 
 <h2>Update History</h2>
+
+<h3>January 31st 2020</h3>
+<ul>
+<li>Update to 1.16.5</li>
+</ul>
 
 <h3>December 5th 2020</h3>
 <ul>
