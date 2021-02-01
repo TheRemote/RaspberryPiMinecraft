@@ -201,6 +201,12 @@ Print_Style "Version $Version will be installed.  To change this, open SetupMine
 Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" "$MAGENTA"
 Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" "$MAGENTA"
 
+# Check to make sure we aren't being ran as root
+if [ $(id -u) = 0 ]; then
+   echo "This script is not meant to be ran as root or sudo.  Please run normally with ./SetupMinecraft.sh.  If you know what you are doing and want to override this edit this check out of SetupMinecraft.sh.  Exiting..."
+   exit 1
+fi
+
 # Install dependencies needed to run minecraft in the background
 Print_Style "Installing screen, sudo, net-tools, wget..." "$YELLOW"
 if [ ! -n "$(which sudo)" ]; then
