@@ -17,11 +17,11 @@ echo "Sending restart notifications to server..."
 counter="30"
 while [ ${counter} -gt 0 ]; do
 	if [[ "${counter}" =~ ^(30|7|6|5|4|3|2)$ ]]; then
-    screen -Rd minecraft -X stuff "say Server is restarting in ${counter} seconds! $(printf '\r')"
+		screen -Rd minecraft -X stuff "say Server is restarting in ${counter} seconds! $(printf '\r')"
 	fi
-  if [[ "${counter}" = 1 ]]; then
-    screen -Rd minecraft -X stuff "say Server is restarting in ${counter} second! $(printf '\r')"
-  fi
+	if [[ "${counter}" = 1 ]]; then
+		screen -Rd minecraft -X stuff "say Server is restarting in ${counter} second! $(printf '\r')"
+	fi
 	counter=$((counter-1))
 	sleep 1s
 done
