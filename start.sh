@@ -38,7 +38,6 @@ if [ -d "world" ]; then
 fi
 
 # Paper / Spigot / Bukkit Optimization settings
-# Original guide by Celebrimbor: https://www.spigotmc.org/threads/guide-server-optimization%E2%9A%A1.283181/
 
 # Configure paper.yml options
 if [ -f "paper.yml" ]; then

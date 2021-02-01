@@ -1,5 +1,5 @@
 #!/bin/bash
-# Minecraft Server Installation Script - James A. Chambers - https://www.jamesachambers.com
+# Minecraft Server Installation Script - James A. Chambers - https://jamesachambers.com
 # More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 
@@ -85,7 +85,7 @@ Get_ServerMemory() {
 # Updates all scripts
 Update_Scripts() {
   # Remove existing scripts
-  rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh
+  rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh minecraft/fixpermissions.sh
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." "$YELLOW"
@@ -106,13 +106,20 @@ Update_Scripts() {
   wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
+
+  # Download permissions.sh from repository
+  echo "Grabbing fixpermissions.sh from repository..."
+  wget -O fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
+  chmod +x fixpermissions.sh
+  sed -i "s:dirname:$DirName:g" fixpermissions.sh
+  sed -i "s:userxname:$UserName:g" fixpermissions.sh
 }
 
 # Updates Minecraft service
 Update_Service() {
   sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
   sudo chmod +x /etc/systemd/system/minecraft.service
-  sudo sed -i "s/replace/$UserName/g" /etc/systemd/system/minecraft.service
+  sudo sed -i "s:userxname:$UserName:g" /etc/systemd/system/minecraft.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
   sudo systemctl daemon-reload
   Print_Style "Minecraft can automatically start at boot if you wish." "$CYAN"

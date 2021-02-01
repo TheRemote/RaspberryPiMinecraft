@@ -49,6 +49,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <h3>January 31st 2021</h3>
 <ul>
 <li>Update to 1.16.5</li>
+<li>Server now takes ownership of server files on each start to prevent folks a whole heap of trouble and heartache when restoring backups/moving files/etc.</li>
 <li>Added check to make sure script isn't being ran as sudo to prevent installing to the /root folder</li>
 </ul>
 

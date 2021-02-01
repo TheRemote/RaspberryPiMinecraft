@@ -1,11 +1,12 @@
 [Unit]
-Description=minecraft server service
+Description=Minecraft Server Service
 After=network-online.target
 
 [Service]
-User=replace
+User=userxname
 WorkingDirectory=dirname/minecraft
 Type=forking
+ExecStartPre=+/bin/chown -R userxname dirname/minecraft
 ExecStart=/bin/bash dirname/minecraft/start.sh
 ExecStop=/bin/bash dirname/minecraft/stop.sh
 GuessMainPID=no
