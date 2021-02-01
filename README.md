@@ -3,6 +3,7 @@ For the full article and guide visit https://jamesachambers.com/raspberry-pi-min
 
 <h2>Installation Instructions</h2>
 To get started type:<br>
+
 ```
 wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh
 chmod +x SetupMinecraft.sh
