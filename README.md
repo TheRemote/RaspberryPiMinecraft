@@ -3,10 +3,11 @@ For the full article and guide visit https://jamesachambers.com/raspberry-pi-min
 
 <h2>Installation Instructions</h2>
 To get started type:<br>
-wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh<br>
-chmod +x SetupMinecraft.sh<br>
-./SetupMinecraft.sh<br>
-
+```
+wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh
+chmod +x SetupMinecraft.sh
+./SetupMinecraft.sh
+```
 <h2>Getting Help</h2>
 To get help you may open an issue here or visit my web site at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/ which contains lots of comments from myself and users helping each other out!
 
