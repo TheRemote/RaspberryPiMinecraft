@@ -46,7 +46,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
-<h3>January 31st 2020</h3>
+<h3>January 31st 2021</h3>
 <ul>
 <li>Update to 1.16.5</li>
 </ul>
