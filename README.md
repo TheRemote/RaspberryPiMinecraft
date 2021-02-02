@@ -19,7 +19,7 @@ Note that for this to work the Paper Minecraft server must also have released th
 
 <h2>Check Java Version</h2>
 
-<p>Sometimes if you have multiple versions of Java installed the wrong version of Java will be selected as the default.  If the server didn't start check that the right version of Java is selected with this command:</p>
+<p>Sometimes if you have multiple versions of Java installed the wrong version of Java will be selected as the default.  If the server didn't start check that the right version of Java is selected with this command: <code>java -version</code></p>
 <p>If you get the message "<em>update-alternatives: error: no alternatives for java</em>" then you only have one version of Java installed and can skip to the next section.</p>
 <p>If you are presented with a list of choices then your machine has multiple versions of Java installed.  It will look like this:</p>
 
