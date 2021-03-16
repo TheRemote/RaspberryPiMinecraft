@@ -50,6 +50,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <ul>
 <li>Added backup rotation - server keeps the last 10 backups by default</li>
 <li>If you want to change the amount of backups held it is located in the "start.sh" script with a comment of '# Rotate backups -- keep most recent 10'</li>
+<li>This adds a little responsibility for saving really old backups but fixes the issue I and many others have had of the server getting filled with backups and crashing</li>
 </ul>
 
 <h3>January 31st 2021</h3>
