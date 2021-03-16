@@ -46,6 +46,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>March 16th 2021</h3>
+<ul>
+<li>Added backup rotation - server keeps the last 10 backups by default</li>
+<li>If you want to change the amount of backups held it is located in the "start.sh" script with a comment of '# Rotate backups -- keep most recent 10'</li>
+</ul>
+
 <h3>January 31st 2021</h3>
 <ul>
 <li>Update to 1.16.5</li>

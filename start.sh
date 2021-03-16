@@ -37,6 +37,9 @@ if [ -d "world" ]; then
     tar --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
 fi
 
+# Rotate backups -- keep most recent 10
+ls -1tr dirname/minecraft/backups | head -n -10 | xargs -d '\n' rm -f --
+
 # Paper / Spigot / Bukkit Optimization settings
 
 # Configure paper.yml options
