@@ -66,8 +66,9 @@ Get_ServerMemory() {
     Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." "$YELLOW"
   fi
   MemSelected=0
+  RecommendedMemory=$(($AvailableMemory - 200))
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
-    read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $AvailableMemory): " MemSelected
+    read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
     if [[ $MemSelected -lt 600 ]]; then
       Print_Style "Please enter a minimum of 600" "$RED"
     elif [[ $MemSelected -gt $TotalMemory ]]; then
