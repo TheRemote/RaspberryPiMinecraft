@@ -109,7 +109,7 @@ Update_Scripts() {
 
   # Download update.sh from repository
   echo "Grabbing update.sh from repository..."
-  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
+  wget -O update.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
   chmod +x update.sh
   sed -i "s:dirname:$DirName:g" update.sh
 
