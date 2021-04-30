@@ -9,6 +9,7 @@ if ! screen -list | grep -q "\.minecraft"; then
     echo "Server is not currently running!"
     echo "Starting up server now..."
     ./start.sh
+    exit 1
 fi
 
 echo "Sending restart notifications to server..."
