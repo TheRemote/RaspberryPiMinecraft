@@ -107,6 +107,12 @@ Update_Scripts() {
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
 
+  # Download update.sh from repository
+  echo "Grabbing update.sh from repository..."
+  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
+  chmod +x update.sh
+  sed -i "s:dirname:$DirName:g" update.sh
+
   # Download permissions.sh from repository
   echo "Grabbing fixpermissions.sh from repository..."
   wget -O fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
