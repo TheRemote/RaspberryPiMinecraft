@@ -46,6 +46,20 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>March 22nd 2021</h3>
+<ul>
+<li>Lowered amount of recommended memory by a flat 200MB due to so many people having "Out of Memory" errors</li>
+<li>Note:  Nobody has ever really been "out of memory" on the Pi since like the Pi 1.  The problem is you're using TOO MUCH.</li>
+<li>If you're getting memory related crashes you need to turn your memory DOWN.  The server will recommend lower amounts going forward.</li>
+</ul>
+
+<h3>March 16th 2021</h3>
+<ul>
+<li>Added backup rotation - server keeps the last 10 backups by default</li>
+<li>If you want to change the amount of backups held it is located in the "start.sh" script with a comment of '# Rotate backups -- keep most recent 10'</li>
+<li>This adds a little responsibility for saving really old backups but fixes the issue I and many others have had of the server getting filled with backups and crashing</li>
+</ul>
+
 <h3>January 31st 2021</h3>
 <ul>
 <li>Update to 1.16.5</li>
