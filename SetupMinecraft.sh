@@ -156,6 +156,25 @@ Install_Java() {
   Print_Style "Installing latest Java OpenJDK..." "$YELLOW"
 
   # Check for the highest available JDK first and then decrement version until we find a candidate for installation
+  JavaVer=$(apt-cache show openjdk-20-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-20-jre-headless -y
+    return
+  fi  JavaVer=$(apt-cache show openjdk-19-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-19-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-18-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-18-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-17-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-17-jre-headless -y
+    return
+  fi
   JavaVer=$(apt-cache show openjdk-16-jre-headless | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-16-jre-headless -y
@@ -189,6 +208,18 @@ Install_Java() {
   JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-10-jre-headless -y
+    return
+  fi
+
+  # Fall back to non headless JRE
+  JavaVer=$(apt-cache show openjdk-16-jre | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-16-jre-headless -y
+    return
+  fi
+  JavaVer=$(apt-cache show openjdk-14-jre | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-14-jre-headless -y
     return
   fi
 

@@ -46,6 +46,13 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>June 10th 2021</h3>
+<ul>
+<li>Added OpenJDK 17 and 18 placeholders for prerequisite installations</li>
+<li>Added a fallback to the non-headless JRE for platforms that don't offer that metapackage</li>
+<li>Paper Minecraft 1.17 is not yet available but should be soon.  If you go to https://papermc.io/api/v1/paper/ and see 1.17 in the list it's available and you can change the version variable at the very top of SetupMinecraft.sh otherwise it hasn't been released yet.  Should be soon!</li>
+</ul>
+
 <h3>March 22nd 2021</h3>
 <ul>
 <li>Lowered amount of recommended memory by a flat 200MB due to so many people having "Out of Memory" errors</li>
