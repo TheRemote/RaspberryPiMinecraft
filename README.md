@@ -46,6 +46,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>June 12th 2021</h3>
+<ul>
+<li>Fixed syntax error (thanks aruthir!)</li>
+</ul>
+
 <h3>June 10th 2021</h3>
 <ul>
 <li>Added OpenJDK 17 and 18 placeholders for prerequisite installations</li>

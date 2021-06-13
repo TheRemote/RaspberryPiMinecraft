@@ -160,7 +160,8 @@ Install_Java() {
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-20-jre-headless -y
     return
-  fi  JavaVer=$(apt-cache show openjdk-19-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  fi
+  JavaVer=$(apt-cache show openjdk-19-jre-headless | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-19-jre-headless -y
     return
