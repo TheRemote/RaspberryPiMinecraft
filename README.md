@@ -10,6 +10,11 @@ chmod +x SetupMinecraft.sh<br>
 <h2>Getting Help</h2>
 To get help you may open an issue here or visit my web site at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/ which contains lots of comments from myself and users helping each other out!
 
+<h2>OpenJDK Warnings for 1.17</h2>
+The server is now displaying a warning that OpenJDK versions older than OpenJDK 16 will stop working next update.  Unfortunately Raspberry Pi OS only has OpenJDK 11 as the latest one available in the repository for the official 32 bit release.<br>
+<br>
+Fortunately I have a guide to update your OpenJDK version using a sneaky trick with snapd to give you a newer version than is available in the repositories available here: <a href="https://jamesachambers.com/upgrade-java-past-apts-openjdk-11-on-raspberry-pi-os/">https://jamesachambers.com/upgrade-java-past-apts-openjdk-11-on-raspberry-pi-os/</a>.  This will be implemented into the script in some fashion for the 1.17 release since it seems unlikely that the Pi repositories are going to jump 5 versions in the next few days / weeks but for those of you who want to take care of it right away you can get the new OpenJDK up and running right now.<br>
+
 <h2>Changing Minecraft Server Versions</h2>
 If a new version of Minecraft is out and the script hasn't been updated yet you can change it in the SetupMinecraft.sh script.  If you do nano SetupMinecraft.sh it will be the first line in the file like this:<br>
 <br>
