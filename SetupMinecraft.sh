@@ -208,6 +208,7 @@ Install_Java() {
       Print_Style "Installing OpenJDK..." "$YELLOW"
       sudo snap install core
       sudo snap install openjdk
+      sudo snap refresh openjdk
       sudo update-alternatives --install /usr/bin/java java /snap/openjdk/current/jdk/bin/java 1
       sudo update-alternatives --set java /snap/openjdk/current/jdk/bin/java
       CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
