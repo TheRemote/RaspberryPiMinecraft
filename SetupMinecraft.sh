@@ -219,6 +219,8 @@ Install_Java() {
         Print_Style "OpenJDK installation completed." "$GREEN"
       fi
     fi
+  else
+    Print_Style "OpenJDK installation completed." "$GREEN"
   fi
 }
 
