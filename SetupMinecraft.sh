@@ -181,55 +181,42 @@ Install_Java() {
     sudo apt-get install openjdk-16-jre-headless -y
     return
   fi
-  JavaVer=$(apt-cache show openjdk-15-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-15-jre-headless -y
-    return
-  fi
-  JavaVer=$(apt-cache show openjdk-14-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-14-jre-headless -y
-    return
-  fi
-  JavaVer=$(apt-cache show openjdk-13-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-13-jre-headless -y
-    return
-  fi
-  JavaVer=$(apt-cache show openjdk-12-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-12-jre-headless -y
-    return
-  fi
-  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-11-jre-headless -y
-    return
-  fi
-  JavaVer=$(apt-cache show openjdk-11-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-10-jre-headless -y
-    return
-  fi
 
   # Fall back to non headless JRE
   JavaVer=$(apt-cache show openjdk-16-jre | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-16-jre-headless -y
-    return
-  fi
-  JavaVer=$(apt-cache show openjdk-14-jre | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-14-jre-headless -y
+    sudo apt-get install openjdk-16-jre -y
     return
   fi
 
-  # Install OpenJDK 9 as a last resort
-  if [ ! -n "$(which java)" ]; then
-    JavaVer=$(apt-cache show openjdk-9-jre-headless | grep Version | awk 'NR==1{ print $2 }')
-    if [[ "$JavaVer" ]]; then
-      sudo apt-get install openjdk-9-jre-headless -y
-      return
+  CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+  if [[ $CurrentJava -lt 16 ]]; then
+    Print_Style  "New enough OpenJDK (>16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
+    if [ ! -n "$(which snap)" ]; then
+      Print_Style "The snap application is not currently installed." "$CYAN"
+      echo -n "Install snapd and reboot the Pi now? (run SetupMinecraft.sh again after reboot completes) (y/n)?"
+      read answer
+      if [ "$answer" != "${answer#[Yy]}" ]; then
+        sudo apt-get install snapd -y
+        sudo reboot
+      else
+        echo "Installation of snapd was aborted.  Exiting..."
+        exit 1
+      fi
+      apt-get update && apt-get install sudo -y
+    else
+      Print_Style "Installing OpenJDK..." "$YELLOW"
+      sudo snap install core
+      sudo snap install openjdk
+      sudo update-alternatives --install /usr/bin/java java /snap/openjdk/current/jdk/bin/java 1
+      sudo update-alternatives --set java /snap/openjdk/current/jdk/bin/java
+      CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+      if [[ $CurrentJava -lt 16 ]]; then
+        Print_Style "OpenJDK installation failed.  Java version is still reporting as less than OpenJDK 16!" "$RED"
+        exit 1
+      else
+        Print_Style "OpenJDK installation completed." "$GREEN"
+      fi
     fi
   fi
 }
@@ -261,7 +248,13 @@ Install_Java
 
 # Check if Java installation was successful
 if [ -n "$(which java)" ]; then
-  Print_Style "Java installed successfully" "$GREEN"
+  CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+  if [[ $CurrentJava -ge 16 ]]; then
+    Print_Style "Java installed successfully" "$GREEN"
+    else
+      Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." "$RED"
+      exit 1
+    fi
 else
   Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." "$RED"
   exit 1

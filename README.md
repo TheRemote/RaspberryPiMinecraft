@@ -51,6 +51,15 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>June 16th 2021</h3>
+<ul>
+<li>Raised minimum OpenJDK requirement to 16 in preparation for the 1.17 Paper Minecraft server release</li>
+<li>If a new enough OpenJDK is not available in apt (Raspberry Pi OS is on OpenJDK 11 for example) it will be installed via snapd</li>
+<li>If snapd is not installed it will ask you if you want to install it (reboot required) or abort</li>
+<li>After the reboot run SetupMinecraft.sh again and it will finish installing OpenJDK 16!  Be patient, it can take some time, even 10-15 minutes on a good connection and longer on a bad one</li>
+<li>Sorry for the inconvenience, there isn't an easier way to get it until the Raspberry Pi OS apt repositories are updated!</li>
+</ul>
+
 <h3>June 12th 2021</h3>
 <ul>
 <li>Fixed syntax error (thanks aruthir!)</li>
