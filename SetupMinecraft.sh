@@ -4,7 +4,7 @@
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 
 # Minecraft server version
-Version="1.16.5"
+Version="1.17"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
