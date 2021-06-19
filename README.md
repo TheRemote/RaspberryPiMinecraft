@@ -51,6 +51,20 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>June 24th 2021</h3>
+<ul>
+<li>Removed installation of OpenJDK above OpenJDK 16 as the Paper Minecraft server is not working with versions higher than 16</li>
+<li>If you have a higher version of Java installed use the following command: sudo update-alternatives –config java and select OpenJDK 16</li>
+</ul>
+
+<h3>June 19th 2021</h3>
+<ul>
+<li>1.17 Release</li>
+<li>Make sure you have backups and take copies of your backups and place them outside the Minecraft folder to be 100% safe</li>
+<li>Once running the new version you can't go back to the old one without restoring a backup because it writes new stuff in your server the old version doesn't understand and crashes on</li>
+<li>As long as you have backups you should be okay!</li>
+</ul>
+
 <h3>June 16th 2021</h3>
 <ul>
 <li>Raised minimum OpenJDK requirement to 16 in preparation for the 1.17 Paper Minecraft server release</li>
