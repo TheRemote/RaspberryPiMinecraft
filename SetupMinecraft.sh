@@ -185,14 +185,14 @@ Install_Java() {
   Print_Style "Installing latest Java OpenJDK..." "$YELLOW"
 
   # Check for the highest available JDK first and then decrement version until we find a candidate for installation
-  JavaVer=$(apt-cache show openjdk-16-jre-headless | grep Version | awk 'NR==1{ print $2 }')
+  JavaVer=$(apt-cache show openjdk-16-jre-headless 2&>1 | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-16-jre-headless -y
     return
   fi
 
   # Fall back to non headless JRE
-  JavaVer=$(apt-cache show openjdk-16-jre | grep Version | awk 'NR==1{ print $2 }')
+  JavaVer=$(apt-cache show openjdk-16-jre 2&>1 | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-16-jre -y
     return
