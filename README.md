@@ -2,10 +2,8 @@ This script will automatically download and configure the Paper Minecraft server
 For the full article and guide visit https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/<br>
 
 <h2>Installation Instructions</h2>
-To get started type:<br>
-wget https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh<br>
-chmod +x SetupMinecraft.sh<br>
-./SetupMinecraft.sh<br>
+To get started / install the server type:<br>
+<pre>curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash</pre><br>
 
 <h2>Getting Help</h2>
 To get help you may open an issue here or visit my web site at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/ which contains lots of comments from myself and users helping each other out!
@@ -53,7 +51,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>July 3rd 2021</h3>
 <ul>
-<li>Add allowing custom directories</li>
+<li>Add custom directories</li>
 </ul>
 
 <h3>June 24th 2021</h3>

@@ -293,8 +293,6 @@ if [ -d "minecraft" ]; then
   Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." "$YELLOW"
   # Get Home directory path and username
   cd minecraft
-  DirName=$(readlink -e ~)
-  UserName=$(whoami)
 
   # Ask user for amount of memory they want to dedicate to the Minecraft server
   Get_ServerMemory
@@ -314,7 +312,6 @@ fi
 
 # Create server directory
 Print_Style "Creating minecraft server directory..." "$YELLOW"
-cd ~
 mkdir minecraft
 cd minecraft
 mkdir backups
