@@ -240,7 +240,7 @@ Print_Style "Version $Version will be installed.  To change this, open SetupMine
 Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" "$MAGENTA"
 Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" "$MAGENTA"
 
-if [ -e "SetupMinecraft.sh" ]; then
+if [[ -e "SetupMinecraft.sh" && "$AllowLocalCopy" -ne "1" ]]; then
   rm -f "SetupMinecraft.sh"
   echo "Local copy of SetupMinecraft.sh running.  Exiting and running online version.  To override set AllowLocalCopy=\"1\" at the top of the script."
   curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash
