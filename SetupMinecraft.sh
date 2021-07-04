@@ -283,16 +283,16 @@ fi
 echo "Enter directory path to install Minecraft server (default ~): "
 read_with_prompt DirName "Directory Path" ~
 DirName=$(eval echo "$DirName")
-
-# Check to see if Minecraft server main directory already exists
-cd $DirName
 UserName=$(whoami)
 
+# Check to see if Minecraft server main directory already exists
+
+
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
-if [ -d "minecraft" ]; then
+if [ -d "$DirName/minecraft" ]; then
   Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." "$YELLOW"
   # Get Home directory path and username
-  cd minecraft
+  cd "$DirName/minecraft"
 
   # Ask user for amount of memory they want to dedicate to the Minecraft server
   Get_ServerMemory
@@ -312,8 +312,8 @@ fi
 
 # Create server directory
 Print_Style "Creating minecraft server directory..." "$YELLOW"
-mkdir minecraft
-cd minecraft
+mkdir -p "$DirName/minecraft"
+cd "$DirName/minecraft"
 mkdir backups
 
 # Get total system memory
