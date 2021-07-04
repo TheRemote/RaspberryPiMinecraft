@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 3rd 2021</h3>
+<ul>
+<li>Add allowing custom directories</li>
+</ul>
+
 <h3>June 24th 2021</h3>
 <ul>
 <li>Removed installation of OpenJDK above OpenJDK 16 as the Paper Minecraft server is not working with versions higher than 16</li>

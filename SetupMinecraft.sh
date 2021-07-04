@@ -3,8 +3,12 @@
 # More information at https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 
+# To run the setup script use:
+# curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash
+
 # Minecraft server version
 Version="1.17"
+AllowLocalCopy="0"
 
 # Terminal colors
 BLACK=$(tput setaf 0)
@@ -21,6 +25,31 @@ NORMAL=$(tput sgr0)
 BLINK=$(tput blink)
 REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
+
+# Function to read input from user with a prompt
+function read_with_prompt {
+  variable_name="$1"
+  prompt="$2"
+  default="${3-}"
+  unset $variable_name
+  while [[ ! -n ${!variable_name} ]]; do
+    read -p "$prompt: " $variable_name < /dev/tty
+    if [ ! -n "`which xargs`" ]; then
+      declare -g $variable_name=$(echo "${!variable_name}" | xargs)
+    fi
+    declare -g $variable_name=$(echo "${!variable_name}" | head -n1 | awk '{print $1;}')
+    if [[ -z ${!variable_name} ]] && [[ -n "$default" ]] ; then
+      declare -g $variable_name=$default
+    fi
+    echo -n "$prompt : ${!variable_name} -- accept (y/n)?"
+    read answer < /dev/tty
+    if [[ "$answer" == "${answer#[Yy]}" ]]; then
+      unset $variable_name
+    else
+      echo "$prompt: ${!variable_name}"
+    fi
+  done
+}
 
 # Prints a line with color using terminal codes
 Print_Style() {
@@ -211,8 +240,15 @@ Print_Style "Version $Version will be installed.  To change this, open SetupMine
 Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" "$MAGENTA"
 Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" "$MAGENTA"
 
+if [ -e "SetupMinecraft.sh" ]; then
+  rm -f "SetupMinecraft.sh"
+  echo "Local copy of SetupMinecraft.sh running.  Exiting and running online version.  To override set AllowLocalCopy = 1 at the top of the script."
+  curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash
+  exit 1
+fi
+
 # Check to make sure we aren't being ran as root
-if [ $(id -u) = 0 ]; then
+if [[ $(id -u) = 0 ]]; then
    echo "This script is not meant to be ran as root or sudo.  Please run normally with ./SetupMinecraft.sh.  If you know what you are doing and want to override this edit this check out of SetupMinecraft.sh.  Exiting..."
    exit 1
 fi
@@ -243,6 +279,15 @@ else
   exit 1
 fi
 
+# Get directory path (default ~)
+echo "Enter directory path to install Minecraft server (default ~): "
+read_with_prompt DirName "Directory Path" ~
+DirName=$(eval echo "$DirName")
+
+# Check to see if Minecraft server main directory already exists
+cd $DirName
+UserName=$(whoami)
+
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "minecraft" ]; then
   Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." "$YELLOW"
@@ -267,9 +312,6 @@ if [ -d "minecraft" ]; then
   exit 0
 fi
 
-# Get total system memory
-Get_ServerMemory
-
 # Create server directory
 Print_Style "Creating minecraft server directory..." "$YELLOW"
 cd ~
@@ -277,9 +319,8 @@ mkdir minecraft
 cd minecraft
 mkdir backups
 
-# Get Home directory path and username
-DirName=$(readlink -e ~)
-UserName=$(whoami)
+# Get total system memory
+Get_ServerMemory
 
 # Retrieve latest build of Paper minecraft server
 Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
