@@ -51,7 +51,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>July 3rd 2021</h3>
 <ul>
-<li>Add custom directories</li>
+<li>Add option to choose a custom directory instead of forcing the home path</li>
 </ul>
 
 <h3>June 24th 2021</h3>

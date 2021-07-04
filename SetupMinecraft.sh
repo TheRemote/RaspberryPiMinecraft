@@ -242,7 +242,7 @@ Print_Style "Don't forget to set up port forwarding on your router!  The default
 
 if [ -e "SetupMinecraft.sh" ]; then
   rm -f "SetupMinecraft.sh"
-  echo "Local copy of SetupMinecraft.sh running.  Exiting and running online version.  To override set AllowLocalCopy = 1 at the top of the script."
+  echo "Local copy of SetupMinecraft.sh running.  Exiting and running online version.  To override set AllowLocalCopy=\"1\" at the top of the script."
   curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash
   exit 1
 fi
