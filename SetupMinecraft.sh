@@ -117,6 +117,7 @@ Get_ServerMemory() {
 # Updates all scripts
 Update_Scripts() {
   # Remove existing scripts
+  cd $DirName
   rm minecraft/start.sh minecraft/stop.sh minecraft/restart.sh minecraft/fixpermissions.sh
 
   # Download start.sh from repository
