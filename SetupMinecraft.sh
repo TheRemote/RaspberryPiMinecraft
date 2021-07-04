@@ -221,8 +221,8 @@ Install_Java() {
       sudo update-alternatives --install /usr/bin/java java /snap/openjdk/current/jdk/bin/java 1
       sudo update-alternatives --set java /snap/openjdk/current/jdk/bin/java
       CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-      if [[ $CurrentJava -lt 16 ]]; then
-        Print_Style "OpenJDK installation failed.  Java version is still reporting as less than OpenJDK 16!" "$RED"
+      if [[ $CurrentJava -lt 16 || $CurrentJava -gt 16 ]]; then
+        Print_Style "OpenJDK installation failed.  Java version is still reporting as less or greater than OpenJDK 16!" "$RED"
         exit 1
       else
         Print_Style "OpenJDK installation completed." "$GREEN"
