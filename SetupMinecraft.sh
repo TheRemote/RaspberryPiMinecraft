@@ -84,7 +84,8 @@ Get_ServerMemory() {
     Print_Style "WARNING:  Available memory to run the server is less than 700MB.  This will impact performance and stability." "$RED"
     Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." "$RED"
     Print_Style "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible." "$RED"
-    read -n1 -r -p "Press any key to continue"
+    echo -n "Press any key to continue"
+    read endkey < /dev/tty
   fi
 
   # Ask user for amount of memory they want to dedicate to the Minecraft server
@@ -97,7 +98,8 @@ Get_ServerMemory() {
   MemSelected=0
   RecommendedMemory=$(($AvailableMemory - 200))
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
-    read -p "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " MemSelected
+    echo -n "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " 
+    read MemSelected < /dev/tty
     if [[ $MemSelected -lt 600 ]]; then
       Print_Style "Please enter a minimum of 600" "$RED"
     elif [[ $MemSelected -gt $TotalMemory ]]; then
@@ -154,7 +156,7 @@ Update_Service() {
   sudo systemctl daemon-reload
   Print_Style "Minecraft can automatically start at boot if you wish." "$CYAN"
   echo -n "Start Minecraft server at startup automatically (y/n)?"
-  read answer
+  read answer < /dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
     sudo systemctl enable minecraft.service
   fi
@@ -168,7 +170,7 @@ Configure_Reboot() {
   Print_Style "Your time zone is currently set to $TimeZone.  Current system time: $CurrentTime" "$CYAN"
   Print_Style "You can adjust/remove the selected reboot time later by typing crontab -e" "$CYAN"
   echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
-  read answer
+  read answer < /dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
     croncmd="$DirName/minecraft/restart.sh"
     cronjob="0 4 * * * $croncmd"
@@ -204,7 +206,7 @@ Install_Java() {
     if [ ! -n "$(which snap)" ]; then
       Print_Style "The snap application is not currently installed." "$CYAN"
       echo -n "Install snapd and reboot the Pi now? (run SetupMinecraft.sh again after reboot completes) (y/n)?"
-      read answer
+      read answer < /dev/tty
       if [ "$answer" != "${answer#[Yy]}" ]; then
         sudo apt-get install snapd -y
         sudo reboot
@@ -284,9 +286,6 @@ echo "Enter directory path to install Minecraft server (default ~): "
 read_with_prompt DirName "Directory Path" ~
 DirName=$(eval echo "$DirName")
 UserName=$(whoami)
-
-# Check to see if Minecraft server main directory already exists
-
 
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "$DirName/minecraft" ]; then
