@@ -49,6 +49,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 5th 2021</h3>
+<ul>
+<li>Fixed an issue with SetupMinecraft.sh saving scripts to the home folder instead of the minecraft folder</li>
+</ul>
+
 <h3>July 3rd 2021</h3>
 <ul>
 <li>Add option to choose a custom directory instead of forcing the home path</li>
