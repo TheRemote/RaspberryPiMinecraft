@@ -51,7 +51,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>July 5th 2021</h3>
 <ul>
-<li>Fixed an issue with SetupMinecraft.sh saving scripts to the home folder instead of the minecraft folder</li>
+<li>Fixed an issue with SetupMinecraft.sh saving scripts to the home folder instead of the minecraft folder (thanks Ryan A J.)</li>
 </ul>
 
 <h3>July 3rd 2021</h3>
