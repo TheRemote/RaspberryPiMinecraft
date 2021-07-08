@@ -7,7 +7,7 @@
 # curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash
 
 # Minecraft server version
-Version="1.17"
+Version="1.17.1"
 AllowLocalCopy="0"
 
 # Terminal colors
