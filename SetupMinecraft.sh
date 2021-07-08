@@ -8,6 +8,7 @@
 
 # Minecraft server version
 Version="1.17.1"
+# Set to AllowLocalCopy="1" if you make changes to the script otherwise any changes will be discarded and the latest online version will run
 AllowLocalCopy="0"
 
 # Terminal colors
@@ -146,6 +147,11 @@ Update_Scripts() {
   chmod +x fixpermissions.sh
   sed -i "s:dirname:$DirName:g" fixpermissions.sh
   sed -i "s:userxname:$UserName:g" fixpermissions.sh
+
+  # Download update.sh from repository
+  echo "Grabbing update.sh from repository..."
+  wget -O update.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
+  chmod +x update.sh
 }
 
 # Updates Minecraft service
@@ -202,8 +208,8 @@ Install_Java() {
   fi
 
   CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-  if [[ $CurrentJava -lt 16 ]]; then
-    Print_Style  "New enough OpenJDK (>=16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
+  if [[ $CurrentJava -lt 16 || $CurrentJava -gt 16 ]]; then
+    Print_Style  "Correct OpenJDK (16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
     if [ ! -n "$(which snap)" ]; then
       Print_Style "The snap application is not currently installed." "$CYAN"
       echo -n "Install snapd and reboot the Pi now? (run SetupMinecraft.sh again after reboot completes) (y/n)?"

@@ -14,10 +14,12 @@ The server is now displaying a warning that OpenJDK versions older than OpenJDK 
 Fortunately I have a guide to update your OpenJDK version using a sneaky trick with snapd to give you a newer version than is available in the repositories available here: <a href="https://jamesachambers.com/upgrade-java-past-apts-openjdk-11-on-raspberry-pi-os/">https://jamesachambers.com/upgrade-java-past-apts-openjdk-11-on-raspberry-pi-os/</a>.  This will be implemented into the script in some fashion for the 1.17 release since it seems unlikely that the Pi repositories are going to jump 5 versions in the next few days / weeks but for those of you who want to take care of it right away you can get the new OpenJDK up and running right now.<br>
 
 <h2>Changing Minecraft Server Versions</h2>
-If a new version of Minecraft is out and the script hasn't been updated yet you can change it in the SetupMinecraft.sh script.  If you do nano SetupMinecraft.sh it will be the first line in the file like this:<br>
+If a new version of Minecraft is out and the script hasn't been updated yet you can change it in the SetupMinecraft.sh script.  If you use the command nano SetupMinecraft.sh it will be the first line in the file like this:<br>
 <br>
-Version="1.16.5"<br>
+Version="1.17.1"<br>
+AllowLocalCopy="1"<br>
 <br>
+Make sure to change AllowLocalCopy="1" to tell the script you want to actually run the local copy instead of the latest version.<br>
 Note that for this to work the Paper Minecraft server must also have released the latest version or the download will fail.  You can check here: <a href="https://papermc.io/downloads">https://papermc.io/downloads</a><br>
 
 <h2>Check Java Version</h2>
@@ -52,6 +54,9 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <h3>July 8th 2021</h3>
 <ul>
 <li>Update to 1.17.1</li>
+<li>Update documentation to explain new AllowLocalCopy="1" flag.  This flag tells the script not to run the latest online version and to run the local copy.  You want to use this if you are changing the version or making any modifications to the script itself before running it.</li>
+<li>Added update.sh convenience script that calls the latest version of SetupMinecraft.sh</li>
+<li>Fixed a bug where having an OpenJDK greater than 16 was not triggering the snap configuration (usually only seen on the cutting edge Ubuntu flavors)</li>
 </ul>
 
 <h3>July 5th 2021</h3>
