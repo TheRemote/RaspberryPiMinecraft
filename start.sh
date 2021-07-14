@@ -38,7 +38,7 @@ if [ -d "world" ]; then
 fi
 
 # Rotate backups -- keep most recent 10
-Rotate=$(ls -1tr dirname/minecraft/backups | head -n -10 | xargs -d '\n' rm -f --)
+Rotate=$(pushd dirname/minecraft/backups; ls -1tr | head -n -10 | xargs -d '\n' rm -f --; popd)
 
 # Paper / Spigot / Bukkit Optimization settings
 

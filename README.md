@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 14th 2021</h3>
+<ul>
+<li>Fixed a issue that was causing backups to not rotate (it should only keep 10).  Thanks Olli</li>
+</ul>
+
 <h3>July 8th 2021</h3>
 <ul>
 <li>Update to 1.17.1</li>
