@@ -289,8 +289,6 @@ else
 fi
 
 # Get directory path (default ~)
-
-# Get directory path (default ~)
 until [ -d "$DirName" ]
 do
   echo "Enter root directory path to install Minecraft server.  Almost nobody should change this unless you're installing to a different disk altogether. (default ~): "
