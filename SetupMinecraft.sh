@@ -289,10 +289,17 @@ else
 fi
 
 # Get directory path (default ~)
-echo "Enter directory path to install Minecraft server (default ~): "
-read_with_prompt DirName "Directory Path" ~
-DirName=$(eval echo "$DirName")
-UserName=$(whoami)
+
+# Get directory path (default ~)
+until [ -d "$DirName" ]
+do
+  echo "Enter directory path to install Minecraft server (default ~): "
+  read_with_prompt DirName "Directory Path" ~
+  DirName=$(eval echo "$DirName")
+  if [ ! -d "$DirName" ]; then
+    echo "Invalid directory.  Please use the default path of ~ if you aren't familiar with fully qualified Linux paths or you're going to have errors."
+  fi
+done
 
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "$DirName/minecraft" ]; then

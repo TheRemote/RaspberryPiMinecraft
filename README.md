@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 15th 2021</h3>
+<ul>
+<li>Added safety check for path to server -- please use the default path of ~ if you aren't familiar with fully qualified Linux paths/directories -- you really don't want to change the safe defaults unless you have a really specific need.</li>
+</ul>
+
 <h3>July 14th 2021</h3>
 <ul>
 <li>Fixed a issue that was causing backups to not rotate (it should only keep 10).  Thanks Olli</li>
