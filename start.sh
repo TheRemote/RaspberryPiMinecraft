@@ -4,6 +4,12 @@
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server startup script using screen -- view the console with screen -r minecraft
 
+# Check to make sure we aren't running as root
+if [[ $(id -u) = 0 ]]; then
+   echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./start.sh.  Exiting..."
+   exit 1
+fi
+
 # Flush out memory to disk so we have the maximum available for Java allocation
 sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"
 sync

@@ -256,9 +256,9 @@ if [[ -e "SetupMinecraft.sh" && "$AllowLocalCopy" -ne "1" ]]; then
   exit 1
 fi
 
-# Check to make sure we aren't being ran as root
+# Check to make sure we aren't running as root
 if [[ $(id -u) = 0 ]]; then
-   echo "This script is not meant to be ran as root or sudo.  Please run normally with ./SetupMinecraft.sh.  If you know what you are doing and want to override this edit this check out of SetupMinecraft.sh.  Exiting..."
+   echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./SetupMinecraft.sh.  Exiting..."
    exit 1
 fi
 

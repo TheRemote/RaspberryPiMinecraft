@@ -4,6 +4,12 @@
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server stop script - primarily called by minecraft service but can be ran manually with ./stop.sh
 
+# Check to make sure we aren't running as root
+if [[ $(id -u) = 0 ]]; then
+   echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./stop.sh.  Exiting..."
+   exit 1
+fi
+
 # Check if server is running
 if ! screen -list | grep -q "\.minecraft"; then
   echo "Server is not currently running!"
