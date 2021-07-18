@@ -11,6 +11,8 @@ Version="1.17.1"
 # Set to AllowLocalCopy="1" if you make changes to the script otherwise any changes will be discarded and the latest online version will run
 AllowLocalCopy="0"
 
+UserName=$(whoami)
+
 # Terminal colors
 BLACK=$(tput setaf 0)
 RED=$(tput setaf 1)

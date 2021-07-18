@@ -53,6 +53,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>July 17th 2021</h3>
 <ul>
+    <li>Added username missing to fix service issue</li>
     <li>Reduced memory recommendation by 100MB to allow more space for the OS / other processes since newer versions of Minecraft are requiring more memory.  Remember, if you don't leave enough memory for other things the Minecraft server will crash for memory issues, but it's because you set it too high (counterintuitive I know) and didn't leave enough for the OS and it killed your Minecraft server to prevent the entire OS from crashing.</li>
     <li>Added in check to ensure start.sh and other scripts are not being ran as root.  If this happens you have to use sudo screen -r to find the screen and the permissions will be wrong since root isn't the owner of the server files</li>
     <li>If you know you ran the script/server as root (which starts creating files owned by root instead of the regular user) and your server won't start/is wonky run the fixpermissions script from your server folder with ./fixpermissions.sh and it will correct them for you!</li>
