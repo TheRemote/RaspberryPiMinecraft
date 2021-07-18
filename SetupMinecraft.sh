@@ -349,7 +349,7 @@ Update_Scripts
 
 # Server configuration
 Print_Style "Enter a name for your server..." "$MAGENTA"
-read -p 'Server Name: ' servername
+read -p 'Server Name: ' servername < /dev/tty
 echo "server-name=$servername" >>server.properties
 echo "motd=$servername" >>server.properties
 
