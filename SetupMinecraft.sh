@@ -209,7 +209,12 @@ Install_Java() {
     return
   fi
 
-  CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+  if [ -n "$(which java)" ]; then
+    CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+  else
+    CurrentJava="0"
+  fi
+  
   if [[ $CurrentJava -lt 16 || $CurrentJava -gt 16 ]]; then
     Print_Style  "Correct OpenJDK (16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
     if [ ! -n "$(which snap)" ]; then

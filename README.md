@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 19th 2021</h3>
+<ul>
+<li>Fixed an issue where SetupMinecraft.sh could throw an error if no Java version was installed</li>
+</ul>
+
 <h3>July 17th 2021</h3>
 <ul>
     <li>Fixed server name prompt</li>
