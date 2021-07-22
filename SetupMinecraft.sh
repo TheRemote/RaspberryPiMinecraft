@@ -125,7 +125,7 @@ Update_Scripts() {
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." "$YELLOW"
-  wget -O start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
+  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
@@ -133,32 +133,32 @@ Update_Scripts() {
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
-  wget -O stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
+  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
-  wget -O restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
+  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
 
   # Download permissions.sh from repository
   echo "Grabbing fixpermissions.sh from repository..."
-  wget -O fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
+  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
   chmod +x fixpermissions.sh
   sed -i "s:dirname:$DirName:g" fixpermissions.sh
   sed -i "s:userxname:$UserName:g" fixpermissions.sh
 
   # Download update.sh from repository
   echo "Grabbing update.sh from repository..."
-  wget -O update.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
+  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o update.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
   chmod +x update.sh
 }
 
 # Updates Minecraft service
 Update_Service() {
-  sudo wget -O /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
+  sudo curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
   sudo chmod +x /etc/systemd/system/minecraft.service
   sudo sed -i "s:userxname:$UserName:g" /etc/systemd/system/minecraft.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
@@ -182,7 +182,7 @@ Configure_Reboot() {
   read answer < /dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
     croncmd="$DirName/minecraft/restart.sh"
-    cronjob="0 4 * * * $croncmd"
+    cronjob="0 4 * * * $croncmd 2>&1"
     (
       crontab -l | grep -v -F "$croncmd"
       echo "$cronjob"
@@ -270,12 +270,12 @@ if [[ $(id -u) = 0 ]]; then
 fi
 
 # Install dependencies needed to run minecraft in the background
-Print_Style "Installing screen, sudo, net-tools, wget..." "$YELLOW"
+Print_Style "Installing screen, sudo, net-tools, curl..." "$YELLOW"
 if [ ! -n "$(which sudo)" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
-sudo apt-get install screen wget -y
+sudo apt-get install screen curl -y
 sudo apt-get install net-tools -y
 
 # Install Java dependency
@@ -339,7 +339,7 @@ Get_ServerMemory
 
 # Retrieve latest build of Paper minecraft server
 Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
-wget -O paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 Print_Style "Building the Minecraft server..." "$YELLOW"
