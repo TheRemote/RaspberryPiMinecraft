@@ -125,7 +125,7 @@ Update_Scripts() {
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." "$YELLOW"
-  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
+  curl -H "Accept-Encoding: identity" -L -o start.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/start.sh
   chmod +x start.sh
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
@@ -133,32 +133,32 @@ Update_Scripts() {
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
-  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
+  curl -H "Accept-Encoding: identity" -L -o stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
-  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
+  curl -H "Accept-Encoding: identity" -L -o restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
 
   # Download permissions.sh from repository
   echo "Grabbing fixpermissions.sh from repository..."
-  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
+  curl -H "Accept-Encoding: identity" -L -o fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
   chmod +x fixpermissions.sh
   sed -i "s:dirname:$DirName:g" fixpermissions.sh
   sed -i "s:userxname:$UserName:g" fixpermissions.sh
 
   # Download update.sh from repository
   echo "Grabbing update.sh from repository..."
-  curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o update.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
+  curl -H "Accept-Encoding: identity" -L -o update.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/update.sh
   chmod +x update.sh
 }
 
 # Updates Minecraft service
 Update_Service() {
-  sudo curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
+  sudo curl -H "Accept-Encoding: identity" -L -o /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
   sudo sed -i "s:userxname:$UserName:g" /etc/systemd/system/minecraft.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
   sudo systemctl daemon-reload
@@ -338,7 +338,7 @@ Get_ServerMemory
 
 # Retrieve latest build of Paper minecraft server
 Print_Style "Getting latest Paper Minecraft server..." "$YELLOW"
-curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -o paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
+curl -H "Accept-Encoding: identity" -L -o paperclip.jar https://papermc.io/api/v1/paper/$Version/latest/download
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 Print_Style "Building the Minecraft server..." "$YELLOW"
