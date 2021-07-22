@@ -159,7 +159,6 @@ Update_Scripts() {
 # Updates Minecraft service
 Update_Service() {
   sudo curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o /etc/systemd/system/minecraft.service https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/minecraft.service
-  sudo chmod +x /etc/systemd/system/minecraft.service
   sudo sed -i "s:userxname:$UserName:g" /etc/systemd/system/minecraft.service
   sudo sed -i "s:dirname:$DirName:g" /etc/systemd/system/minecraft.service
   sudo systemctl daemon-reload
