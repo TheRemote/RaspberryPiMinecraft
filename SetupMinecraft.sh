@@ -144,7 +144,7 @@ Update_Scripts() {
   curl -H "Accept-Encoding: identity" -L -o restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
-    sed -i "s<pathvariable<$PATH<g" restart.sh
+  sed -i "s<pathvariable<$PATH<g" restart.sh
 
   # Download permissions.sh from repository
   echo "Grabbing fixpermissions.sh from repository..."
