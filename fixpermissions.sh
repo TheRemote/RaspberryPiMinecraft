@@ -39,13 +39,9 @@ echo "Taking ownership of all server files/folders in dirname/minecraft..."
 if [[ $Automated == 1 ]]; then
     sudo -n chown -R userxname dirname/minecraft
     sudo -n chmod -R 755 dirname/minecraft/*.sh
-    sudo -n chmod 755 dirname/minecraft/bedrock_server
-    sudo -n chmod +x dirname/minecraft/bedrock_server
 else
     sudo chown -Rv userxname dirname/minecraft
     sudo chmod -Rv 755 dirname/minecraft/*.sh
-    sudo chmod 755 dirname/minecraft/bedrock_server
-    sudo chmod +x dirname/minecraft/bedrock_server
 
     NewestLog=$(find dirname/minecraft/logs -type f -exec stat -c "%y %n" {} + | sort -r | head -n1 | cut -d " " -f 4-)
     echo "Displaying last 10 lines from log file $NewestLog in /logs folder:"
