@@ -151,7 +151,7 @@ Update_Scripts() {
   curl -H "Accept-Encoding: identity" -L -o fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
   chmod +x fixpermissions.sh
   sed -i "s:dirname:$DirName:g" fixpermissions.sh
-  sed -i "s:userxname:$UserName:g" fixpermissions.s
+  sed -i "s:userxname:$UserName:g" fixpermissions.sh
   sed -i "s<pathvariable<$PATH<g" fixpermissions.sh
 
   # Download update.sh from repository
