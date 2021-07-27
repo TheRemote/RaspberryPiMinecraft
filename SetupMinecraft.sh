@@ -121,7 +121,7 @@ Get_ServerMemory() {
 Update_Scripts() {
   # Remove existing scripts
   cd $DirName/minecraft
-  rm start.sh stop.sh restart.sh fixpermissions.sh
+  rm start.sh stop.sh restart.sh fixpermissions.sh update.sh
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." "$YELLOW"
@@ -130,25 +130,29 @@ Update_Scripts() {
   sed -i "s:dirname:$DirName:g" start.sh
   sed -i "s:memselect:$MemSelected:g" start.sh
   sed -i "s:verselect:$Version:g" start.sh
+  sed -i "s<pathvariable<$PATH<g" start.sh
 
   # Download stop.sh from repository
   echo "Grabbing stop.sh from repository..."
   curl -H "Accept-Encoding: identity" -L -o stop.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/stop.sh
   chmod +x stop.sh
   sed -i "s:dirname:$DirName:g" stop.sh
+  sed -i "s<pathvariable<$PATH<g" stop.sh
 
   # Download restart.sh from repository
   echo "Grabbing restart.sh from repository..."
   curl -H "Accept-Encoding: identity" -L -o restart.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/restart.sh
   chmod +x restart.sh
   sed -i "s:dirname:$DirName:g" restart.sh
+    sed -i "s<pathvariable<$PATH<g" restart.sh
 
   # Download permissions.sh from repository
   echo "Grabbing fixpermissions.sh from repository..."
   curl -H "Accept-Encoding: identity" -L -o fixpermissions.sh https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/fixpermissions.sh
   chmod +x fixpermissions.sh
   sed -i "s:dirname:$DirName:g" fixpermissions.sh
-  sed -i "s:userxname:$UserName:g" fixpermissions.sh
+  sed -i "s:userxname:$UserName:g" fixpermissions.s
+  sed -i "s<pathvariable<$PATH<g" fixpermissions.sh
 
   # Download update.sh from repository
   echo "Grabbing update.sh from repository..."
@@ -248,6 +252,24 @@ Install_Java() {
   fi
 }
 
+Update_Sudoers() {
+  if [ -d /etc/sudoers.d ]; then
+    sudoline="$UserName ALL=(ALL) NOPASSWD: /bin/bash $DirName/minecraft/fixpermissions.sh, /bin/systemctl start minecraft, /bin/bash $DirName/minecraft/start.sh, /sbin/reboot"
+    if [ -e /etc/sudoers.d/minecraft ]; then
+      AddLine=$(sudo grep -qxF "$sudoline" /etc/sudoers.d/minecraft || echo "$sudoline" | sudo tee -a /etc/sudoers.d/minecraft)
+    else
+      AddLine=$(echo "$sudoline" | sudo tee /etc/sudoers.d/minecraft)
+    fi
+  else
+    echo "/etc/sudoers.d was not found on your system.  Please add this line to sudoers using sudo visudo:  $sudoline"
+  fi
+}
+
+Fix_Permissions() {
+  echo "Setting server file permissions..."
+  sudo ./fixpermissions.sh -a > /dev/null
+}
+
 #################################################################################################
 
 Print_Style "Minecraft Server installation script by James A. Chambers - https://jamesachambers.com/" "$MAGENTA"
@@ -320,6 +342,12 @@ if [ -d "$DirName/minecraft" ]; then
   # Service configuration
   Update_Service
 
+  # Sudoers configuration
+  Update_Sudoers
+
+  # Fix server files/folders permissions
+  Fix_Permissions
+
   # Configure automatic start on boot
   Configure_Reboot
 
@@ -362,6 +390,12 @@ Update_Service
 
 # Configure automatic start on boot
 Configure_Reboot
+
+# Sudoers configuration
+Update_Sudoers
+
+# Fix server files/folders permissions
+Fix_Permissions
 
 # Finished!
 Print_Style "Setup is complete.  Starting Minecraft server..." "$GREEN"

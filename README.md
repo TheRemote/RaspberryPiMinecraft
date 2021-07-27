@@ -51,6 +51,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 27th 2021</h3>
+<ul>
+<li>Added PATH variable to scripts to improve compatibility on some distros</li>
+<li>Server now fixes permissions upon startup</li>
+</ul>
+
 <h3>July 21st 2021</h3>
 <ul>
 <li>Switched from wget to curl to fix spacing issues experienced by some users</li>

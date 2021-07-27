@@ -4,6 +4,15 @@
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server startup script using screen -- view the console with screen -r minecraft
 
+# Set path variable
+USERPATH="pathvariable"
+PathLength=${#USERPATH}
+if [[ "$PathLength" -gt 12 ]]; then
+    PATH="$USERPATH"
+else
+    echo "Unable to set path variable.  You likely need an updated version of SetupMinecraft.sh from GitHub!"
+fi
+
 # Check to make sure we aren't running as root
 if [[ $(id -u) = 0 ]]; then
    echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./start.sh.  Exiting..."
@@ -36,6 +45,9 @@ done
 
 # Switch to server directory
 cd dirname/minecraft/
+
+# Take ownership of server files and set correct permissions
+Permissions=$(bash /dirname/minecraft/fixpermissions.sh -a)
 
 # Back up server
 if [ -d "world" ]; then 
