@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>August 1st 2021</h3>
+<ul>
+<li>Fixed a missing -A parameter for a curl command (thanks davie2000, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/27">issue #27</a>)</li>
+</ul>
+
 <h3>July 27th 2021</h3>
 <ul>
 <li>Added PATH variable to scripts to improve compatibility on some distros</li>
