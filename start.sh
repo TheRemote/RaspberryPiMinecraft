@@ -173,7 +173,7 @@ curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A -o paperclip.jar https://papermc.io/api/v1/paper/verselect/latest/download
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar https://papermc.io/api/v1/paper/verselect/latest/download
 fi
 
 echo "Starting Minecraft server.  To view window type screen -r minecraft."
