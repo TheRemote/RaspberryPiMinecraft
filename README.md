@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>September 2nd 2021</h3>
+<ul>
+<li>Update to Paper Minecraft Server API v2</li>
+</ul>
+
 <h3>August 1st 2021</h3>
 <ul>
 <li>Fixed a missing -A parameter for a curl command (thanks davie2000, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/27">issue #27</a>)</li>
