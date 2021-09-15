@@ -51,6 +51,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>September 15th 2021</h3>
+<ul>
+<li>Update to allow OpenJDK 17 which is now the default "snap"</li>
+</ul>
+
 <h3>September 2nd 2021</h3>
 <ul>
 <li>Update to Paper Minecraft Server API v2</li>
