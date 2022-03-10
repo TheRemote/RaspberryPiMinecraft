@@ -49,6 +49,15 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <li>TinkerOS Stretch</li>
 </ul>
 
+<h3>Buy A Coffee / Donate</h3>
+<p>People have expressed some interest in this (you are all saints, thank you, truly)</p>
+<ul>
+ <li>PayPal: 05jchambers@gmail.com</li>
+ <li>Venmo: @JamesAChambers</li>
+ <li>CashApp: $theremote</li>
+ <li>Bitcoin (BTC): 3H6wkPnL1Kvne7dJQS8h7wB4vndB9KxZP7</li>
+</ul>
+
 <h2>Update History</h2>
 
 <h3>March 5th 2022</h3>
