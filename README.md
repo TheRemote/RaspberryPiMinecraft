@@ -60,6 +60,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>March 23rd 2022</h3>
+<ul>
+<li>Removed obsolete requirement not allowing OpenJDK versions above 17 as Paper now supports this</li>
+</ul>
+
 <h3>March 5th 2022</h3>
 <ul>
 <li>Update to 1.18.2 -- make sure you have backups first if you are upgrading from an existing server!</li>

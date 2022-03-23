@@ -218,8 +218,8 @@ Install_Java() {
     CurrentJava="0"
   fi
   
-  if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
-    Print_Style  "Correct OpenJDK (16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
+  if [[ $CurrentJava -lt 16 ]]; then
+    Print_Style  "Minimum OpenJDK (16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
     if [ ! -n "$(which snap)" ]; then
       Print_Style "The snap application is not currently installed." "$CYAN"
       echo -n "Install snapd and reboot the Pi now? (run SetupMinecraft.sh again after reboot completes) (y/n)?"
@@ -240,7 +240,7 @@ Install_Java() {
       sudo update-alternatives --install /usr/bin/java java /snap/openjdk/current/jdk/bin/java 1
       sudo update-alternatives --set java /snap/openjdk/current/jdk/bin/java
       CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-      if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
+      if [[ $CurrentJava -lt 16 ]]; then
         Print_Style "OpenJDK installation failed.  Java version is still reporting as less or greater than OpenJDK 16!" "$RED"
         exit 1
       else
