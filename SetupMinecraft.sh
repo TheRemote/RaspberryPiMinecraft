@@ -199,9 +199,28 @@ Install_Java() {
   Print_Style "Installing latest Java OpenJDK..." "$YELLOW"
 
   # Check for the highest available JDK first and then decrement version until we find a candidate for installation
+  JavaVer=$(apt-cache show openjdk-17-jre-headless 2&>1 | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-17-jre-headless -y
+    return
+  fi
+
   JavaVer=$(apt-cache show openjdk-16-jre-headless 2&>1 | grep Version | awk 'NR==1{ print $2 }')
   if [[ "$JavaVer" ]]; then
     sudo apt-get install openjdk-16-jre-headless -y
+    return
+  fi
+
+  JavaVer=$(apt-cache show openjdk-17 2&>1 | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-17 -y
+    return
+  fi
+
+
+  JavaVer=$(apt-cache show openjdk-16 2&>1 | grep Version | awk 'NR==1{ print $2 }')
+  if [[ "$JavaVer" ]]; then
+    sudo apt-get install openjdk-16 -y
     return
   fi
 
@@ -218,35 +237,9 @@ Install_Java() {
     CurrentJava="0"
   fi
   
-  if [[ $CurrentJava -lt 16 ]]; then
-    Print_Style  "Minimum OpenJDK (16) was not found in apt repositories and needs to be installed via snapd.  Checking for snapd..." "$YELLOW"
-    if [ ! -n "$(which snap)" ]; then
-      Print_Style "The snap application is not currently installed." "$CYAN"
-      echo -n "Install snapd and reboot the Pi now? (run SetupMinecraft.sh again after reboot completes) (y/n)?"
-      read answer < /dev/tty
-      if [ "$answer" != "${answer#[Yy]}" ]; then
-        sudo apt-get install snapd -y
-        sudo reboot
-      else
-        echo "Installation of snapd was aborted.  Exiting..."
-        exit 1
-      fi
-      apt-get update && apt-get install sudo -y
-    else
-      Print_Style "Installing OpenJDK..." "$YELLOW"
-      sudo snap install core
-      sudo snap install openjdk
-      sudo snap refresh openjdk
-      sudo update-alternatives --install /usr/bin/java java /snap/openjdk/current/jdk/bin/java 1
-      sudo update-alternatives --set java /snap/openjdk/current/jdk/bin/java
-      CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-      if [[ $CurrentJava -lt 16 ]]; then
-        Print_Style "OpenJDK installation failed.  Java version is still reporting as less or greater than OpenJDK 16!" "$RED"
-        exit 1
-      else
-        Print_Style "OpenJDK installation completed." "$GREEN"
-      fi
-    fi
+  if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
+    Print_Style  "Required OpenJDK version 16 or 17 was not found in apt repositories and needs to be installed manually." "$YELLOW"
+    return
   else
     Print_Style "OpenJDK installation completed." "$GREEN"
   fi
