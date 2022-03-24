@@ -323,6 +323,7 @@ Print_Style "Creating minecraft server directory..." "$YELLOW"
 mkdir -p "$DirName/minecraft"
 cd "$DirName/minecraft"
 mkdir backups
+mkdir logs
 
 # Install Java
 Install_Java
@@ -339,7 +340,7 @@ curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 Print_Style "Building the Minecraft server..." "$YELLOW"
-java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
+jre/bin/java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
 
 # Accept the EULA
 Print_Style "Accepting the EULA..." "$GREEN"
