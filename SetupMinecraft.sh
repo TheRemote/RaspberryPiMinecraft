@@ -121,7 +121,7 @@ Get_ServerMemory() {
 Update_Scripts() {
   # Remove existing scripts
   cd $DirName/minecraft
-  rm start.sh stop.sh restart.sh fixpermissions.sh update.sh
+  rm -f start.sh stop.sh restart.sh fixpermissions.sh update.sh
 
   # Download start.sh from repository
   Print_Style "Grabbing start.sh from repository..." "$YELLOW"
@@ -202,17 +202,17 @@ Install_Java() {
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
     curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_arm_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
-    rm jre17.tar.gz
+    rm -f jre17.tar.gz
     mv jdk-* jre
   elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
     curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
-    rm jre17.tar.gz
+    rm -f jre17.tar.gz
     mv jdk-* jre
   elif [[ "$CPUArch" == *"x86_64"* ]]; then
     curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_x64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
-    rm jre17.tar.gz
+    rm -f jre17.tar.gz
     mv jdk-* jre
   fi
 
