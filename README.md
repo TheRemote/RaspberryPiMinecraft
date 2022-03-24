@@ -55,6 +55,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>March 24th 2022</h3>
+<ul>
+<li>Dedicated OpenJDK 17 install is now used (stored in your server's directory) to avoid apt / snap issues</li>
+</ul>
+
 <h3>March 23rd 2022</h3>
 <ul>
 <li>Removed snapd installation as the snapd repository will only install OpenJDK 18 or higher which won't work with Paper</li>

@@ -196,50 +196,30 @@ Configure_Reboot() {
 
 Install_Java() {
   # Install Java
-  Print_Style "Installing latest Java OpenJDK..." "$YELLOW"
+  Print_Style "Installing OpenJDK..." "$YELLOW"
 
-  # Check for the highest available JDK first and then decrement version until we find a candidate for installation
-  JavaVer=$(apt-cache show openjdk-17-jre-headless 2&>1 | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-17-jre-headless -y
-    return
+  if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
+    curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_arm_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
+    tar -xf jre17.tar.gz
+    rm jre17.tar.gz
+    mv jdk-* jre
+  elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
+    curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
+    tar -xf jre17.tar.gz
+    rm jre17.tar.gz
+    mv jdk-* jre
+  elif [[ "$CPUArch" == *"x86_64"* ]]; then
+    curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_x64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
+    tar -xf jre17.tar.gz
+    rm jre17.tar.gz
+    mv jdk-* jre
   fi
 
-  JavaVer=$(apt-cache show openjdk-16-jre-headless 2&>1 | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-16-jre-headless -y
-    return
-  fi
-
-  JavaVer=$(apt-cache show openjdk-17 2&>1 | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-17 -y
-    return
-  fi
-
-
-  JavaVer=$(apt-cache show openjdk-16 2&>1 | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-16 -y
-    return
-  fi
-
-  # Fall back to non headless JRE
-  JavaVer=$(apt-cache show openjdk-16-jre 2&>1 | grep Version | awk 'NR==1{ print $2 }')
-  if [[ "$JavaVer" ]]; then
-    sudo apt-get install openjdk-16-jre -y
-    return
-  fi
-
-  if [ -n "$(which java)" ]; then
-    CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-  else
-    CurrentJava="0"
-  fi
-  
+  CurrentJava=$(jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
   if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
-    Print_Style  "Required OpenJDK version 16 or 17 was not found in apt repositories and needs to be installed manually." "$YELLOW"
-    return
+    CPUArch=$(uname -m)
+    Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$YELLOW"
+    exit 1
   else
     Print_Style "OpenJDK installation completed." "$GREEN"
   fi
@@ -292,23 +272,6 @@ sudo apt-get update
 sudo apt-get install screen curl -y
 sudo apt-get install net-tools -y
 
-# Install Java dependency
-Install_Java
-
-# Check if Java installation was successful
-if [ -n "$(which java)" ]; then
-  CurrentJava=$(java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-  if [[ $CurrentJava -ge 16 ]]; then
-    Print_Style "Java installed successfully" "$GREEN"
-    else
-      Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." "$RED"
-      exit 1
-    fi
-else
-  Print_Style "Java did not install successfully -- please install manually or check the above output to see what went wrong and run the installation script again." "$RED"
-  exit 1
-fi
-
 # Get directory path (default ~)
 until [ -d "$DirName" ]
 do
@@ -323,8 +286,16 @@ done
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "$DirName/minecraft" ]; then
   Print_Style "Directory minecraft already exists!  Updating scripts and configuring service ..." "$YELLOW"
+
   # Get Home directory path and username
   cd "$DirName/minecraft"
+
+  if [ -d "jre" ]; then
+    Print_Style "Java is already installed." "$GREEN"
+  else
+    cd "$DirName"
+    Install_Java
+  fi
 
   # Ask user for amount of memory they want to dedicate to the Minecraft server
   Get_ServerMemory
@@ -351,8 +322,13 @@ fi
 # Create server directory
 Print_Style "Creating minecraft server directory..." "$YELLOW"
 mkdir -p "$DirName/minecraft"
+cd "$DirName"
+Install_Java
 cd "$DirName/minecraft"
 mkdir backups
+
+# Install Java
+Install_Java
 
 # Get total system memory
 Get_ServerMemory
