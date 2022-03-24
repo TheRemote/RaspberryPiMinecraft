@@ -293,7 +293,6 @@ if [ -d "$DirName/minecraft" ]; then
   if [ -d "jre" ]; then
     Print_Style "Java is already installed." "$GREEN"
   else
-    cd "$DirName"
     Install_Java
   fi
 
@@ -322,8 +321,6 @@ fi
 # Create server directory
 Print_Style "Creating minecraft server directory..." "$YELLOW"
 mkdir -p "$DirName/minecraft"
-cd "$DirName"
-Install_Java
 cd "$DirName/minecraft"
 mkdir backups
 
