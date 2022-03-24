@@ -59,6 +59,7 @@ Update_Sudoers
 <ul>
 <li>Dedicated OpenJDK 17 install is now used (stored in your server's directory) to avoid apt / snap issues</li>
 <li>Create "logs" folder for new servers to avoid harmless error messages (cleanup)</li>
+<li>Add new "jre" folder to backup command's ignore list to avoid bloated backups</li>
 </ul>
 
 <h3>March 23rd 2022</h3>
