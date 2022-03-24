@@ -198,6 +198,7 @@ Install_Java() {
   # Install Java
   Print_Style "Installing OpenJDK..." "$YELLOW"
 
+  CPUArch=$(uname -m)
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
     curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_arm_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
@@ -217,7 +218,6 @@ Install_Java() {
 
   CurrentJava=$(jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
   if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
-    CPUArch=$(uname -m)
     Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$YELLOW"
     exit 1
   else
