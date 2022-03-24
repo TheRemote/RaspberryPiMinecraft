@@ -216,7 +216,7 @@ Install_Java() {
     mv jdk-* jre
   fi
 
-  CurrentJava=$(jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+  CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
   if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
     Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$YELLOW"
     exit 1
