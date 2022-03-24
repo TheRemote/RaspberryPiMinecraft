@@ -39,7 +39,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <li>Raspbian / Raspian Lite Buster/Stretch</li>
 <li>Ubuntu / Ubuntu Server 20.04 / 18.04</li>
 <li>Debian 9 Buster</li>
-<li>Armbian 9 Stretch</li>
+Update_Sudoers
 <li>Arch Linux</li>
 <li>TinkerOS Stretch</li>
 </ul>
@@ -58,6 +58,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <h3>March 24th 2022</h3>
 <ul>
 <li>Dedicated OpenJDK 17 install is now used (stored in your server's directory) to avoid apt / snap issues</li>
+<li>Create "logs" folder for new servers to avoid harmless error messages (cleanup)</li>
 </ul>
 
 <h3>March 23rd 2022</h3>
@@ -81,7 +82,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <ul>
 <li>Update to 1.18.1 -- make sure you have backups first if you are upgrading from an existing server!</li>
 </ul>
-
+Update_Sudoers
 <h3>November 30th 2021</h3>
 <ul>
 <li>Update to 1.18 -- make sure you have backups first if you are upgrading from an existing server!</li>
