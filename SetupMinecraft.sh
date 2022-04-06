@@ -200,28 +200,33 @@ Install_Java() {
 
   CPUArch=$(uname -m)
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-    curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_arm_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_arm_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
     rm -f jre17.tar.gz
     mv jdk-* jre
   elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-    curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_aarch64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
     rm -f jre17.tar.gz
     mv jdk-* jre
   elif [[ "$CPUArch" == *"x86_64"* ]]; then
-    curl https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_x64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.2%2B8/OpenJDK17U-jre_x64_linux_hotspot_17.0.2_8.tar.gz -o jre17.tar.gz -L
     tar -xf jre17.tar.gz
     rm -f jre17.tar.gz
     mv jdk-* jre
   fi
 
-  CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-  if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
-    Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$YELLOW"
-    exit 1
+  if [ -e "$DirName/minecraft/jre/bin/java" ]; then
+    CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+    if [[ $CurrentJava -lt 16 || $CurrentJava -gt 17 ]]; then
+      Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$RED"
+      exit 1
+    else
+      Print_Style "OpenJDK installation completed." "$GREEN"
+    fi
   else
-    Print_Style "OpenJDK installation completed." "$GREEN"
+      Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$RED"
+      exit 1
   fi
 }
 
@@ -290,7 +295,7 @@ if [ -d "$DirName/minecraft" ]; then
   # Get Home directory path and username
   cd "$DirName/minecraft"
 
-  if [ -d "jre" ]; then
+  if [ -d "$DirName/minecraft/jre" ]; then
     Print_Style "Java is already installed." "$GREEN"
   else
     Install_Java
@@ -340,7 +345,7 @@ curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 
 
 # Run the Minecraft server for the first time which will build the modified server and exit saying the EULA needs to be accepted
 Print_Style "Building the Minecraft server..." "$YELLOW"
-jre/bin/java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
+$DirName/minecraft/jre/bin/java -jar -Xms400M -Xmx"$MemSelected"M paperclip.jar
 
 # Accept the EULA
 Print_Style "Accepting the EULA..." "$GREEN"

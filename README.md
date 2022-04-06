@@ -54,6 +54,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>April 6th 2022</h3>
+<ul>
+<li>Fixed issue that prevented detecting a broken OpenJDK installation</li>
+<li>Added language headers to OpenJDK download</li>
+</ul>
+
 <h3>March 24th 2022</h3>
 <ul>
 <li>Dedicated OpenJDK 17 install is now used (stored in your server's directory) to avoid apt / snap issues</li>
