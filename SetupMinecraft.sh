@@ -225,6 +225,7 @@ Install_Java() {
       Print_Style "OpenJDK installation completed." "$GREEN"
     fi
   else
+      rm -rf jre
       Print_Style  "Required OpenJDK version 16 or 17 could not be installed." "$RED"
       exit 1
   fi
@@ -274,8 +275,16 @@ if [ ! -n "$(which sudo)" ]; then
   apt-get update && apt-get install sudo -y
 fi
 sudo apt-get update
-sudo apt-get install screen curl -y
 sudo apt-get install net-tools -y
+if [ -n "`which screen`" ]; then
+  sudo apt-get install screen -y
+fi
+if [ -n "`which curl`" ]; then
+  sudo apt-get install curl -y
+fi
+if [ -n "`which pigz`" ]; then
+  sudo apt-get install pigz -y
+fi
 
 # Get directory path (default ~)
 until [ -d "$DirName" ]

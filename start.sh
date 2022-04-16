@@ -51,8 +51,13 @@ Permissions=$(bash dirname/minecraft/fixpermissions.sh -a)
 
 # Back up server
 if [ -d "world" ]; then 
-    echo "Backing up server (to cd minecraft/backups folder)"
-    tar --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
+    if [ ! -n "`which pigz`" ]; then
+        echo "Backing up server (all cores) to cd minecraft/backups folder"
+        tar -I pigz --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
+    else
+        echo "Backing up server (single core, pigz not found) to cd minecraft/backups folder"
+        tar --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
+    fi
 fi
 
 # Rotate backups -- keep most recent 10

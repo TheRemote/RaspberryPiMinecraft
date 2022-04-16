@@ -54,6 +54,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>April 16th 2022</h3>
+<ul>
+<li>Remove "jre" folder if JDK installation fails so it will attempt to download a fresh copy upon running SetupMinecraft.sh again</li>
+<li>Added support for the tar command to use multiple CPU cores instead of a single core.  This should speed up backups and reduce instances of when it takes longer to back up than the server's startup time (thanks SudosFTW, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/36">issue #36</a>)</li>
+</ul>
+
 <h3>April 6th 2022</h3>
 <ul>
 <li>Fixed issue that prevented detecting a broken OpenJDK installation</li>
