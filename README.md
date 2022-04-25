@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>April 24th 2022</h3>
+<ul>
+<li>Fixed mistake in new multicore compression (thanks pmcmorris</li>
+</ul>
+
 <h3>April 16th 2022</h3>
 <ul>
 <li>Remove "jre" folder if JDK installation fails so it will attempt to download a fresh copy upon running SetupMinecraft.sh again</li>
