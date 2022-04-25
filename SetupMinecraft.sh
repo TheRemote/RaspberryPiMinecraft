@@ -276,13 +276,13 @@ if [ ! -n "$(which sudo)" ]; then
 fi
 sudo apt-get update
 sudo apt-get install net-tools -y
-if [ -n "`which screen`" ]; then
+if [ ! -n "`which screen`" ]; then
   sudo apt-get install screen -y
 fi
-if [ -n "`which curl`" ]; then
+if [ ! -n "`which curl`" ]; then
   sudo apt-get install curl -y
 fi
-if [ -n "`which pigz`" ]; then
+if [ ! -n "`which pigz`" ]; then
   sudo apt-get install pigz -y
 fi
 

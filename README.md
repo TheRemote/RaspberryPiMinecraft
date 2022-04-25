@@ -56,7 +56,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>April 24th 2022</h3>
 <ul>
-<li>Fixed mistake in new multicore compression (thanks pmcmorris)</li>
+<li>Fixed mistake in new multicore compression (thanks pmcmorris) and related mistake in SetupMinecraft.sh dependency check</li>
 </ul>
 
 <h3>April 16th 2022</h3>
