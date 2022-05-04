@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>May 4th 2022</h3>
+<ul>
+<li>Fixed "route" command used to detect internet access to be compatible with Debian</li>
+</ul>
+
 <h3>April 24th 2022</h3>
 <ul>
 <li>Fixed mistake in new multicore compression (thanks pmcmorris) and related mistake in SetupMinecraft.sh dependency check</li>
