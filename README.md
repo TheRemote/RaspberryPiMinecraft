@@ -56,9 +56,8 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>May 8th 2022</h3>
 <ul>
-<li>Fixed a problem with restart.sh having a #!/bin/sh at the top which could cause restart.sh to run in a POSIX shell that doesn't recognize the [[ operator (thanks </li>
+<li>Fixed a problem with restart.sh having a #!/bin/sh at the top which could cause restart.sh to run in a POSIX shell that doesn't recognize the [[ operator (thanks jmswan, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/37">issue #37</a></li>
 </ul>
-
 
 <h3>May 4th 2022</h3>
 <ul>
