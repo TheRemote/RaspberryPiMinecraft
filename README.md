@@ -54,6 +54,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>May 8th 2022</h3>
+<ul>
+<li>Fixed a problem with restart.sh having a #!/bin/sh at the top which could cause restart.sh to run in a POSIX shell that doesn't recognize the [[ operator (thanks </li>
+</ul>
+
+
 <h3>May 4th 2022</h3>
 <ul>
 <li>Fixed "route" command used to detect internet access to be compatible with Debian</li>
