@@ -69,8 +69,9 @@ if [ -d "world" ]; then
 fi
 
 # Rotate backups -- keep most recent 10
-Rotate=$(pushd dirname/minecraft/backups; ls -1tr | head -n -10 | xargs -d '\n' rm -f --; popd)
-
+if [ -d "dirname/minecraft/backups" ]; then
+    Rotate=$(pushd dirname/minecraft/backups; ls -1tr | head -n -10 | xargs -d '\n' rm -f --; popd)
+fi
 # Paper / Spigot / Bukkit Optimization settings
 
 # Configure paper.yml options
