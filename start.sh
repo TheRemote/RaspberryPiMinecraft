@@ -69,11 +69,11 @@ if [ -d "world" ]; then
 fi
 
 # Rotate backups -- keep most recent 10
-if [ -d "dirname/minecraft/backups" ]; then
+if [ -e "dirname/minecraft/backups" ]; then
     Rotate=$(pushd dirname/minecraft/backups; ls -1tr | head -n -10 | xargs -d '\n' rm -f --; popd)
 fi
-# Paper / Spigot / Bukkit Optimization settings
 
+# Paper / Spigot / Bukkit Optimization settings
 # Configure paper.yml options
 if [ -f "paper.yml" ]; then
     # early-warning-delay, early-warning-every
@@ -176,7 +176,6 @@ if [ -f "server.properties" ]; then
     sed -i "s/snooper-enabled=true/snooper-enabled=false/g" server.properties
     # Increase server watchdog timer to prevent it from shutting itself down without restarting
     sed -i "s/max-tick-time=60000/max-tick-time=120000/g" server.properties
-
 fi
 
 # Update paperclip.jar
