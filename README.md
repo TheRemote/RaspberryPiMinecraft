@@ -56,6 +56,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>May 10th 2022</h3>
 <ul>
+<li>Update Adoptium OpenJDK version</li>
 <li>Add safety check for backups to make sure folder exists before pruning</li>
 </ul>
 
