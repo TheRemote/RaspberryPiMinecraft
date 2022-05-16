@@ -24,7 +24,7 @@ sudo sh -c "echo 1 > /proc/sys/vm/drop_caches"
 sync
 
 # Check if server is already running
-ScreenWipe=$(screen -wipe)
+ScreenWipe=$(screen -wipe 2>&1)
 if screen -list | grep -q "\.minecraft"; then
     echo "Server is already running!  Type screen -r minecraft to open the console"
     exit 1
