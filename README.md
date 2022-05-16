@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>May 15th 2022</h3>
+<ul>
+  <li>Added screen -wipe to beginning of start.sh to prevent a startup issue that could occur if there was a "dead" screen instance (thanks grimholme)</li>
+</ul>
+
 <h3>May 11th 2022</h3>
 <ul>
 <li>Fix Adoptium arm and aarch64 OpenJDK links (thanks 407pilot, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/38">issue #38</a></li>
