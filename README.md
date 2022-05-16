@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>May 16th 2022</h3>
+<ul>
+  <li>Add -DPaper.IgnoreJavaVersion=true to allow OpenJDK 17 to run the older Paper Minecraft versions (thanks NotMick, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/39">issue #39</a></li>
+</ul>
+
 <h3>May 15th 2022</h3>
 <ul>
   <li>Added screen -wipe to beginning of start.sh to prevent a startup issue that could occur if there was a "dead" screen instance (thanks grimholme)</li>
