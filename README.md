@@ -54,6 +54,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>May 21st 2022</h3>
+<ul>
+  <li>Switched from JDK to JRE to save space</li>
+  <li>Added Adoptium OpenJDK support for s390x and ppc64le architectures</li>
+</ul>
+
 <h3>May 16th 2022</h3>
 <ul>
   <li>Add -DPaper.IgnoreJavaVersion=true to allow OpenJDK 17 to run the older Paper Minecraft versions (thanks NotMick, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/39">issue #39</a></li>

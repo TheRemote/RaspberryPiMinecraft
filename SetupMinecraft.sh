@@ -200,20 +200,30 @@ Install_Java() {
 
   CPUArch=$(uname -m)
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jdk_arm_linux_hotspot_17.0.3_7.tar.gz -o jre17.tar.gz -L
-    tar -xf jre17.tar.gz
-    rm -f jre17.tar.gz
-    mv jdk-* jre
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jre_x64_linux_hotspot_17.0.3_7.tar.gz -o /jre17.tar.gz -L
+    tar -xf /jre17.tar.gz
+    rm -f /jre17.tar.gz
+    mv /jdk-* /jre
   elif [[ "$CPUArch" == *"aarch64"* || "$CPUArch" == *"arm64"* ]]; then
-    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.3_7.tar.gz -o jre17.tar.gz -L
-    tar -xf jre17.tar.gz
-    rm -f jre17.tar.gz
-    mv jdk-* jre
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jre_x64_linux_hotspot_17.0.3_7.tar.gz -o /jre17.tar.gz -L
+    tar -xf /jre17.tar.gz
+    rm -f /jre17.tar.gz
+    mv /jdk-* /jre
   elif [[ "$CPUArch" == *"x86_64"* ]]; then
-    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jdk_x64_linux_hotspot_17.0.3_7.tar.gz -o jre17.tar.gz -L
-    tar -xf jre17.tar.gz
-    rm -f jre17.tar.gz
-    mv jdk-* jre
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jre_x64_linux_hotspot_17.0.3_7.tar.gz -o /jre17.tar.gz -L
+    tar -xf /jre17.tar.gz
+    rm -f /jre17.tar.gz
+    mv /jdk-* /jre
+  elif [[ "$CPUArch" == *"s390x"* ]]; then
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jre_s390x_linux_hotspot_17.0.3_7.tar.gz -o /jre17.tar.gz -L
+    tar -xf /jre17.tar.gz
+    rm -f /jre17.tar.gz
+    mv /jdk-* /jre
+  elif [[ "$CPUArch" == *"ppc64le"* ]]; then
+    curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.3%2B7/OpenJDK17U-jre_ppc64le_linux_hotspot_17.0.3_7.tar.gz -o /jre17.tar.gz -L
+    tar -xf /jre17.tar.gz
+    rm -f /jre17.tar.gz
+    mv /jdk-* /jre
   fi
 
   if [ -e "$DirName/minecraft/jre/bin/java" ]; then
