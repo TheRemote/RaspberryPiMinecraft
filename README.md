@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>May 22nd 2022</h3>
+<ul>
+  <li>Update OpenJDK installation paths</li>
+</ul>
+
 <h3>May 21st 2022</h3>
 <ul>
   <li>Switched from JDK to JRE to save space</li>
