@@ -15,8 +15,8 @@ fi
 
 # Check to make sure we aren't running as root
 if [[ $(id -u) = 0 ]]; then
-   echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./start.sh.  Exiting..."
-   exit 1
+    echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./start.sh.  Exiting..."
+    exit 1
 fi
 
 # Flush out memory to disk so we have the maximum available for Java allocation
@@ -38,14 +38,14 @@ else
     DefaultRoute=$(route -n | awk '$4 == "UG" {print $2}')
 fi
 while [ -z "$DefaultRoute" ]; do
-    echo "Network interface not up, will try again in 1 second";
-    sleep 1;
+    echo "Network interface not up, will try again in 1 second"
+    sleep 1
     if [ -e '/sbin/route' ]; then
         DefaultRoute=$(/sbin/route -n | awk '$4 == "UG" {print $2}')
     else
         DefaultRoute=$(route -n | awk '$4 == "UG" {print $2}')
     fi
-    NetworkChecks=$((NetworkChecks+1))
+    NetworkChecks=$((NetworkChecks + 1))
     if [ $NetworkChecks -gt 20 ]; then
         echo "Waiting for network interface to come up timed out - starting server without network connection ..."
         break
@@ -59,8 +59,8 @@ cd dirname/minecraft/
 Permissions=$(bash dirname/minecraft/fixpermissions.sh -a)
 
 # Back up server
-if [ -d "world" ]; then 
-    if [ -n "`which pigz`" ]; then
+if [ -d "world" ]; then
+    if [ -n "$(which pigz)" ]; then
         echo "Backing up server (all cores) to cd minecraft/backups folder"
         tar -I pigz --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
     else
@@ -71,7 +71,11 @@ fi
 
 # Rotate backups -- keep most recent 10
 if [ -e "dirname/minecraft/backups" ]; then
-    Rotate=$(pushd dirname/minecraft/backups; ls -1tr | head -n -10 | xargs -d '\n' rm -f --; popd)
+    Rotate=$(
+        pushd dirname/minecraft/backups
+        ls -1tr | head -n -10 | xargs -d '\n' rm -f --
+        popd
+    )
 fi
 
 # Paper / Spigot / Bukkit Optimization settings
@@ -85,7 +89,7 @@ if [ -f "paper.yml" ]; then
     # Paper applies a custom and far more efficient algorithm for explosions. It has no impact on gameplay.
     sed -i "s/optimize-explosions: false/optimize-explosions: true/g" paper.yml
     # mob-spawner-tick-rate
-    # This is the delay (in ticks) before an activated spawner attempts to spawn mobs. Doubling the rate to 2 should have no impact on spawn rates. 
+    # This is the delay (in ticks) before an activated spawner attempts to spawn mobs. Doubling the rate to 2 should have no impact on spawn rates.
     # Only go higher if you have severe load from ticking spawners. Keep below 10.
     sed -i "s/mob-spawner-tick-rate: 1/mob-spawner-tick-rate: 3/g" paper.yml
     # container-update-tick-rate
@@ -104,7 +108,7 @@ if [ -f "paper.yml" ]; then
     # grass-spread-tick
     # The time (in ticks) before the server attempts to spread grass in loaded chunks. This will have minimal gameplay impact on most game types.
     sed -i "s/grass-spread-tick-rate: 1/grass-spread-tick-rate: 3/g" paper.yml
-    # despawn-ranges 
+    # despawn-ranges
     # Soft = The distance (in blocks) from a player where mobs will be periodically removed.
     # Hard = Distance where mobs will be removed instantly.
     sed -i "s/soft: 32/soft: 28/g" paper.yml
@@ -137,7 +141,7 @@ fi
 # Configure bukkit.yml options
 if [ -f "bukkit.yml" ]; then
     # monster-spawns
-    # This dictates how often (in ticks) the server will attempt to spawn a monster in a legal location. Doubling the time between attempts helps performance without hurting spawn rates. 
+    # This dictates how often (in ticks) the server will attempt to spawn a monster in a legal location. Doubling the time between attempts helps performance without hurting spawn rates.
     sed -i "s/monster-spawns: 1/monster-spawns: 2/g" bukkit.yml
     # autosave
     # This enables Bukkit's world saving function and how often it runs (in ticks). It should be 6000 (5 minutes) by default.
@@ -191,7 +195,7 @@ else
     BuildJSON=$(curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://papermc.io/api/v2/projects/paper/versions/1.19)
     Build=$(echo "$BuildJSON" | rev | cut -d, -f 1 | cut -d] -f 2 | rev)
     # Fix for if there is only one build in the branch
-    if [ -n $(echo "$Build" | grep builds)]; then
+    if [ -n $(echo "$Build" | grep builds) ]; then
         Build=0
     fi
     Build=$(($Build + 0))
