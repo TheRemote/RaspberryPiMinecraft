@@ -197,14 +197,16 @@ else
     # Fix for if there is only one build in the branch
     if [ -n $(echo "$Build" | grep builds) ]; then
         Build=0
-    fi
-    Build=$(($Build + 0))
-    if [[ $Build != 0 ]]; then
         echo "Latest paperclip build found: $Build"
-
         curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "https://papermc.io/api/v2/projects/paper/versions/verselect/builds/$Build/downloads/paper-verselect-$Build.jar"
     else
-        echo "Unable to retrieve latest Paper build (got result of $Build)"
+        Build=$(($Build + 0))
+        if [[ $Build != 0 ]]; then
+            echo "Latest paperclip build found: $Build"
+            curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "https://papermc.io/api/v2/projects/paper/versions/verselect/builds/$Build/downloads/paper-verselect-$Build.jar"
+        else
+            echo "Unable to retrieve latest Paper build (got result of $Build)"
+        fi
     fi
 fi
 
