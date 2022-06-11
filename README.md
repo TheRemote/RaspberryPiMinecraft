@@ -54,6 +54,13 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>Jun 11th 2022</h3>
+<ul>
+  <li>Update to Paper experimental 1.19 release as default installation</li>
+  <li>Make sure you have backups of your server from your "backups" folder stored separately before upgrading</li>
+  <li>If you have problems with 1.19 you need to restore a backup to go back to 1.18 as it will not take your server data files on 1.18 once the 1.19 structures/data have been added</li>
+</ul>
+
 <h3>May 22nd 2022</h3>
 <ul>
   <li>Update OpenJDK installation paths</li>
