@@ -56,7 +56,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>June 15th 2022</h3>
 <ul>
-  <li>Fix Paper 1.19 version upgrades (thanks Dire, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/41">issue #41</a>)</li>
+  <li>Fix Paper 1.19 version upgrades (thanks Meganium97, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/41">issue #41</a>)</li>
 </ul>
 
 <h3>June 11th 2022</h3>
