@@ -54,7 +54,12 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
-<h3>Jun 11th 2022</h3>
+<h3>June 15th 2022</h3>
+<ul>
+  <li>Fix Paper 1.19 version upgrades (thanks Dire, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/41">issue #41</a>)</li>
+</ul>
+
+<h3>June 11th 2022</h3>
 <ul>
   <li>Update to Paper experimental 1.19 release as default installation</li>
   <li>Make sure you have backups of your server from your "backups" folder stored separately before upgrading</li>
@@ -76,7 +81,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h3>May 16th 2022</h3>
 <ul>
-  <li>Add -DPaper.IgnoreJavaVersion=true to allow OpenJDK 17 to run the older Paper Minecraft versions (thanks NotMick, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/39">issue #39</a></li>
+  <li>Add -DPaper.IgnoreJavaVersion=true to allow OpenJDK 17 to run the older Paper Minecraft versions (thanks NotMick, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/39">issue #39</a>)</li>
 </ul>
 
 <h3>May 15th 2022</h3>
