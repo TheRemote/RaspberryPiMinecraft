@@ -1,4 +1,4 @@
-This script will automatically download and configure the Paper Minecraft server on your Raspberry Pi!<br>
+This script will automatically download and configure the Paper Minecraft server!<br>
 For the full article and guide visit https://jamesachambers.com/raspberry-pi-minecraft-server-script-with-startup-service/<br>
 
 <h2>Installation Instructions</h2>
