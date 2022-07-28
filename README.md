@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 27th 2022</h3>
+<ul>
+  <li>Update to 1.19.1 (always make sure you've copied some backups out of the backups folder first!)</li>
+</ul>
+
 <h3>June 15th 2022</h3>
 <ul>
   <li>Fix Paper 1.19 version upgrades (thanks Meganium97, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/issues/41">issue #41</a>)</li>
