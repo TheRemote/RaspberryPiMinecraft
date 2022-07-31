@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>July 31st 2022</h3>
+<ul>
+  <li>Upgrade Adoptium OpenJDK to 18.0.2 -- if you want to upgrade your Adoptium you can remove the ~/minecraft/jre folder and run SetupMinecraft.sh again to upgrade to the latest one</li>
+</ul>
+
 <h3>July 27th 2022</h3>
 <ul>
   <li>Update to 1.19.1 (always make sure you've copied some backups out of the backups folder first!)</li>
