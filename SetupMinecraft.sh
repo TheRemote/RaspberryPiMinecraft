@@ -36,16 +36,16 @@ function read_with_prompt {
   default="${3-}"
   unset $variable_name
   while [[ ! -n ${!variable_name} ]]; do
-    read -p "$prompt: " $variable_name < /dev/tty
-    if [ ! -n "`which xargs`" ]; then
+    read -p "$prompt: " $variable_name </dev/tty
+    if [ ! -n "$(which xargs)" ]; then
       declare -g $variable_name=$(echo "${!variable_name}" | xargs)
     fi
     declare -g $variable_name=$(echo "${!variable_name}" | head -n1 | awk '{print $1;}')
-    if [[ -z ${!variable_name} ]] && [[ -n "$default" ]] ; then
+    if [[ -z ${!variable_name} ]] && [[ -n "$default" ]]; then
       declare -g $variable_name=$default
     fi
     echo -n "$prompt : ${!variable_name} -- accept (y/n)?"
-    read answer < /dev/tty
+    read answer </dev/tty
     if [[ "$answer" == "${answer#[Yy]}" ]]; then
       unset $variable_name
     else
@@ -88,7 +88,7 @@ Get_ServerMemory() {
     Print_Style "You can increase available memory by closing other processes.  If nothing else is running your distro may be using all available memory." "$RED"
     Print_Style "It is recommended to use a headless distro (Lite or Server version) to ensure you have the maximum memory available possible." "$RED"
     echo -n "Press any key to continue"
-    read endkey < /dev/tty
+    read endkey </dev/tty
   fi
 
   # Ask user for amount of memory they want to dedicate to the Minecraft server
@@ -101,8 +101,8 @@ Get_ServerMemory() {
   MemSelected=0
   RecommendedMemory=$(($AvailableMemory - 300))
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
-    echo -n "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): " 
-    read MemSelected < /dev/tty
+    echo -n "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): "
+    read MemSelected </dev/tty
     if [[ $MemSelected -lt 600 ]]; then
       Print_Style "Please enter a minimum of 600" "$RED"
     elif [[ $MemSelected -gt $TotalMemory ]]; then
@@ -169,7 +169,7 @@ Update_Service() {
   sudo systemctl daemon-reload
   Print_Style "Minecraft can automatically start at boot if you wish." "$CYAN"
   echo -n "Start Minecraft server at startup automatically (y/n)?"
-  read answer < /dev/tty
+  read answer </dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
     sudo systemctl enable minecraft.service
   fi
@@ -183,7 +183,7 @@ Configure_Reboot() {
   Print_Style "Your time zone is currently set to $TimeZone.  Current system time: $CurrentTime" "$CYAN"
   Print_Style "You can adjust/remove the selected reboot time later by typing crontab -e" "$CYAN"
   echo -n "Automatically reboot Pi and update server at 4am daily (y/n)?"
-  read answer < /dev/tty
+  read answer </dev/tty
   if [ "$answer" != "${answer#[Yy]}" ]; then
     croncmd="$DirName/minecraft/restart.sh"
     cronjob="0 4 * * * $croncmd 2>&1"
@@ -196,6 +196,15 @@ Configure_Reboot() {
 }
 
 Install_Java() {
+  # Check currently installed OpenJDK
+  if [ -e "$DirName/minecraft/jre/bin/java" ]; then
+    CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+    if [[ $CurrentJava -lt 18 ]]; then
+      echo "Older or broken Java installation found -- reinstalling..."
+      rm -rf "$DirName/minecraft/jre"
+    fi
+  fi
+
   # Install Java
   Print_Style "Installing OpenJDK..." "$YELLOW"
 
@@ -229,16 +238,16 @@ Install_Java() {
 
   if [ -e "$DirName/minecraft/jre/bin/java" ]; then
     CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-    if [[ $CurrentJava -lt 16 || $CurrentJava -gt 18 ]]; then
-      Print_Style  "Required OpenJDK version 16/17/18 could not be installed." "$RED"
+    if [[ $CurrentJava -lt 18 ]]; then
+      Print_Style "Required OpenJDK version 18 could not be installed." "$RED"
       exit 1
     else
       Print_Style "OpenJDK installation completed." "$GREEN"
     fi
   else
-      rm -rf jre
-      Print_Style  "Required OpenJDK version 16/17/18 could not be installed." "$RED"
-      exit 1
+    rm -rf jre
+    Print_Style "Required OpenJDK version 18 could not be installed." "$RED"
+    exit 1
   fi
 }
 
@@ -257,7 +266,7 @@ Update_Sudoers() {
 
 Fix_Permissions() {
   echo "Setting server file permissions..."
-  sudo ./fixpermissions.sh -a > /dev/null
+  sudo ./fixpermissions.sh -a >/dev/null
 }
 
 #################################################################################################
@@ -276,8 +285,8 @@ fi
 
 # Check to make sure we aren't running as root
 if [[ $(id -u) = 0 ]]; then
-   echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./SetupMinecraft.sh.  Exiting..."
-   exit 1
+  echo "This script is not meant to run as root or sudo.  Please run as a normal user with ./SetupMinecraft.sh.  Exiting..."
+  exit 1
 fi
 
 # Install dependencies needed to run minecraft in the background
@@ -287,19 +296,18 @@ if [ ! -n "$(which sudo)" ]; then
 fi
 sudo apt-get update
 sudo apt-get install net-tools -y
-if [ ! -n "`which screen`" ]; then
+if [ ! -n "$(which screen)" ]; then
   sudo apt-get install screen -y
 fi
-if [ ! -n "`which curl`" ]; then
+if [ ! -n "$(which curl)" ]; then
   sudo apt-get install curl -y
 fi
-if [ ! -n "`which pigz`" ]; then
+if [ ! -n "$(which pigz)" ]; then
   sudo apt-get install pigz -y
 fi
 
 # Get directory path (default ~)
-until [ -d "$DirName" ]
-do
+until [ -d "$DirName" ]; do
   echo "Enter root directory path to install Minecraft server.  Almost nobody should change this unless you're installing to a different disk altogether. (default ~): "
   read_with_prompt DirName "Directory Path" ~
   DirName=$(eval echo "$DirName")
@@ -376,7 +384,7 @@ Update_Scripts
 
 # Server configuration
 Print_Style "Enter a name for your server..." "$MAGENTA"
-read -p 'Server Name: ' servername < /dev/tty
+read -p 'Server Name: ' servername </dev/tty
 echo "server-name=$servername" >>server.properties
 echo "motd=$servername" >>server.properties
 

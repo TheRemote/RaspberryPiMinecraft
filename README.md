@@ -54,6 +54,13 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>August 2nd 2022</h3>
+<ul>
+  <li>Fix ARM link for Adoptium OpenJDK
+   (thanks zqigolden, <a href="https://github.com/TheRemote/RaspberryPiMinecraft/pull/42">PR #42</a></li>
+  <li>OpenJDK will now detect if you have an older version than SetupMinecraft is installing (or a broken Java install) and reinstall the newest version</li>
+</ul>
+
 <h3>July 31st 2022</h3>
 <ul>
   <li>Upgrade Adoptium OpenJDK to 18.0.2 -- if you want to upgrade your Adoptium you can remove the ~/minecraft/jre folder and run SetupMinecraft.sh again to upgrade to the latest one</li>
