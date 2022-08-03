@@ -196,14 +196,8 @@ Configure_Reboot() {
 }
 
 Install_Java() {
-  # Check currently installed OpenJDK
-  if [ -e "$DirName/minecraft/jre" ]; then
-    CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
-    if [[ $CurrentJava -lt 18 ]]; then
-      echo "Older or broken Java installation found -- reinstalling..."
-      rm -rf "$DirName/minecraft/jre"
-    fi
-  fi
+  # Remove old JRE
+  rm -rf jre
 
   # Install Java
   Print_Style "Installing OpenJDK..." "$YELLOW"
