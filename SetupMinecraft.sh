@@ -379,6 +379,11 @@ Update_Scripts
 # Server configuration
 Print_Style "Enter a name for your server..." "$MAGENTA"
 read -p 'Server Name: ' servername </dev/tty
+
+# Remove non-alphanumeric characters from servername
+servername=$(echo "$servername" | tr -cd '[a-zA-Z0-9]._-')
+
+# Modify server.properties with server name
 echo "server-name=$servername" >>server.properties
 echo "motd=$servername" >>server.properties
 
