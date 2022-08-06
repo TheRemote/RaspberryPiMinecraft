@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>August 6th 2022</h3>
+<ul>
+  <li>Upgrade to 1.19.2</li>
+</ul>
+
 <h3>August 4th 2022</h3>
 <ul>
   <li>Script now removes non-alphanumeric characters from the servername variable (to prevent using quotes and other symbols that will break it)</li>
