@@ -57,6 +57,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <h3>August 10th 2022</h3>
 <ul>
   <li>Moved custom directories to the top of SetupMinecraft.sh to eliminate confusion about how to use the feature (and almost nobody should unless you are storing your server on a separate drive)</li>
+    <li>Improve JRE update detection in SetupMinecraft.sh</li>
 </ul>
 
 <h3>August 6th 2022</h3>

@@ -319,7 +319,11 @@ if [ -d "$DirName/minecraft" ]; then
   cd "$DirName/minecraft"
 
   if [ -d "$DirName/minecraft/jre" ]; then
-    Print_Style "Java is already installed." "$GREEN"
+    CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
+    if [[ $CurrentJava -lt 18 ]]; then
+      Print_Style "Updating Java..." "$YELLOW"
+      Install_Java
+    fi
   else
     Install_Java
   fi
