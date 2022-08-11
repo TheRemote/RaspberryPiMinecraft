@@ -18,6 +18,8 @@ if [ -z "$DirName" ]; then
   DirName=~
 fi
 
+cd "$DirName"
+
 UserName=$(whoami)
 
 # Terminal colors
