@@ -206,7 +206,7 @@ Configure_Reboot() {
 
 Install_Java() {
   # Remove old JRE
-  rm -rf jre
+  rm -rf "$DirName/minecraft/jre"
 
   # Install Java
   Print_Style "Installing OpenJDK..." "$YELLOW"
@@ -248,7 +248,7 @@ Install_Java() {
       Print_Style "OpenJDK installation completed." "$GREEN"
     fi
   else
-    rm -rf jre
+    rm -rf "$DirName/minecraft/jre"
     Print_Style "Required OpenJDK version 18 could not be installed." "$RED"
     exit 1
   fi
@@ -278,6 +278,8 @@ Print_Style "Minecraft Server installation script by James A. Chambers - https:/
 Print_Style "Version $Version will be installed.  To change this, open SetupMinecraft.sh and change the \"Version\" variable to the version you want to install." "$MAGENTA"
 Print_Style "Latest version is always available at https://github.com/TheRemote/RaspberryPiMinecraft" "$MAGENTA"
 Print_Style "Don't forget to set up port forwarding on your router!  The default port is 25565" "$MAGENTA"
+
+cd "$DirName"
 
 if [[ -e "SetupMinecraft.sh" && "$AllowLocalCopy" -ne "1" ]]; then
   rm -f "SetupMinecraft.sh"
