@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>August 10th 2022</h3>
+<ul>
+  <li>Moved custom directories to the top of SetupMinecraft.sh to eliminate confusion about how to use the feature (and almost nobody should unless you are storing your server on a separate drive)</li>
+</ul>
+
 <h3>August 6th 2022</h3>
 <ul>
   <li>Upgrade to 1.19.2</li>

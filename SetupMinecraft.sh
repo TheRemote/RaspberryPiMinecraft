@@ -11,6 +11,10 @@ Version="1.19.2"
 # Set to AllowLocalCopy="1" if you make changes to the script otherwise any changes will be discarded and the latest online version will run
 AllowLocalCopy="0"
 
+# Custom Directory
+# You can change this to a custom directory -- it is meant to be the root directory that contains everything (not including the "minecraft" folder part)
+DirName="~"
+
 UserName=$(whoami)
 
 # Terminal colors
@@ -299,16 +303,6 @@ fi
 if [ ! -n "$(which pigz)" ]; then
   sudo apt-get install pigz -y
 fi
-
-# Get directory path (default ~)
-until [ -d "$DirName" ]; do
-  echo "Enter root directory path to install Minecraft server.  Almost nobody should change this unless you're installing to a different disk altogether. (default ~): "
-  read_with_prompt DirName "Directory Path" ~
-  DirName=$(eval echo "$DirName")
-  if [ ! -d "$DirName" ]; then
-    echo "Invalid directory.  Please use the default path of ~ if you aren't familiar with fully qualified Linux paths or you're going to have errors."
-  fi
-done
 
 # Check to see if Minecraft directory already exists, if it does then reconfigure existing scripts
 if [ -d "$DirName/minecraft" ]; then
