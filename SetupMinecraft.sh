@@ -13,7 +13,10 @@ AllowLocalCopy="0"
 
 # Custom Directory
 # You can change this to a custom directory -- it is meant to be the root directory that contains everything (not including the "minecraft" folder part)
-DirName="~"
+DirName=$(readlink -e ~)
+if [ -z "$DirName" ]; then
+  DirName=~
+fi
 
 UserName=$(whoami)
 
