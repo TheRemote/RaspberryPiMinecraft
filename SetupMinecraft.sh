@@ -322,6 +322,7 @@ if [ -d "$DirName/minecraft" ]; then
     CurrentJava=$($DirName/minecraft/jre/bin/java -version 2>&1 | head -1 | cut -d '"' -f 2 | cut -d '.' -f 1)
     if [[ $CurrentJava -lt 18 ]]; then
       Print_Style "Updating Java..." "$YELLOW"
+      rm -rf "$DirName/minecraft/jre"
       Install_Java
     fi
   else
