@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>September 2nd 2022</h3>
+<ul>
+  <li>Fix tail warning message if there is no existing log file</li>
+</ul>
+
 <h3>August 26th 2022</h3>
 <ul>
   <li>Raise server startup timeout from 600 seconds to 1800 seconds to prevent startup failure when backing up large servers</li>

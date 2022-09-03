@@ -44,8 +44,10 @@ else
     sudo chmod -Rv 755 dirname/minecraft/*.sh
 
     NewestLog=$(find dirname/minecraft/logs -type f -exec stat -c "%y %n" {} + | sort -r | head -n1 | cut -d " " -f 4-)
-    echo "Displaying last 10 lines from log file $NewestLog in /logs folder:"
-    tail -10 "$NewestLog"
+    if [ -n "$NewestLog" ]; then
+      echo "Displaying last 10 lines from log file $NewestLog in /logs folder:"
+      tail -10 "$NewestLog"
+    fi
 fi
 
 echo "Complete"
