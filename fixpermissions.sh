@@ -16,7 +16,7 @@ else
 fi
 
 echo "Taking ownership of all server files/folders in dirname/minecraft..."
-sudo chown -Rv userxname dirname/minecraft
-sudo chmod -Rv 755 dirname/minecraft/*.sh
+sudo chown -R userxname dirname/minecraft
+sudo chmod -R 755 dirname/minecraft/*.sh
 
 echo "Complete"
