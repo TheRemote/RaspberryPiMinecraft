@@ -15,39 +15,8 @@ else
     echo "Unable to set path variable.  You likely need to download an updated version of SetupMinecraft.sh from GitHub!"
 fi
 
-# Get whether script is being invoked in automated mode
-Automated=0
-while getopts ":a:" opt; do
-  case $opt in
-    t)
-      case $OPTARG in
-        ''|*[!0-9]*)
-          Automated=1
-          ;;
-        *)
-          Automated=1
-          ;;
-      esac
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG; countdown time must be a whole number in minutes." >&2
-      ;;
-  esac
-done
-
 echo "Taking ownership of all server files/folders in dirname/minecraft..."
-if [[ $Automated == 1 ]]; then
-    sudo -n chown -R userxname dirname/minecraft
-    sudo -n chmod -R 755 dirname/minecraft/*.sh
-else
-    sudo chown -Rv userxname dirname/minecraft
-    sudo chmod -Rv 755 dirname/minecraft/*.sh
-
-    NewestLog=$(find dirname/minecraft/logs -type f -exec stat -c "%y %n" {} + | sort -r | head -n1 | cut -d " " -f 4-)
-    if [ -n "$NewestLog" ]; then
-      echo "Displaying last 10 lines from log file $NewestLog in /logs folder:"
-      tail -10 "$NewestLog"
-    fi
-fi
+sudo chown -Rv userxname dirname/minecraft
+sudo chmod -Rv 755 dirname/minecraft/*.sh
 
 echo "Complete"

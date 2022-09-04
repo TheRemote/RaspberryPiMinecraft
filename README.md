@@ -54,6 +54,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>September 4th 2022</h3>
+<ul>
+  <li>Remvoe pointless and confusing automation code</li>
+</ul>
+
 <h3>September 2nd 2022</h3>
 <ul>
   <li>Fix tail warning message if there is no existing log file</li>
