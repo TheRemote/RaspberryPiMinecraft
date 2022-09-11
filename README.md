@@ -54,9 +54,14 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 <h2>Update History</h2>
 
+<h3>September 11th 2022</h3>
+<ul>
+  <li>Fix memory recommendation to allow a little bit more breathing room to prevent heap errors</li>
+</ul>
+
 <h3>September 4th 2022</h3>
 <ul>
-  <li>Remvoe pointless and confusing automation code</li>
+  <li>Remove pointless and confusing automation code</li>
 </ul>
 
 <h3>September 2nd 2022</h3>

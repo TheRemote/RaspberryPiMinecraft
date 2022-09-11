@@ -80,11 +80,11 @@ Get_ServerMemory() {
 
   Print_Style "Total memory: $TotalMemory - Available Memory: $AvailableMemory" "$YELLOW"
   if [[ "$CPUArch" == *"armv7"* || "$CPUArch" == *"armhf"* ]]; then
-    if [ "$AvailableMemory" -gt 2700 ]; then
+    if [ "$AvailableMemory" -gt 2500 ]; then
       Print_Style "Warning: You are running a 32 bit operating system which has a hard limit of 3 GB of memory per process" "$RED"
-      Print_Style "You must also leave behind some room for the Java VM process overhead.  It is not recommended to exceed 2700 and if you experience crashes you may need to reduce it further." $RED
+      Print_Style "You must also leave behind some room for the Java VM process overhead.  It is not recommended to exceed 2500 and if you experience crashes you may need to reduce it further." $RED
       Print_Style "You can remove this limit by using a 64 bit Raspberry Pi Linux distribution (aarch64/arm64) like Ubuntu, Debian, etc." "$RED"
-      AvailableMemory=2700
+      AvailableMemory=2500
     fi
   fi
   if [ "$TotalMemory" -lt 700 ]; then
@@ -108,7 +108,7 @@ Get_ServerMemory() {
     Print_Style "INFO: You are running a 64-bit architecture, which means you can use more than 2700MB of RAM for the Minecraft server." "$YELLOW"
   fi
   MemSelected=0
-  RecommendedMemory=$(($AvailableMemory - 300))
+  RecommendedMemory=$(($AvailableMemory - 400))
   while [[ $MemSelected -lt 600 || $MemSelected -ge $TotalMemory ]]; do
     echo -n "Enter amount of memory in megabytes to dedicate to the Minecraft server (recommended: $RecommendedMemory): "
     read MemSelected </dev/tty
