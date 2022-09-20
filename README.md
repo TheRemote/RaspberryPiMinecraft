@@ -37,7 +37,7 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 <h2>Tested Distributions</h2>
 <ul>
 <li>Raspberry Pi OS - Bullseye/Buster/Stretch</li>
-<li>Ubuntu / Ubuntu Server 21.10 / 20.04 (LTS)</li>
+<li>Ubuntu / Ubuntu Server 22.04 / 21.10 / 20.04 (LTS)</li>
 <li>Debian 11 Bullseye / Debian 10 Buster / Debian 9 Stretch</li>
 <li>Arch Linux</li>
 <li>TinkerOS Stretch</li>
