@@ -80,6 +80,11 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>September 20th 2022</h3>
+<ul>
+  <li>Update to OpenJDK 18.0.2.1</li>
+</ul>
+
 <h3>September 11th 2022</h3>
 <ul>
   <li>Fix memory recommendation to allow a little bit more breathing room to prevent heap errors</li>
