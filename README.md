@@ -83,6 +83,7 @@ See the following links:<br>
 <h3>December 9th 2022</h3>
 <ul>
   <li>Upgrade to 1.19.3</li>
+  <li>Upgrade to OpenJDK 19</li>
 </ul>
 
 <h3>September 20th 2022</h3>
