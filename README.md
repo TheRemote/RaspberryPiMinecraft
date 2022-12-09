@@ -80,6 +80,11 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>December 9th 2022</h3>
+<ul>
+  <li>Upgrade to 1.19.3</li>
+</ul>
+
 <h3>September 20th 2022</h3>
 <ul>
   <li>Update to OpenJDK 18.0.2.1</li>
