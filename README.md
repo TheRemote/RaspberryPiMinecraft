@@ -80,6 +80,11 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>January 14th 2022</h3>
+<ul>
+  <li>Change connectivity check from google.com to papermc.org to prevent blocking in some countries</li>
+</ul>
+
 <h3>December 9th 2022</h3>
 <ul>
   <li>Upgrade to 1.19.3</li>
