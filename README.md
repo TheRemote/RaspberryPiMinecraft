@@ -80,7 +80,7 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
-<h3>January 14th 2022</h3>
+<h3>January 14th 2023</h3>
 <ul>
   <li>Change connectivity check from google.com to papermc.org to prevent blocking in some countries</li>
 </ul>
