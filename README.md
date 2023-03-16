@@ -80,6 +80,11 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>March 16th 2022</h3>
+<ul>
+  <li>Upgrade to 1.19.4 (make backups first, and make sure you've copied backup out of the main backups folder as they are rotated)</li>
+</ul>
+
 <h3>January 14th 2023</h3>
 <ul>
   <li>Change connectivity check from google.com to papermc.org to prevent blocking in some countries</li>
