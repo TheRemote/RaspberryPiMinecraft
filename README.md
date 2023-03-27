@@ -17,23 +17,6 @@ AllowLocalCopy="1"<br>
 Make sure to change AllowLocalCopy="1" to tell the script you want to actually run the local copy instead of the latest version.<br>
 Note that for this to work the Paper Minecraft server must also have released the latest version or the download will fail.  You can check here: <a href="https://papermc.io/downloads">https://papermc.io/downloads</a><br>
 
-<h2>Check Java Version</h2>
-
-<p>Sometimes if you have multiple versions of Java installed the wrong version of Java will be selected as the default.  If the server didn't start check that the right version of Java is selected with this command:</p>
-<p>If you get the message "<em>update-alternatives: error: no alternatives for java</em>" then you only have one version of Java installed and can skip to the next section.</p>
-<p>If you are presented with a list of choices then your machine has multiple versions of Java installed.  It will look like this:</p>
-
-<pre><code>update-alternatives: warning: /etc/alternatives/java has been changed (manually or by a script); switching to manual updates only
-There are 2 choices for the alternative java (providing /usr/bin/java).
-
-  Selection    Path                                            Priority   Status
-------------------------------------------------------------
-  0            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1101      auto mode
-  1            /usr/lib/jvm/java-11-openjdk-amd64/bin/java      1101      manual mode
-  2            /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java   1081      manual mode
-</code></pre>
-<p>You will usually want to just select the newest version of OpenJDK that is listed so you would type 0 and press enter.  In some cases on some platforms you may want to switch to the official Oracle JDK although I strongly recommend sticking with OpenJDK!</p>
-
 <h2>Tested Distributions</h2>
 <ul>
 <li>Raspberry Pi OS - Bullseye/Buster/Stretch</li>
