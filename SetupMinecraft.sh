@@ -7,7 +7,7 @@
 # curl https://raw.githubusercontent.com/TheRemote/RaspberryPiMinecraft/master/SetupMinecraft.sh | bash
 
 # Minecraft server version
-Version="1.19.4"
+Version="1.20"
 # Set to AllowLocalCopy="1" if you make changes to the script otherwise any changes will be discarded and the latest online version will run
 AllowLocalCopy="0"
 
