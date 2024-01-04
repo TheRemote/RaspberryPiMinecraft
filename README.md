@@ -63,6 +63,11 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>January 4th 2024</h3>
+<ul>
+  <li>Upgrade to 1.20.4 (make backups first, and make sure you've copied backup out of the main backups folder as they are rotated)</li>
+</ul>
+
 <h3>October 1st 2023</h3>
 <ul>
   <li>Upgrade to 1.20.2 (make backups first, and make sure you've copied backup out of the main backups folder as they are rotated)</li>
