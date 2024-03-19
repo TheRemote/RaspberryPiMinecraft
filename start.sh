@@ -62,10 +62,10 @@ Permissions=$(bash dirname/minecraft/fixpermissions.sh -a)
 if [ -d "world" ]; then
     if [ -n "$(which pigz)" ]; then
         echo "Backing up server (all cores) to cd minecraft/backups folder"
-        tar -I pigz --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
+        tar -I pigz --exclude='./plugins' --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
     else
         echo "Backing up server (single core, pigz not found) to cd minecraft/backups folder"
-        tar --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
+        tar --exclude='./plugins' --exclude='./backups' --exclude='./cache' --exclude='./logs' --exclude='./jre' --exclude='./paperclip.jar' -pzvcf backups/$(date +%Y.%m.%d.%H.%M.%S).tar.gz ./*
     fi
 fi
 
