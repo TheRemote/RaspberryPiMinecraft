@@ -66,6 +66,7 @@ See the following links:<br>
 <h3>May 19th 2024</h3>
 <ul>
   <li>Upgraded Java to OpenJDK 21</li>
+  <li>Upgraded default version to 1.20.6</li>
   <li>32 bit ARM is no longer supported -- make sure you are running a 64 bit OS to use 64 bit ARM (aarch64)</li>
 </ul>
 
