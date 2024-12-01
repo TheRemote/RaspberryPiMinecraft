@@ -63,6 +63,11 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>December 1st 2024</h3>
+<ul>
+  <li>Upgrade to 1.21.3 (make backups first, and make sure you've copied backup out of the main backups folder as they are rotated)</li>
+</ul>
+
 <h3>May 19th 2024</h3>
 <ul>
   <li>Upgraded Java to OpenJDK 21</li>
