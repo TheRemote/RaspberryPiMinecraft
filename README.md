@@ -378,7 +378,7 @@ Update_Sudoers
 <ul>
 <li>Added OpenJDK 17 and 18 placeholders for prerequisite installations</li>
 <li>Added a fallback to the non-headless JRE for platforms that don't offer that metapackage</li>
-<li>Paper Minecraft 1.17 is not yet available but should be soon.  If you go to https://papermc.io/api/v1/paper/ and see 1.17 in the list it's available and you can change the version variable at the very top of SetupMinecraft.sh otherwise it hasn't been released yet.  Should be soon!</li>
+<li>Paper Minecraft 1.17 is not yet available but should be soon.  If you go to https://api.papermc.io/v1/paper/ and see 1.17 in the list it's available and you can change the version variable at the very top of SetupMinecraft.sh otherwise it hasn't been released yet.  Should be soon!</li>
 </ul>
 
 <h3>March 22nd 2021</h3>
