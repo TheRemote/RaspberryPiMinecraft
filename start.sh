@@ -4,6 +4,9 @@
 # GitHub Repository: https://github.com/TheRemote/RaspberryPiMinecraft
 # Minecraft Server startup script using screen -- view the console with screen -r minecraft
 
+# Set current Paper version: Change if needed
+verselect=1.21.11
+
 # Set path variable
 USERPATH="pathvariable"
 PathLength=${#USERPATH}
@@ -192,12 +195,14 @@ if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
     # Get latest build
-    BuildJSON=$(curl --no-progress-meter -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://api.papermc.io/v2/projects/paper/versions/$Version)
-    Build=$(echo "$BuildJSON" | rev | cut -d, -f 1 | cut -d']' -f 2 | cut -d'[' -f 1 | rev)
-    Build=$(($Build + 0))
-    if [[ $Build != 0 ]]; then
-        echo "Latest paperclip build found: $Build"
-        curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "https://api.papermc.io/v2/projects/paper/versions/verselect/builds/$Build/downloads/paper-verselect-$Build.jar"
+    BuildJSON=$(curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://fill.papermc.io/v3/projects/paper/versions/$verselect)
+    LatestBuild=$(echo "$BuildJSON" | sed 's/.*"builds":\s*\[\s*\([0-9]*\).*/\1/')
+    LatestBuild=$(($LatestBuild + 0))
+    if [[ $LatestBuild != 0 ]]; then
+        echo "Latest paperclip build found: $LatestBuild."
+        LatestArtifactUrl=$(curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://fill.papermc.io/v3/projects/paper/versions/$verselect/builds/$LatestBuild)
+        DownloadUrl=$(echo "$LatestArtifactUrl" | sed 's/.*"url":\s*"\([^"]*\)".*/\1/')
+        curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "$DownloadUrl"
     else
         echo "Unable to retrieve latest Paper build (got result of $Build)"
     fi
