@@ -191,13 +191,22 @@ curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 
 if [ "$?" != 0 ]; then
     echo "Unable to connect to update website (internet connection may be down).  Skipping update ..."
 else
-    # Get latest build
-    BuildJSON=$(curl --no-progress-meter -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" https://api.papermc.io/v2/projects/paper/versions/$Version)
-    Build=$(echo "$BuildJSON" | rev | cut -d, -f 1 | cut -d']' -f 2 | cut -d'[' -f 1 | rev)
-    Build=$(($Build + 0))
-    if [[ $Build != 0 ]]; then
+    Build=$(curl -s -L "https://fill.papermc.io/v3/projects/paper/versions/$Version" | jq -r '.builds[0]' 2>/dev/null)
+    if [[ -n "$Build" && "$Build" != "null" ]]; then
         echo "Latest paperclip build found: $Build"
-        curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "https://api.papermc.io/v2/projects/paper/versions/verselect/builds/$Build/downloads/paper-verselect-$Build.jar"
+        # Get the SHA256 hash and filename for the download URL (pipe directly to avoid newline issues in commit messages)
+        SHA256=$(curl -s -L "https://fill.papermc.io/v3/projects/paper/versions/$Version/builds/$Build" | jq -r '.downloads["server:default"].checksums.sha256' 2>/dev/null)
+        FileName="paper-$Version-$Build.jar"
+        if [[ -n "$SHA256" && "$SHA256" != "null" ]]; then
+            echo "Downloading Paper $Version build $Build..."
+            if [ -z "$QuietCurl" ]; then
+                curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o /minecraft/paperclip.jar "https://fill-data.papermc.io/v1/objects/$SHA256/$FileName"
+            else
+                curl --no-progress-meter -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o /minecraft/paperclip.jar "https://fill-data.papermc.io/v1/objects/$SHA256/$FileName"
+            fi
+        else
+            echo "Unable to retrieve download info for Paper build $Build"
+        fi
     else
         echo "Unable to retrieve latest Paper build (got result of $Build)"
     fi

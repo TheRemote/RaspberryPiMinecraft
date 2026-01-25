@@ -63,6 +63,12 @@ See the following links:<br>
 
 <h2>Update History</h2>
 
+<h3>January 25th 2026</h3>
+<ul>
+  <li>Upgrade to 1.21.11 (make backups first, and make sure you've copied backup out of the main backups folder as they are rotated)</li>
+  <li>Fix script to use Paper API v3</li>
+</ul>
+
 <h3>July 24th 2025</h3>
 <ul>
   <li>Upgrade to 1.21.8 (make backups first, and make sure you've copied backup out of the main backups folder as they are rotated)</li>
