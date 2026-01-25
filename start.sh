@@ -200,9 +200,9 @@ else
         if [[ -n "$SHA256" && "$SHA256" != "null" ]]; then
             echo "Downloading Paper $Version build $Build..."
             if [ -z "$QuietCurl" ]; then
-                curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "https://fill-data.papermc.io/v1/objects/$SHA256/$FileName"
+                curl -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o dirname/minecraft/paperclip.jar "https://fill-data.papermc.io/v1/objects/$SHA256/$FileName"
             else
-                curl --no-progress-meter -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o paperclip.jar "https://fill-data.papermc.io/v1/objects/$SHA256/$FileName"
+                curl --no-progress-meter -H "Accept-Encoding: identity" -H "Accept-Language: en" -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4.212 Safari/537.36" -o dirname/minecraft/paperclip.jar "https://fill-data.papermc.io/v1/objects/$SHA256/$FileName"
             fi
         else
             echo "Unable to retrieve download info for Paper build $Build"
